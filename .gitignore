@@ -22,3 +22,11 @@ Thumbs.db
 # Build output
 dist/
 build/
+
+# Media / temporary captures
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.mp4
+*.webm
