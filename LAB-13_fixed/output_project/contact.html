@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact – FIFO Tournament 2026</title>
+  <script src="theme.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --gold: #EAB308;
+      --gold-light: #FDE047;
+      --gold-dark: #A16207;
+      --slate-bg: #080E1C;
+      --glass-bg: rgba(255,255,255,0.04);
+      --glass-border: rgba(234,179,8,0.2);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      background-color: #080E1C;
+      font-family: 'Rajdhani', sans-serif;
+      color: #e2e8f0;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ===== NAV ===== */
+    .glass-nav {
+      background: rgba(8,14,28,0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
+      box-shadow: 0 4px 30px rgba(234,179,8,0.08);
+    }
+
+    .nav-logo {
+      font-family: 'Orbitron', monospace;
+      font-weight: 900;
+      font-size: 1.8rem;
+      background: linear-gradient(135deg, #EAB308, #FDE047, #EAB308);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 4px;
+      position: relative;
+    }
+
+    .nav-logo::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #EAB308, transparent);
+      animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    .nav-link {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #94a3b8;
+      position: relative;
+      padding-bottom: 4px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: #EAB308;
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover { color: #EAB308; }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link.active { color: #EAB308; }
+    .nav-link.active::after { width: 100%; }
+
+    /* ===== PAGE HEADER ===== */
+    .page-header {
+      padding-top: 120px;
+      padding-bottom: 50px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-header-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1459865264687-595d652de67e?w=1920&q=60');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.07;
+    }
+
+    .page-header-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(15,23,42,0.5) 0%, rgba(15,23,42,1) 100%);
+    }
+
+    .page-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(234,179,8,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(234,179,8,0.04) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+
+    .section-label {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 5px;
+      color: #EAB308;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .section-label::before {
+      content: '';
+      width: 40px;
+      height: 2px;
+      background: #EAB308;
+    }
+
+    /* ===== FORM WRAPPER ===== */
+    .form-outer {
+      position: relative;
+    }
+
+    .form-card {
+      background: rgba(8,14,28,0.7);
+      border: 1px solid rgba(234,179,8,0.18);
+      border-radius: 24px;
+      overflow: hidden;
+      backdrop-filter: blur(20px);
+      position: relative;
+      box-shadow:
+        0 0 0 1px rgba(234,179,8,0.06),
+        0 30px 60px rgba(0,0,0,0.4),
+        0 0 80px rgba(234,179,8,0.04);
+    }
+
+    .form-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #EAB308, #FDE047, #EAB308, transparent);
+    }
+
+    .form-card-inner {
+      padding: 3rem 3.5rem;
+    }
+
+    @media (max-width: 640px) {
+      .form-card-inner { padding: 2rem 1.5rem; }
+    }
+
+    /* ===== INPUT STYLES ===== */
+    .form-group {
+      margin-bottom: 1.6rem;
+    }
+
+    .form-label {
+      display: block;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #64748b;
+      margin-bottom: 0.6rem;
+      transition: color 0.3s ease;
+    }
+
+    .form-group:focus-within .form-label {
+      color: #EAB308;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      color: #e2e8f0;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      padding: 14px 18px;
+      outline: none;
+      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      position: relative;
+    }
+
+    .form-input::placeholder,
+    .form-textarea::placeholder {
+      color: #334155;
+      font-weight: 400;
+    }
+
+    .form-input:hover,
+    .form-select:hover,
+    .form-textarea:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(234,179,8,0.2);
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      background: rgba(234,179,8,0.04);
+      border-color: rgba(234,179,8,0.5);
+      box-shadow:
+        0 0 0 3px rgba(234,179,8,0.08),
+        0 0 20px rgba(234,179,8,0.06);
+      color: #f1f5f9;
+    }
+
+    .form-select {
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23EAB308' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 44px;
+    }
+
+    .form-select option {
+      background: #1E293B;
+      color: #e2e8f0;
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 130px;
+      line-height: 1.7;
+    }
+
+    /* Input with icon wrapper */
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #334155;
+      pointer-events: none;
+      transition: color 0.3s ease;
+    }
+
+    .input-wrapper:focus-within .input-icon {
+      color: #EAB308;
+    }
+
+    .input-wrapper .form-input,
+    .input-wrapper .form-select {
+      padding-left: 46px;
+    }
+
+    /* Char counter */
+    .char-counter {
+      font-size: 0.72rem;
+      color: #334155;
+      text-align: right;
+      margin-top: 0.4rem;
+      transition: color 0.3s;
+    }
+
+    .char-counter.near { color: #EAB308; }
+    .char-counter.over { color: #ef4444; }
+
+    /* ===== SUBMIT BUTTON ===== */
+    .btn-submit {
+      width: 100%;
+      padding: 18px 32px;
+      background: linear-gradient(135deg, #CA8A04, #EAB308, #CA8A04);
+      background-size: 200% 100%;
+      background-position: 0% 50%;
+      color: #0F172A;
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+
+    .btn-submit::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn-submit:hover {
+      background-position: 100% 50%;
+      transform: translateY(-3px);
+      box-shadow:
+        0 20px 60px rgba(234,179,8,0.45),
+        0 0 0 1px rgba(234,179,8,0.3);
+    }
+
+    .btn-submit:hover::before { left: 100%; }
+
+    .btn-submit:active {
+      transform: translateY(-1px);
+    }
+
+    .btn-submit.loading {
+      pointer-events: none;
+      background: rgba(234,179,8,0.3);
+      color: rgba(255,255,255,0.5);
+    }
+
+    .btn-icon { transition: transform 0.3s ease; }
+    .btn-submit:hover .btn-icon { transform: translateX(4px); }
+
+    /* Spinner */
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    /* ===== CONTACT INFO SIDEBAR ===== */
+    .info-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(234,179,8,0.12);
+      border-radius: 16px;
+      padding: 2rem;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .info-card:hover {
+      border-color: rgba(234,179,8,0.3);
+      background: rgba(234,179,8,0.02);
+    }
+
+    .info-icon-box {
+      width: 48px;
+      height: 48px;
+      background: rgba(234,179,8,0.1);
+      border: 1px solid rgba(234,179,8,0.3);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #EAB308;
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .info-card:hover .info-icon-box {
+      background: rgba(234,179,8,0.15);
+      border-color: rgba(234,179,8,0.5);
+      box-shadow: 0 0 20px rgba(234,179,8,0.15);
+    }
+
+    .info-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      color: #64748b;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .info-value {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #e2e8f0;
+    }
+
+    .info-sub {
+      font-size: 0.82rem;
+      color: #475569;
+      margin-top: 2px;
+    }
+
+    /* ===== STADIUM CARD ===== */
+    .stadium-card {
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid rgba(234,179,8,0.15);
+    }
+
+    .stadium-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .stadium-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 30%, rgba(15,23,42,0.9) 100%);
+    }
+
+    .stadium-label {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 1rem 1.2rem;
+    }
+
+    /* ===== SOCIAL LINKS ===== */
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+    }
+
+    .social-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+      color: #64748b;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .social-btn:hover {
+      background: rgba(234,179,8,0.07);
+      border-color: rgba(234,179,8,0.3);
+      color: #EAB308;
+      transform: translateX(3px);
+    }
+
+    /* ===== SUCCESS STATE ===== */
+    .success-message {
+      display: none;
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      background: rgba(34,197,94,0.1);
+      border: 2px solid rgba(34,197,94,0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      color: #4ade80;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      background: rgba(5,8,18,0.98);
+      border-top: 1px solid rgba(234,179,8,0.15);
+      padding: 3rem 2rem;
+    }
+
+    .social-icon {
+      width: 42px; height: 42px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(234,179,8,0.2);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: #64748b; text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .social-icon:hover {
+      background: rgba(234,179,8,0.1);
+      border-color: rgba(234,179,8,0.5);
+      color: #EAB308;
+      transform: translateY(-3px);
+    }
+
+    /* Fade animations */
+    .fade-in {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    .gold-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(234,179,8,0.4), transparent);
+    }
+
+    /* Mobile menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 72px; left: 0; right: 0;
+      background: rgba(8,14,28,0.98);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(234,179,8,0.2);
+      padding: 1.5rem 2rem;
+      z-index: 999;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .mobile-menu.open { display: flex; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0F172A; }
+    ::-webkit-scrollbar-thumb { background: rgba(234,179,8,0.4); border-radius: 3px; }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* Field validation */
+    .form-input.valid {
+      border-color: rgba(34,197,94,0.4);
+    }
+
+    .form-input.invalid {
+      border-color: rgba(239,68,68,0.4);
+    }
+
+    .validation-msg {
+      font-size: 0.75rem;
+      margin-top: 0.4rem;
+      display: none;
+    }
+
+    .validation-msg.error { color: #ef4444; display: block; }
+    .validation-msg.success { color: #4ade80; display: block; }
+  
+    /* ── ENHANCED THEME OVERRIDE ── */
+    :root {
+      --gold:#EAB308;--gold-light:#FDE047;--gold-dark:#CA8A04;
+      --cyan:#06B6D4;--cyan-light:#67E8F9;
+      --bg:#05091A;--bg2:#0A1020;--border:rgba(6,182,212,0.18);
+      --border-gold:rgba(234,179,8,0.18);
+    }
+    body { background: #05091A !important; }
+    .glass-nav {
+      background: rgba(5,9,26,0.85) !important;
+      border-bottom: 1px solid rgba(6,182,212,0.18) !important;
+      box-shadow: 0 4px 40px rgba(6,182,212,0.06) !important;
+    }
+    .nav-logo {
+      background: linear-gradient(135deg,#06B6D4,#67E8F9,#EAB308) !important;
+      -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important;
+      background-clip: text !important;
+    }
+    .nav-logo::after { background: linear-gradient(90deg,transparent,#06B6D4,#EAB308,transparent) !important; }
+    .nav-link:hover { color:#67E8F9 !important; }
+    .nav-link:hover::after,.nav-link.active::after { background: linear-gradient(90deg,#06B6D4,#EAB308) !important; width:100%; }
+    .nav-link.active { color:#06B6D4 !important; }
+    ::-webkit-scrollbar-thumb { background: rgba(6,182,212,0.35) !important; border-radius:3px; }
+    .gd { background: linear-gradient(90deg,transparent,rgba(6,182,212,.25),rgba(234,179,8,.12),transparent) !important; }
+    .section-label { color:#06B6D4 !important; }
+    .section-label::before { background: linear-gradient(90deg,#06B6D4,#67E8F9) !important; }
+
+  
+    /* ── THEME VARIABLE CONSUMERS (shared) ── */
+    body{background:var(--bg)!important;color:var(--text-secondary)!important;}
+    .glass-nav{background:var(--bg-nav)!important;border-bottom:1px solid var(--border)!important;box-shadow:var(--shadow-nav)!important;}
+    .nav-link{color:var(--text-muted)!important;}
+    .nav-link:hover,.nav-link.active{color:var(--cyan)!important;}
+    .nav-link::after,.nav-link:hover::after,.nav-link.active::after{background:linear-gradient(90deg,var(--cyan),var(--gold))!important;}
+    .mob-menu{background:var(--bg-mob-menu)!important;border-color:var(--border)!important;}
+    .gd{background:linear-gradient(90deg,transparent,var(--border),transparent)!important;}
+    ::-webkit-scrollbar-track{background:var(--bg)!important;}
+    ::-webkit-scrollbar-thumb{background:var(--scrollbar-thumb)!important;}
+    /* Light mode body background override */
+    :root:not([data-theme="dark"]) body,
+    html:not([data-theme="dark"]) body{
+      background:var(--bg)!important;
+    }
+
+  
+    /* ── LIGHT MODE SECTION OVERRIDES ── */
+    :root body,.glass-nav{transition:background-color .3s ease,border-color .3s ease,box-shadow .3s ease;}
+    /* Cards / panels */
+    [data-theme]:not([data-theme="dark"]) .h-card,
+    html:not([data-theme="dark"]) .h-card{background:rgba(255,255,255,0.9)!important;border-color:var(--border-card)!important;box-shadow:0 4px 20px rgba(0,0,0,0.08)!important;}
+    html:not([data-theme="dark"]) .stat-item::after{background:linear-gradient(to bottom,transparent,var(--border),transparent)!important;}
+    html:not([data-theme="dark"]) .stats-bar{background:linear-gradient(90deg,rgba(240,244,248,.98),rgba(230,240,252,.95),rgba(240,244,248,.98))!important;border-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .stat-num{color:var(--gold)!important;}
+    html:not([data-theme="dark"]) .stat-lbl{color:var(--text-muted)!important;}
+    html:not([data-theme="dark"]) .cd-item{background:rgba(255,255,255,0.9)!important;border-color:var(--border-card)!important;}
+    html:not([data-theme="dark"]) .cd-num{color:var(--gold)!important;}
+    html:not([data-theme="dark"]) .cd-unit{color:var(--text-muted)!important;}
+    html:not([data-theme="dark"]) .footer{background:rgba(224,234,248,.98)!important;border-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .section-title{color:var(--text-primary)!important;}
+    html:not([data-theme="dark"]) .feature-row{background:rgba(6,182,212,0.04)!important;border-left-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .feature-row:hover{background:rgba(6,182,212,0.10)!important;border-left-color:var(--cyan)!important;}
+    html:not([data-theme="dark"]) .h-tag{background:rgba(202,138,4,0.10)!important;border-color:var(--border-gold)!important;color:var(--gold)!important;}
+    html:not([data-theme="dark"]) .hero-overlay{background:linear-gradient(135deg,rgba(240,244,248,0.88) 0%,rgba(215,232,250,0.72) 50%,rgba(180,210,248,0.28) 100%)!important;}
+    html:not([data-theme="dark"]) .si{background:rgba(0,0,0,0.04)!important;border-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .si:hover{background:rgba(6,182,212,0.12)!important;}
+    html:not([data-theme="dark"]) .hero-title{color:var(--text-primary)!important;text-shadow:0 0 60px rgba(6,182,212,0.15)!important;}
+    html:not([data-theme="dark"]) .hero-sub{color:var(--text-muted)!important;}
+
+  </style>
+</head>
+<body>
+
+<!-- ===== NAVIGATION ===== -->
+<nav class="glass-nav fixed top-0 left-0 right-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 md:h-20">
+      <a href="index.html" class="nav-logo">FIFO</a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="schedule.html" class="nav-link">Schedule</a>
+        <a href="players.html" class="nav-link">Players</a>
+        <a href="contact.html" class="nav-link active">Contact</a>
+      </div>
+      <a href="signup.html" class="hidden md:inline-flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-slate-900 font-bold text-sm px-5 py-2.5 rounded transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-yellow-500/30" style="font-family:'Orbitron',monospace; font-size:0.72rem; letter-spacing:2px;">
+        <span>REGISTER</span>
+        <i data-lucide="chevron-right" style="width:14px;height:14px;"></i>
+      </a>
+      <button
+        id="theme-toggle"
+        class="theme-toggle-btn hidden md:inline-flex"
+        aria-label="Switch to Light Mode"
+        aria-pressed="false"
+        title="Toggle dark / light mode"
+      >
+        <span class="toggle-track"></span>
+        <i data-lucide="sun" class="theme-icon"></i>
+        <span class="theme-label">LIGHT</span>
+      </button>
+      <button onclick="toggleMenu()" class="md:hidden text-slate-400 hover:text-yellow-400 transition-colors">
+        <i data-lucide="menu" id="menu-icon" style="width:24px;height:24px;"></i>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="index.html" class="nav-link text-lg">Home</a>
+    <a href="schedule.html" class="nav-link text-lg">Schedule</a>
+    <a href="players.html" class="nav-link text-lg">Players</a>
+    <a href="contact.html" class="nav-link active text-lg">Contact</a>
+      <button
+      id="theme-toggle-mobile"
+      class="theme-toggle-btn"
+      style="margin-top:.5rem;width:100%;justify-content:center;"
+      aria-label="Switch to Light Mode"
+      aria-pressed="false"
+      onclick="FIFO_Theme.toggle()"
+    >
+      <span class="toggle-track"></span>
+      <i data-lucide="sun" class="theme-icon"></i>
+      <span class="theme-label">LIGHT MODE</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ===== PAGE HEADER ===== -->
+<header class="page-header">
+  <div class="page-header-bg"></div>
+  <div class="page-header-gradient"></div>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center" style="position:relative;z-index:1;">
+    <div class="section-label" style="justify-content:center;">
+      <span style="width:40px;height:2px;background:#EAB308;display:block;"></span>
+      Get in Touch
+      <span style="width:40px;height:2px;background:#EAB308;display:block;"></span>
+    </div>
+    <h1 style="font-family:'Bebas Neue',cursive;font-size:clamp(2.5rem,6vw,5rem);letter-spacing:3px;color:#f1f5f9;line-height:1;margin-bottom:1rem;">
+      Contact <span style="color:#EAB308;">FIFO</span>
+    </h1>
+    <p style="color:#64748b;font-size:1rem;letter-spacing:0.5px;max-width:480px;margin:0 auto;line-height:1.8;">
+      Whether you're a team representative, media outlet, or passionate fan, we'd love to hear from you. Our team responds within 24 hours.
+    </p>
+  </div>
+</header>
+
+<div class="gold-divider"></div>
+
+<!-- ===== MAIN CONTACT AREA ===== -->
+<main style="padding: 5rem 1.5rem; position:relative;">
+
+  <!-- Background decoration -->
+  <div style="position:absolute;top:10%;right:5%;width:300px;height:300px;background:radial-gradient(circle,rgba(234,179,8,0.04),transparent 70%);pointer-events:none;border-radius:50%;"></div>
+  <div style="position:absolute;bottom:10%;left:5%;width:400px;height:400px;background:radial-gradient(circle,rgba(234,179,8,0.03),transparent 70%);pointer-events:none;border-radius:50%;"></div>
+
+  <div class="max-w-6xl mx-auto">
+    <div class="grid lg:grid-cols-5 gap-10 items-start">
+
+      <!-- ===== FORM (3/5) ===== -->
+      <div class="lg:col-span-3">
+        <div class="form-outer">
+
+          <!-- Decorative corner elements -->
+          <div style="position:absolute;top:-1px;left:-1px;width:30px;height:30px;border-top:2px solid #EAB308;border-left:2px solid #EAB308;border-radius:2px 0 0 0;z-index:2;"></div>
+          <div style="position:absolute;top:-1px;right:-1px;width:30px;height:30px;border-top:2px solid #EAB308;border-right:2px solid #EAB308;border-radius:0 2px 0 0;z-index:2;"></div>
+          <div style="position:absolute;bottom:-1px;left:-1px;width:30px;height:30px;border-bottom:2px solid #EAB308;border-left:2px solid #EAB308;border-radius:0 0 0 2px;z-index:2;"></div>
+          <div style="position:absolute;bottom:-1px;right:-1px;width:30px;height:30px;border-bottom:2px solid #EAB308;border-right:2px solid #EAB308;border-radius:0 0 2px 0;z-index:2;"></div>
+
+          <div class="form-card fade-in">
+            <div class="form-card-inner">
+
+              <!-- Form header -->
+              <div style="margin-bottom:2.5rem;">
+                <h2 style="font-family:'Bebas Neue',cursive;font-size:2rem;letter-spacing:2px;color:#f1f5f9;line-height:1;margin-bottom:0.5rem;">Send a Message</h2>
+                <p style="color:#475569;font-size:0.9rem;letter-spacing:0.5px;">Fill in the form below and our team will be in touch shortly.</p>
+              </div>
+
+              <!-- THE FORM -->
+              <form id="contact-form" novalidate onsubmit="handleSubmit(event)">
+
+                <!-- Row 1: Name + Email -->
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;" class="form-row-two">
+                  <!-- Name -->
+                  <div class="form-group">
+                    <label class="form-label" for="name">
+                      Full Name <span style="color:#ef4444;margin-left:2px;">*</span>
+                    </label>
+                    <div class="input-wrapper">
+                      <i data-lucide="user" class="input-icon" style="width:16px;height:16px;"></i>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        class="form-input"
+                        placeholder="Cristiano Ronaldo"
+                        required
+                        minlength="2"
+                        oninput="validateName(this)"
+                        onblur="validateName(this)"
+                      />
+                    </div>
+                    <div class="validation-msg" id="name-msg"></div>
+                  </div>
+
+                  <!-- Email -->
+                  <div class="form-group">
+                    <label class="form-label" for="email">
+                      Email Address <span style="color:#ef4444;margin-left:2px;">*</span>
+                    </label>
+                    <div class="input-wrapper">
+                      <i data-lucide="mail" class="input-icon" style="width:16px;height:16px;"></i>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        class="form-input"
+                        placeholder="cr7@fifotournament.com"
+                        required
+                        oninput="validateEmail(this)"
+                        onblur="validateEmail(this)"
+                      />
+                    </div>
+                    <div class="validation-msg" id="email-msg"></div>
+                  </div>
+                </div>
+
+                <!-- Favorite Team -->
+                <div class="form-group">
+                  <label class="form-label" for="team">Favorite Team</label>
+                  <div class="input-wrapper">
+                    <i data-lucide="shield" class="input-icon" style="width:16px;height:16px;"></i>
+                    <select id="team" name="team" class="form-select">
+                      <option value="" disabled selected>Select your favorite team...</option>
+                      <optgroup label="— South America —">
+                        <option value="brazil">🇧🇷 Brazil</option>
+                        <option value="argentina">🇦🇷 Argentina</option>
+                        <option value="colombia">🇨🇴 Colombia</option>
+                        <option value="uruguay">🇺🇾 Uruguay</option>
+                        <option value="chile">🇨🇱 Chile</option>
+                      </optgroup>
+                      <optgroup label="— Europe —">
+                        <option value="spain">🇪🇸 Spain</option>
+                        <option value="france">🇫🇷 France</option>
+                        <option value="germany">🇩🇪 Germany</option>
+                        <option value="portugal">🇵🇹 Portugal</option>
+                        <option value="england">󠁧󠁢󠁥󠁮󠁧󠁿 England</option>
+                        <option value="italy">🇮🇹 Italy</option>
+                        <option value="netherlands">🇳🇱 Netherlands</option>
+                        <option value="belgium">🇧🇪 Belgium</option>
+                      </optgroup>
+                      <optgroup label="— Africa —">
+                        <option value="nigeria">🇳🇬 Nigeria</option>
+                        <option value="senegal">🇸🇳 Senegal</option>
+                        <option value="morocco">🇲🇦 Morocco</option>
+                        <option value="ghana">🇬🇭 Ghana</option>
+                      </optgroup>
+                      <optgroup label="— Asia —">
+                        <option value="japan">🇯🇵 Japan</option>
+                        <option value="south-korea">🇰🇷 South Korea</option>
+                        <option value="saudi-arabia">🇸🇦 Saudi Arabia</option>
+                      </optgroup>
+                      <option value="other">Other Team</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Inquiry Type -->
+                <div class="form-group">
+                  <label class="form-label">Inquiry Type</label>
+                  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;" id="inquiry-grid">
+                    <label class="inquiry-btn" onclick="selectInquiry(this, 'registration')" style="display:flex;align-items:center;gap:0.5rem;padding:10px 12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;cursor:pointer;transition:all 0.3s;font-size:0.82rem;color:#64748b;">
+                      <i data-lucide="pen-tool" style="width:14px;height:14px;flex-shrink:0;"></i>
+                      Registration
+                    </label>
+                    <label class="inquiry-btn" onclick="selectInquiry(this, 'media')" style="display:flex;align-items:center;gap:0.5rem;padding:10px 12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;cursor:pointer;transition:all 0.3s;font-size:0.82rem;color:#64748b;">
+                      <i data-lucide="camera" style="width:14px;height:14px;flex-shrink:0;"></i>
+                      Media / Press
+                    </label>
+                    <label class="inquiry-btn" onclick="selectInquiry(this, 'sponsorship')" style="display:flex;align-items:center;gap:0.5rem;padding:10px 12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;cursor:pointer;transition:all 0.3s;font-size:0.82rem;color:#64748b;">
+                      <i data-lucide="briefcase" style="width:14px;height:14px;flex-shrink:0;"></i>
+                      Sponsorship
+                    </label>
+                    <label class="inquiry-btn" onclick="selectInquiry(this, 'tickets')" style="display:flex;align-items:center;gap:0.5rem;padding:10px 12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;cursor:pointer;transition:all 0.3s;font-size:0.82rem;color:#64748b;">
+                      <i data-lucide="ticket" style="width:14px;height:14px;flex-shrink:0;"></i>
+                      Tickets
+                    </label>
+                    <label class="inquiry-btn" onclick="selectInquiry(this, 'player')" style="display:flex;align-items:center;gap:0.5rem;padding:10px 12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;cursor:pointer;transition:all 0.3s;font-size:0.82rem;color:#64748b;">
+                      <i data-lucide="user-check" style="width:14px;height:14px;flex-shrink:0;"></i>
+                      Player Info
+                    </label>
+                    <label class="inquiry-btn" onclick="selectInquiry(this, 'other')" style="display:flex;align-items:center;gap:0.5rem;padding:10px 12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;cursor:pointer;transition:all 0.3s;font-size:0.82rem;color:#64748b;">
+                      <i data-lucide="message-circle" style="width:14px;height:14px;flex-shrink:0;"></i>
+                      Other
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Message -->
+                <div class="form-group">
+                  <label class="form-label" for="message">
+                    Your Message <span style="color:#ef4444;margin-left:2px;">*</span>
+                  </label>
+                  <div class="input-wrapper">
+                    <i data-lucide="message-square" class="input-icon" style="width:16px;height:16px;top:20px;transform:none;"></i>
+                    <textarea
+                      id="message"
+                      name="message"
+                      class="form-textarea"
+                      placeholder="Tell us why you want to get involved with FIFO 2026. Share your background, team affiliation, or what you'd like to know..."
+                      required
+                      style="padding-left:46px;"
+                      maxlength="600"
+                      oninput="updateCharCount(this)"
+                    ></textarea>
+                  </div>
+                  <div class="char-counter" id="char-counter">0 / 600 characters</div>
+                </div>
+
+                <!-- Consent checkbox -->
+                <div style="margin-bottom:2rem;">
+                  <label style="display:flex;align-items:flex-start;gap:0.75rem;cursor:pointer;font-size:0.88rem;color:#64748b;line-height:1.6;">
+                    <div style="position:relative;flex-shrink:0;margin-top:2px;">
+                      <input type="checkbox" id="consent" style="position:absolute;opacity:0;width:0;height:0;" onchange="updateCheckbox(this)"/>
+                      <div id="checkbox-box" style="width:20px;height:20px;border:1.5px solid rgba(255,255,255,0.15);border-radius:5px;background:rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center;transition:all 0.3s;">
+                        <i data-lucide="check" id="checkbox-icon" style="width:12px;height:12px;color:#0F172A;display:none;"></i>
+                      </div>
+                    </div>
+                    I agree to FIFO's <a href="#" style="color:#EAB308;text-decoration:underline;">Terms & Conditions</a> and consent to the processing of my personal data for the purpose of this inquiry.
+                  </label>
+                </div>
+
+                <!-- Submit -->
+                <div>
+                  <button type="submit" class="btn-submit" id="submit-btn">
+                    <i data-lucide="send" style="width:18px;height:18px;" class="btn-icon"></i>
+                    <span id="btn-text">Send Message</span>
+                  </button>
+
+                  <p style="text-align:center;color:#334155;font-size:0.78rem;margin-top:1rem;letter-spacing:0.5px;">
+                    <i data-lucide="lock" style="width:11px;height:11px;display:inline;margin-right:4px;color:#475569;"></i>
+                    Your data is encrypted and never shared with third parties.
+                  </p>
+                </div>
+
+              </form>
+
+              <!-- Success Message (hidden by default) -->
+              <div class="success-message" id="success-msg">
+                <div class="success-icon">
+                  <i data-lucide="check-circle" style="width:36px;height:36px;"></i>
+                </div>
+                <h3 style="font-family:'Bebas Neue',cursive;font-size:2rem;letter-spacing:2px;color:#4ade80;margin-bottom:0.5rem;">Message Sent!</h3>
+                <p style="color:#64748b;font-size:1rem;line-height:1.7;margin-bottom:2rem;">Thank you for reaching out to FIFO. Our team will review your message and get back to you within <strong style="color:#EAB308;">24 hours</strong>.</p>
+                <a href="index.html" style="display:inline-flex;align-items:center;gap:0.6rem;background:linear-gradient(135deg,#EAB308,#CA8A04);color:#0F172A;font-family:'Orbitron',monospace;font-size:0.7rem;letter-spacing:2px;padding:12px 28px;border-radius:6px;text-decoration:none;font-weight:700;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+                  Return to Home
+                  <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+                </a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== SIDEBAR (2/5) ===== -->
+      <div class="lg:col-span-2 space-y-5">
+
+        <!-- Contact Info Cards -->
+        <div class="info-card fade-in">
+          <div class="info-icon-box">
+            <i data-lucide="phone" style="width:20px;height:20px;"></i>
+          </div>
+          <div class="info-title">Phone</div>
+          <div class="info-value">+1 (800) FIFO-2026</div>
+          <div class="info-sub">Mon–Fri, 9am–6pm EST</div>
+        </div>
+
+        <div class="info-card fade-in" style="transition-delay:0.1s;">
+          <div class="info-icon-box">
+            <i data-lucide="mail" style="width:20px;height:20px;"></i>
+          </div>
+          <div class="info-title">Email</div>
+          <div class="info-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dcb5b2bab39cbab5bab3a8b3a9aeb2bdb1b9b2a8f2b3aebb">[email&#160;protected]</a></div>
+          <div class="info-sub">Press: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="533e36373a3213353a353c273c26213d323e363d277d3c2134">[email&#160;protected]</a></div>
+        </div>
+
+        <div class="info-card fade-in" style="transition-delay:0.2s;">
+          <div class="info-icon-box">
+            <i data-lucide="map-pin" style="width:20px;height:20px;"></i>
+          </div>
+          <div class="info-title">Headquarters</div>
+          <div class="info-value">PAF Complex, Sector E-9</div>
+          <div class="info-sub">Islamabad, Pakistan</div>
+        </div>
+
+        <!-- OpenStreetMap Location -->
+        <div class="fade-in" style="transition-delay:0.3s;">
+          <div style="font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:3px;color:#475569;text-transform:uppercase;margin-bottom:0.75rem;display:flex;align-items:center;gap:0.5rem;">
+            <i data-lucide="map-pin" style="width:13px;height:13px;color:#EAB308;"></i>
+            Our Location
+          </div>
+          <div style="border-radius:16px;overflow:hidden;border:1px solid rgba(234,179,8,0.2);position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.4);">
+            <!-- Map iframe using OpenStreetMap -->
+            <iframe
+              id="fifo-map"
+              src="https://www.openstreetmap.org/export/embed.html?bbox=73.0400%2C33.6680%2C73.0600%2C33.6780&layer=mapnik&marker=33.6730%2C73.0500"
+              width="100%"
+              height="200"
+              style="border:0;display:block;filter:invert(0.9) hue-rotate(180deg) brightness(0.85) contrast(0.9);"
+              loading="lazy"
+              title="FIFO Headquarters - PAF Complex Islamabad"
+            ></iframe>
+            <!-- Overlay label -->
+            <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(15,23,42,0.95),transparent);padding:0.9rem 1rem;pointer-events:none;">
+              <div style="font-family:'Orbitron',monospace;font-size:0.58rem;letter-spacing:2px;color:#A16207;text-transform:uppercase;margin-bottom:2px;">FIFO Headquarters</div>
+              <div style="font-weight:700;font-size:0.9rem;color:#FDE047;">PAF Complex, Sector E-9</div>
+              <div style="font-size:0.75rem;color:#64748b;">Islamabad, Pakistan</div>
+            </div>
+            <!-- Click to open in OSM -->
+            <a
+              href="https://www.openstreetmap.org/?mlat=33.6730&mlon=73.0500#map=16/33.6730/73.0500"
+              target="_blank"
+              rel="noopener noreferrer"
+              style="position:absolute;top:10px;right:10px;background:rgba(234,179,8,0.9);color:#0F172A;font-family:'Orbitron',monospace;font-size:0.55rem;letter-spacing:1.5px;font-weight:700;padding:6px 10px;border-radius:6px;text-decoration:none;display:flex;align-items:center;gap:5px;transition:all 0.3s;backdrop-filter:blur(4px);"
+              onmouseover="this.style.background='#EAB308';this.style.transform='translateY(-1px)'"
+              onmouseout="this.style.background='rgba(234,179,8,0.9)';this.style.transform='none'"
+            >
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              OPEN MAP
+            </a>
+          </div>
+        </div>
+
+        <!-- Social Links -->
+        <div class="fade-in" style="transition-delay:0.4s;">
+          <div style="font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:3px;color:#475569;text-transform:uppercase;margin-bottom:1rem;">Follow FIFO</div>
+          <div class="social-grid">
+            <a href="#" class="social-btn">
+              <i data-lucide="twitter" style="width:16px;height:16px;"></i>
+              Twitter / X
+            </a>
+            <a href="#" class="social-btn">
+              <i data-lucide="instagram" style="width:16px;height:16px;"></i>
+              Instagram
+            </a>
+            <a href="#" class="social-btn">
+              <i data-lucide="youtube" style="width:16px;height:16px;"></i>
+              YouTube
+            </a>
+            <a href="#" class="social-btn">
+              <i data-lucide="facebook" style="width:16px;height:16px;"></i>
+              Facebook
+            </a>
+          </div>
+        </div>
+
+        <!-- Response time badge -->
+        <div class="fade-in" style="transition-delay:0.5s;background:linear-gradient(135deg,rgba(34,197,94,0.06),rgba(34,197,94,0.02));border:1px solid rgba(34,197,94,0.2);border-radius:12px;padding:1.2rem;display:flex;align-items:center;gap:1rem;">
+          <div style="width:44px;height:44px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i data-lucide="zap" style="width:18px;height:18px;color:#4ade80;"></i>
+          </div>
+          <div>
+            <div style="font-weight:700;color:#4ade80;font-size:0.95rem;">Avg. Response: &lt; 4 Hours</div>
+            <div style="font-size:0.8rem;color:#475569;margin-top:2px;">Our team is active Mon–Sat, 8am–8pm</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="max-w-6xl mx-auto text-center">
+    <div style="font-family:'Orbitron',monospace;font-weight:900;font-size:1.6rem;background:linear-gradient(135deg,#EAB308,#FDE047);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:4px;margin-bottom:0.5rem;">FIFO</div>
+    <p style="color:#475569;font-size:0.85rem;letter-spacing:1px;margin-bottom:1.5rem;">Football International Federation Organization</p>
+    <div style="display:flex;justify-content:center;gap:0.75rem;margin-bottom:2rem;">
+      <a href="#" class="social-icon"><i data-lucide="twitter" style="width:16px;height:16px;"></i></a>
+      <a href="#" class="social-icon"><i data-lucide="instagram" style="width:16px;height:16px;"></i></a>
+      <a href="#" class="social-icon"><i data-lucide="facebook" style="width:16px;height:16px;"></i></a>
+      <a href="#" class="social-icon"><i data-lucide="youtube" style="width:16px;height:16px;"></i></a>
+    </div>
+    <div style="display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-bottom:2rem;">
+      <a href="index.html" style="color:#475569;font-size:0.82rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:color 0.3s;" onmouseover="this.style.color='#EAB308'" onmouseout="this.style.color='#475569'">Home</a>
+      <a href="schedule.html" style="color:#475569;font-size:0.82rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:color 0.3s;" onmouseover="this.style.color='#EAB308'" onmouseout="this.style.color='#475569'">Schedule</a>
+      <a href="players.html" style="color:#475569;font-size:0.82rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:color 0.3s;" onmouseover="this.style.color='#EAB308'" onmouseout="this.style.color='#475569'">Players</a>
+      <a href="contact.html" style="color:#EAB308;font-size:0.82rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;">Contact</a>
+    </div>
+    <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(234,179,8,0.2),transparent);margin-bottom:1.5rem;"></div>
+    <p style="color:#334155;font-size:0.8rem;letter-spacing:1px;">&copy; 2026 FIFO – Football International Federation Organization. All rights reserved.</p>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  lucide.createIcons();
+
+  // Fade-in observer
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Mobile menu
+  function toggleMenu() {
+    const menu = document.getElementById('mobile-menu');
+    const icon = document.getElementById('menu-icon');
+    menu.classList.toggle('open');
+    icon.setAttribute('data-lucide', menu.classList.contains('open') ? 'x' : 'menu');
+    lucide.createIcons();
+  }
+
+  // Validation: Name
+  function validateName(el) {
+    const msg = document.getElementById('name-msg');
+    if (el.value.trim().length < 2) {
+      el.classList.remove('valid'); el.classList.add('invalid');
+      msg.textContent = '⚠ Name must be at least 2 characters.';
+      msg.className = 'validation-msg error';
+    } else {
+      el.classList.remove('invalid'); el.classList.add('valid');
+      msg.className = 'validation-msg';
+    }
+  }
+
+  // Validation: Email
+  function validateEmail(el) {
+    const msg = document.getElementById('email-msg');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(el.value.trim())) {
+      el.classList.remove('valid'); el.classList.add('invalid');
+      msg.textContent = '⚠ Please enter a valid email address.';
+      msg.className = 'validation-msg error';
+    } else {
+      el.classList.remove('invalid'); el.classList.add('valid');
+      msg.className = 'validation-msg';
+    }
+  }
+
+  // Char counter
+  function updateCharCount(el) {
+    const counter = document.getElementById('char-counter');
+    const len = el.value.length;
+    counter.textContent = `${len} / 600 characters`;
+    counter.className = 'char-counter';
+    if (len > 500) counter.classList.add('near');
+    if (len >= 600) counter.classList.add('over');
+  }
+
+  // Custom checkbox
+  function updateCheckbox(el) {
+    const box = document.getElementById('checkbox-box');
+    const icon = document.getElementById('checkbox-icon');
+    if (el.checked) {
+      box.style.background = '#EAB308';
+      box.style.borderColor = '#EAB308';
+      icon.style.display = 'block';
+      lucide.createIcons();
+    } else {
+      box.style.background = 'rgba(255,255,255,0.03)';
+      box.style.borderColor = 'rgba(255,255,255,0.15)';
+      icon.style.display = 'none';
+    }
+  }
+
+  // Inquiry type selection
+  let selectedInquiry = null;
+  function selectInquiry(el, val) {
+    document.querySelectorAll('.inquiry-btn').forEach(b => {
+      b.style.background = 'rgba(255,255,255,0.03)';
+      b.style.borderColor = 'rgba(255,255,255,0.08)';
+      b.style.color = '#64748b';
+    });
+    el.style.background = 'rgba(234,179,8,0.1)';
+    el.style.borderColor = 'rgba(234,179,8,0.4)';
+    el.style.color = '#EAB308';
+    selectedInquiry = val;
+  }
+
+  // Form submission
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const name    = document.getElementById('name').value.trim();
+    const email   = document.getElementById('email').value.trim();
+    const message = document.getElementById('message').value.trim();
+    const consent = document.getElementById('consent').checked;
+    const subject = selectedInquiry || '';
+
+    // Validate
+    if (name.length < 2) { validateName(document.getElementById('name')); return; }
+    if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) { validateEmail(document.getElementById('email')); return; }
+    if (!message) {
+      document.getElementById('message').classList.add('invalid');
+      return;
+    }
+    if (!consent) {
+      alert('Please accept the Terms & Conditions to proceed.');
+      return;
+    }
+
+    const btn = document.getElementById('submit-btn');
+    btn.classList.add('loading');
+    btn.innerHTML = `<svg style="width:18px;height:18px;animation:spin 1s linear infinite;flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg><span>Sending...</span>`;
+
+    try {
+      const res = await fetch('http://localhost:3000/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, subject, message })
+      });
+      if (res.ok) {
+        document.getElementById('contact-form').style.display = 'none';
+        document.getElementById('success-msg').style.display = 'block';
+      } else {
+        const data = await res.json();
+        const msg = data.message || 'Failed to send. Please try again.';
+        btn.classList.remove('loading');
+        btn.innerHTML = `<span>${msg}</span>`;
+        setTimeout(() => { btn.innerHTML = `<span id="btn-text">Send Message</span>`; }, 3000);
+      }
+    } catch(err) {
+      btn.classList.remove('loading');
+      btn.innerHTML = `<span>Cannot reach server. Please email us directly.</span>`;
+      setTimeout(() => { btn.innerHTML = `<span id="btn-text">Send Message</span>`; }, 3000);
+    }
+  }
+</script>
+
+<!-- ===== AI CHATBOT ===== -->
+<button id="chat-toggle" onclick="toggleChat()" aria-label="Open Chat" style="position:fixed;bottom:28px;right:28px;width:62px;height:62px;background:linear-gradient(135deg,#CA8A04,#EAB308);border:none;border-radius:50%;cursor:pointer;box-shadow:0 8px 30px rgba(234,179,8,0.45);display:flex;align-items:center;justify-content:center;z-index:10000;transition:all 0.3s;animation:pulse-chat 2.5s infinite;" onmouseover="this.style.transform='scale(1.1) translateY(-3px)'" onmouseout="this.style.transform='none'">
+  <svg id="chat-open-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+  <svg id="chat-close-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2.5" style="display:none;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  <span id="chat-badge" style="position:absolute;top:-4px;right:-4px;width:20px;height:20px;background:#ef4444;border-radius:50%;font-size:0.65rem;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;border:2px solid #0F172A;">1</span>
+</button>
+
+<div id="chat-window" style="position:fixed;bottom:105px;right:28px;width:360px;max-height:520px;background:rgba(15,23,42,0.97);border:1px solid rgba(234,179,8,0.25);border-radius:20px;box-shadow:0 24px 64px rgba(0,0,0,0.6);display:none;flex-direction:column;overflow:hidden;z-index:9999;backdrop-filter:blur(20px);font-family:'Rajdhani',sans-serif;">
+  <div style="background:linear-gradient(135deg,rgba(202,138,4,0.15),rgba(234,179,8,0.08));border-bottom:1px solid rgba(234,179,8,0.2);padding:1rem 1.25rem;display:flex;align-items:center;gap:0.75rem;">
+    <div style="width:42px;height:42px;background:linear-gradient(135deg,#CA8A04,#EAB308);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+    </div>
+    <div style="flex:1;">
+      <div style="font-family:'Orbitron',monospace;font-size:0.78rem;font-weight:700;color:#FDE047;letter-spacing:2px;">FIFO ASSIST</div>
+      <div style="display:flex;align-items:center;gap:0.4rem;margin-top:2px;">
+        <span style="width:7px;height:7px;background:#4ade80;border-radius:50%;display:inline-block;animation:chat-blink 1.4s infinite;"></span>
+        <span style="font-size:0.75rem;color:#64748b;">AI Assistant &middot; Online</span>
+      </div>
+    </div>
+    <button onclick="clearChat()" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:7px;padding:5px 8px;color:#475569;font-size:0.7rem;cursor:pointer;font-family:'Orbitron',monospace;letter-spacing:1px;transition:all 0.3s;" onmouseover="this.style.color='#EAB308'" onmouseout="this.style.color='#475569'">CLEAR</button>
+  </div>
+
+  <div style="padding:0.75rem 1rem;border-bottom:1px solid rgba(234,179,8,0.08);display:flex;gap:0.5rem;flex-wrap:wrap;">
+    <button onclick="quickAsk('How do I register?')" style="background:rgba(234,179,8,0.07);border:1px solid rgba(234,179,8,0.18);border-radius:20px;padding:5px 11px;font-size:0.72rem;color:#EAB308;cursor:pointer;font-family:'Rajdhani',sans-serif;font-weight:600;transition:all 0.2s;" onmouseover="this.style.background='rgba(234,179,8,0.18)'" onmouseout="this.style.background='rgba(234,179,8,0.07)'">How to register?</button>
+    <button onclick="quickAsk('Show me the leaderboard')" style="background:rgba(234,179,8,0.07);border:1px solid rgba(234,179,8,0.18);border-radius:20px;padding:5px 11px;font-size:0.72rem;color:#EAB308;cursor:pointer;font-family:'Rajdhani',sans-serif;font-weight:600;transition:all 0.2s;" onmouseover="this.style.background='rgba(234,179,8,0.18)'" onmouseout="this.style.background='rgba(234,179,8,0.07)'">Leaderboard</button>
+    <button onclick="quickAsk('What is FIFO tournament?')" style="background:rgba(234,179,8,0.07);border:1px solid rgba(234,179,8,0.18);border-radius:20px;padding:5px 11px;font-size:0.72rem;color:#EAB308;cursor:pointer;font-family:'Rajdhani',sans-serif;font-weight:600;transition:all 0.2s;" onmouseover="this.style.background='rgba(234,179,8,0.18)'" onmouseout="this.style.background='rgba(234,179,8,0.07)'">About FIFO</button>
+    <button onclick="quickAsk('Match schedule and fixtures')" style="background:rgba(234,179,8,0.07);border:1px solid rgba(234,179,8,0.18);border-radius:20px;padding:5px 11px;font-size:0.72rem;color:#EAB308;cursor:pointer;font-family:'Rajdhani',sans-serif;font-weight:600;transition:all 0.2s;" onmouseover="this.style.background='rgba(234,179,8,0.18)'" onmouseout="this.style.background='rgba(234,179,8,0.07)'">Schedule</button>
+  </div>
+
+  <div id="chat-messages" style="flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:0.85rem;min-height:200px;max-height:280px;">
+    <div style="display:flex;gap:0.6rem;align-items:flex-start;">
+      <div style="width:28px;height:28px;background:linear-gradient(135deg,#CA8A04,#EAB308);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+      </div>
+      <div style="background:rgba(234,179,8,0.07);border:1px solid rgba(234,179,8,0.15);border-radius:4px 14px 14px 14px;padding:0.7rem 0.9rem;max-width:80%;font-size:0.88rem;color:#cbd5e1;line-height:1.6;">
+        👋 Hello! I'm <strong style="color:#EAB308;">FIFO Assist</strong>. Ask me anything — registration, leaderboard, schedule, players, tickets and more! 🏆
+      </div>
+    </div>
+  </div>
+
+  <div style="padding:0.85rem 1rem;border-top:1px solid rgba(234,179,8,0.12);display:flex;gap:0.6rem;align-items:center;">
+    <input id="chat-input" type="text" placeholder="Ask about FIFO..." onkeydown="if(event.key==='Enter')sendChat()" style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:10px 14px;color:#e2e8f0;font-family:'Rajdhani',sans-serif;font-size:0.9rem;outline:none;transition:all 0.3s;" onfocus="this.style.borderColor='rgba(234,179,8,0.4)'" onblur="this.style.borderColor='rgba(255,255,255,0.09)'"/>
+    <button onclick="sendChat()" id="chat-send-btn" style="width:40px;height:40px;background:linear-gradient(135deg,#CA8A04,#EAB308);border:none;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.3s;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='none'">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+
+<style>
+  @keyframes pulse-chat { 0%,100%{box-shadow:0 8px 30px rgba(234,179,8,0.45),0 0 0 0 rgba(234,179,8,0.3);} 70%{box-shadow:0 8px 30px rgba(234,179,8,0.45),0 0 0 14px rgba(234,179,8,0);} }
+  @keyframes chat-blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+  @keyframes chat-fadeup { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+  @keyframes dot-bounce { 0%,60%,100%{transform:translateY(0);opacity:0.4;} 30%{transform:translateY(-5px);opacity:1;} }
+  .chat-anim { animation: chat-fadeup 0.3s ease; }
+  #chat-messages::-webkit-scrollbar{width:4px;}
+  #chat-messages::-webkit-scrollbar-thumb{background:rgba(234,179,8,0.3);border-radius:2px;}
+</style>
+
+<script>
+  var FIFO_SYS = "You are FIFO Assist, the official AI chatbot for the FIFO Tournament 2026 (Football International Federation Organization). You help users with questions about the tournament.\n\nKey facts:\n- FIFO is a premier international football tournament in 2026\n- Headquarters: PAF Complex, Sector E-9, Islamabad, Pakistan\n- Grand Final venue: Maracana Stadium, Rio de Janeiro on June 21, 2026\n\nREGISTRATION:\n- Visit signup.html on this website\n- Fill personal details, team affiliation, role (player/coach/manager)\n- Submit team registration with all player details\n- Registration fee applies by team category\n- Deadline: March 31, 2026\n- Email info@fifotournament.com for support\n\nLEADERBOARD / RANKINGS:\n- View standings on players.html\n- Rankings based on goals, assists, clean sheets, overall performance\n- Updated after every match day\n- Top players featured on homepage\n\nSCHEDULE / FIXTURES:\n- Full schedule on schedule.html\n- Group stage: January-April 2026\n- Knockout rounds: May 2026\n- Grand Final: June 21, 2026 at Maracana\n\nPLAYERS:\n- Profiles on players.html with stats: goals, assists, rating, nationality\n- 32 international teams participating\n\nTICKETS:\n- Group stage from $25, knockout from $60, Grand Final from $200\n- Email tickets@fifotournament.com for group bookings\n\nCONTACT:\n- Email: info@fifotournament.com | Press: press@fifotournament.com\n- Phone: +1 (800) FIFO-2026\n- Contact form on this page\n\nKeep answers concise, helpful, football-enthusiastic. Use emojis sparingly. If unsure, direct to contact form or email.";
+
+  var chatHistory = [];
+  var chatOpen = false;
+  var chatTyping = false;
+
+  function toggleChat() {
+    chatOpen = !chatOpen;
+    var win = document.getElementById('chat-window');
+    var openIco = document.getElementById('chat-open-icon');
+    var closeIco = document.getElementById('chat-close-icon');
+    var badge = document.getElementById('chat-badge');
+    if (chatOpen) {
+      win.style.display = 'flex';
+      win.style.flexDirection = 'column';
+      openIco.style.display = 'none';
+      closeIco.style.display = 'block';
+      badge.style.display = 'none';
+      document.getElementById('chat-input').focus();
+    } else {
+      win.style.display = 'none';
+      openIco.style.display = 'block';
+      closeIco.style.display = 'none';
+    }
+  }
+
+  function clearChat() {
+    chatHistory = [];
+    document.getElementById('chat-messages').innerHTML = '<div style="display:flex;gap:0.6rem;align-items:flex-start;" class="chat-anim"><div style="width:28px;height:28px;background:linear-gradient(135deg,#CA8A04,#EAB308);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div><div style="background:rgba(234,179,8,0.07);border:1px solid rgba(234,179,8,0.15);border-radius:4px 14px 14px 14px;padding:0.7rem 0.9rem;max-width:80%;font-size:0.88rem;color:#cbd5e1;line-height:1.6;">Chat cleared! Ask me anything about FIFO 2026 🏆</div></div>';
+  }
+
+  function quickAsk(q) {
+    document.getElementById('chat-input').value = q;
+    sendChat();
+  }
+
+  function appendMsg(role, text) {
+    var msgs = document.getElementById('chat-messages');
+    var div = document.createElement('div');
+    div.className = 'chat-anim';
+    var safeText = text.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+    if (role === 'user') {
+      div.innerHTML = '<div style="display:flex;justify-content:flex-end;"><div style="background:linear-gradient(135deg,rgba(202,138,4,0.2),rgba(234,179,8,0.12));border:1px solid rgba(234,179,8,0.25);border-radius:14px 4px 14px 14px;padding:0.7rem 0.9rem;max-width:80%;font-size:0.88rem;color:#f1f5f9;line-height:1.6;">' + safeText + '</div></div>';
+    } else {
+      div.innerHTML = '<div style="display:flex;gap:0.6rem;align-items:flex-start;"><div style="width:28px;height:28px;background:linear-gradient(135deg,#CA8A04,#EAB308);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div><div style="background:rgba(234,179,8,0.07);border:1px solid rgba(234,179,8,0.15);border-radius:4px 14px 14px 14px;padding:0.7rem 0.9rem;max-width:80%;font-size:0.88rem;color:#cbd5e1;line-height:1.6;">' + text.replace(/\n/g,'<br>') + '</div></div>';
+    }
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function showTypingDots() {
+    var msgs = document.getElementById('chat-messages');
+    var div = document.createElement('div');
+    div.id = 'chat-typing';
+    div.className = 'chat-anim';
+    div.innerHTML = '<div style="display:flex;gap:0.6rem;align-items:flex-start;"><div style="width:28px;height:28px;background:linear-gradient(135deg,#CA8A04,#EAB308);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div><div style="background:rgba(234,179,8,0.07);border:1px solid rgba(234,179,8,0.15);border-radius:4px 14px 14px 14px;padding:0.8rem 1rem;display:flex;gap:5px;align-items:center;"><span style="width:6px;height:6px;background:#EAB308;border-radius:50%;display:inline-block;animation:dot-bounce 1.2s infinite 0s;"></span><span style="width:6px;height:6px;background:#EAB308;border-radius:50%;display:inline-block;animation:dot-bounce 1.2s infinite 0.2s;"></span><span style="width:6px;height:6px;background:#EAB308;border-radius:50%;display:inline-block;animation:dot-bounce 1.2s infinite 0.4s;"></span></div></div>';
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function removeTypingDots() {
+    var t = document.getElementById('chat-typing');
+    if (t) t.remove();
+  }
+
+  async function sendChat() {
+    if (chatTyping) return;
+    var input = document.getElementById('chat-input');
+    var userText = input.value.trim();
+    if (!userText) return;
+    input.value = '';
+    appendMsg('user', userText);
+    chatHistory.push({ role: 'user', content: userText });
+    chatTyping = true;
+    showTypingDots();
+    document.getElementById('chat-send-btn').style.opacity = '0.5';
+    try {
+      var resp = await fetch('http://localhost:3000/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: chatHistory })
+      });
+      var data = await resp.json();
+      var reply = data.reply || 'Sorry, I could not respond. Please try again or email info@fifotournament.com';
+      chatHistory.push({ role: 'assistant', content: reply });
+      removeTypingDots();
+      appendMsg('bot', reply);
+    } catch(err) {
+      removeTypingDots();
+      appendMsg('bot', 'Connection issue — make sure the backend is running. Or email info@fifotournament.com 📧');
+    }
+    chatTyping = false;
+    document.getElementById('chat-send-btn').style.opacity = '1';
+  }
+</script>
+
+</body>
+</html>

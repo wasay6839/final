@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FIFO – Football International Federation Org</title>
+  <script src="theme.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --gold: #EAB308; --gold-light: #FDE047; --gold-dark: #A16207;
+      --gold-dim: rgba(234,179,8,0.12); --bg: #080E1C; --bg2: #0D1526;
+      --glass: rgba(255,255,255,0.03); --border: rgba(234,179,8,0.18);
+    }
+    *{box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--bg);font-family:'Rajdhani',sans-serif;color:#e2e8f0;overflow-x:hidden;min-height:100vh;}
+
+    /* NOISE TEXTURE */
+    body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9998;opacity:0.5;}
+
+    /* NAV */
+    .glass-nav{background:rgba(8,14,28,0.75);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);box-shadow:0 4px 40px rgba(234,179,8,0.07);}
+    .nav-logo{font-family:'Orbitron',monospace;font-weight:900;font-size:1.9rem;background:linear-gradient(135deg,#EAB308,#FDE047,#CA8A04);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:5px;position:relative;}
+    .nav-logo::after{content:'';position:absolute;bottom:-5px;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#EAB308,transparent);animation:shimmer 3s infinite;}
+    @keyframes shimmer{0%,100%{opacity:0.3;}50%{opacity:1;}}
+    .nav-link{font-family:'Rajdhani',sans-serif;font-weight:600;font-size:0.9rem;letter-spacing:2.5px;text-transform:uppercase;color:#94a3b8;position:relative;padding-bottom:4px;transition:color .3s;}
+    .nav-link::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:#EAB308;transition:width .3s;}
+    .nav-link:hover{color:#EAB308;}.nav-link:hover::after,.nav-link.active::after{width:100%;}
+    .nav-link.active{color:#EAB308;}
+    .nav-cta{font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:2px;background:linear-gradient(135deg,#EAB308,#CA8A04);color:#080E1C;font-weight:700;padding:9px 22px;border-radius:4px;text-decoration:none;transition:all .3s;position:relative;overflow:hidden;}
+    .nav-cta::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#FDE047,#EAB308);opacity:0;transition:opacity .3s;}
+    .nav-cta:hover::before{opacity:1;}.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(234,179,8,0.5);}
+    .nav-cta span{position:relative;z-index:1;}
+
+    /* HERO */
+    .hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+    .hero-bg{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1551958219-acbc595d7ce5?w=1920&q=80');background-size:cover;background-position:center;transform:scale(1.06);animation:heroZoom 25s ease-in-out infinite alternate;}
+    @keyframes heroZoom{0%{transform:scale(1.06);}100%{transform:scale(1.14);}}
+    .hero-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(8,14,28,0.95) 0%,rgba(8,14,28,0.7) 50%,rgba(100,70,0,0.25) 100%);}
+    .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(234,179,8,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(234,179,8,0.04) 1px,transparent 1px);background-size:70px 70px;}
+
+    /* SCANLINES */
+    .hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px);pointer-events:none;z-index:2;}
+
+    .hero-content{position:relative;z-index:10;text-align:center;padding:2rem;max-width:1000px;}
+
+    /* GLOWING ORB behind title */
+    .hero-orb{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(234,179,8,0.08) 0%,rgba(234,179,8,0.03) 40%,transparent 70%);border-radius:50%;pointer-events:none;animation:orbPulse 6s ease-in-out infinite;}
+    @keyframes orbPulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.7;}50%{transform:translate(-50%,-50%) scale(1.15);opacity:1;}}
+
+    .hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(234,179,8,0.1);border:1px solid rgba(234,179,8,0.4);color:#EAB308;font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:4px;padding:7px 22px;border-radius:2px;margin-bottom:1.8rem;animation:fadeUp .8s ease both;}
+
+    .hero-eyebrow{font-family:'Orbitron',monospace;font-size:.7rem;letter-spacing:6px;color:rgba(234,179,8,0.6);text-transform:uppercase;margin-bottom:.6rem;animation:fadeUp .8s ease .1s both;}
+
+    .hero-title{font-family:'Bebas Neue',cursive;font-size:clamp(5rem,14vw,10.5rem);line-height:.88;color:#fff;letter-spacing:4px;animation:fadeUp 1s ease .2s both;text-shadow:0 0 80px rgba(234,179,8,0.2);}
+    .hero-title .gold-word{background:linear-gradient(135deg,#EAB308,#FDE047,#EAB308);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;filter:drop-shadow(0 0 30px rgba(234,179,8,0.4));}
+
+    .hero-sub{font-size:1.1rem;color:#64748b;font-weight:500;letter-spacing:4px;text-transform:uppercase;margin:1.8rem 0 2.2rem;animation:fadeUp 1s ease .35s both;}
+
+    /* MATCH CHIP */
+    .match-chip{display:inline-flex;align-items:center;gap:1.5rem;background:rgba(255,255,255,0.04);border:1px solid rgba(234,179,8,0.2);padding:12px 24px;border-radius:60px;margin-bottom:2.5rem;animation:fadeUp 1s ease .45s both;backdrop-filter:blur(10px);}
+    .match-chip-team{display:flex;align-items:center;gap:.6rem;font-weight:700;font-size:1rem;letter-spacing:1.5px;}
+    .match-chip-team img{width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid rgba(234,179,8,0.5);box-shadow:0 0 12px rgba(234,179,8,0.3);}
+    .vs{font-family:'Bebas Neue',cursive;font-size:1.8rem;color:#EAB308;text-shadow:0 0 20px rgba(234,179,8,0.7);}
+
+    /* CTA */
+    .cta-wrap{position:relative;display:inline-block;animation:fadeUp 1s ease .55s both;}
+    .cta-ring{position:absolute;inset:-8px;border-radius:8px;border:2px solid rgba(234,179,8,0.5);animation:ringPulse 2.5s ease-out infinite;}
+    .cta-ring2{position:absolute;inset:-8px;border-radius:8px;border:2px solid rgba(234,179,8,0.3);animation:ringPulse 2.5s ease-out infinite .8s;}
+    @keyframes ringPulse{0%{transform:scale(1);opacity:.8;}100%{transform:scale(1.5);opacity:0;}}
+    .btn-hero{display:inline-flex;align-items:center;gap:.6rem;background:linear-gradient(135deg,#EAB308,#CA8A04);color:#080E1C;font-family:'Orbitron',monospace;font-weight:700;font-size:.85rem;letter-spacing:3px;padding:18px 44px;border-radius:6px;text-decoration:none;position:relative;overflow:hidden;transition:all .3s;}
+    .btn-hero::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#FDE047,#EAB308);opacity:0;transition:opacity .3s;}
+    .btn-hero:hover::before{opacity:1;}.btn-hero:hover{transform:translateY(-3px);box-shadow:0 20px 60px rgba(234,179,8,0.55);}
+    .btn-hero span{position:relative;z-index:1;}
+
+    .hero-links{margin-top:2rem;display:flex;justify-content:center;gap:2.5rem;animation:fadeUp 1s ease .65s both;}
+    .hero-link{color:#475569;font-size:.82rem;letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:.4rem;transition:color .3s;text-decoration:none;}
+    .hero-link:hover{color:#EAB308;}
+
+    /* SCROLL INDICATOR */
+    .scroll-ind{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.4rem;color:#334155;font-size:.68rem;letter-spacing:3px;text-transform:uppercase;}
+    .scroll-mouse{width:22px;height:34px;border:2px solid #334155;border-radius:12px;position:relative;margin:0 auto;}
+    .scroll-dot{width:4px;height:6px;background:#EAB308;border-radius:2px;position:absolute;top:6px;left:50%;transform:translateX(-50%);animation:scrollAnim 2s infinite;}
+    @keyframes scrollAnim{0%{top:6px;opacity:1;}100%{top:18px;opacity:0;}}
+
+    /* STATS BAR */
+    .stats-bar{background:linear-gradient(90deg,rgba(8,14,28,.98),rgba(13,21,38,.95),rgba(8,14,28,.98));border-top:1px solid rgba(234,179,8,0.15);border-bottom:1px solid rgba(234,179,8,0.15);backdrop-filter:blur(10px);}
+    .stat-item{text-align:center;padding:1.8rem 2rem;position:relative;}
+    .stat-item:not(:last-child)::after{content:'';position:absolute;right:0;top:20%;height:60%;width:1px;background:linear-gradient(to bottom,transparent,rgba(234,179,8,0.25),transparent);}
+    .stat-num{font-family:'Orbitron',monospace;font-size:2.4rem;font-weight:900;color:#EAB308;line-height:1;filter:drop-shadow(0 0 12px rgba(234,179,8,0.4));}
+    .stat-lbl{font-size:.72rem;letter-spacing:2.5px;text-transform:uppercase;color:#475569;margin-top:5px;}
+
+    /* ABOUT */
+    .about{padding:9rem 2rem;position:relative;overflow:hidden;}
+    .about::before{content:'FIFO';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Bebas Neue',cursive;font-size:22vw;color:rgba(234,179,8,0.015);pointer-events:none;white-space:nowrap;letter-spacing:10px;}
+    .section-label{font-family:'Orbitron',monospace;font-size:.68rem;letter-spacing:5px;color:#EAB308;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:1rem;}
+    .section-label::before{content:'';width:40px;height:2px;background:linear-gradient(90deg,#EAB308,#FDE047);}
+    .section-title{font-family:'Bebas Neue',cursive;font-size:clamp(2.8rem,5.5vw,4.5rem);letter-spacing:2px;color:#f1f5f9;line-height:.95;}
+
+    .feature-row{display:flex;align-items:flex-start;gap:1rem;padding:1.1rem 1.2rem;border-left:2px solid rgba(234,179,8,0.25);background:rgba(234,179,8,0.025);border-radius:0 10px 10px 0;margin-bottom:.9rem;transition:all .3s;cursor:default;}
+    .feature-row:hover{border-left-color:#EAB308;background:rgba(234,179,8,0.07);transform:translateX(5px);}
+    .feat-icon{width:42px;height:42px;background:rgba(234,179,8,0.1);border:1px solid rgba(234,179,8,0.3);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#EAB308;transition:all .3s;}
+    .feature-row:hover .feat-icon{background:rgba(234,179,8,0.2);box-shadow:0 0 20px rgba(234,179,8,0.2);}
+
+    /* TROPHY CARD */
+    .trophy-wrap{perspective:900px;display:flex;justify-content:center;}
+    .trophy-card{position:relative;width:100%;max-width:440px;border-radius:22px;overflow:hidden;transform:rotateY(-14deg) rotateX(4deg);box-shadow:24px 32px 90px rgba(0,0,0,0.7),0 0 0 1px rgba(234,179,8,0.2);animation:float3d 7s ease-in-out infinite;transition:transform .5s;}
+    .trophy-card:hover{transform:rotateY(0) rotateX(0) scale(1.02);animation:none;}
+    @keyframes float3d{0%,100%{transform:rotateY(-14deg) rotateX(4deg) translateY(0);}50%{transform:rotateY(-9deg) rotateX(2deg) translateY(-14px);}}
+    .trophy-card img{width:100%;height:420px;object-fit:cover;display:block;}
+    .trophy-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(234,179,8,0.1),transparent 60%);}
+    .trophy-shine{position:absolute;top:0;left:-60%;width:35%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.07),transparent);transform:skewX(-20deg);animation:shine 5s infinite;}
+    @keyframes shine{0%{left:-60%;}50%,100%{left:160%;}}
+    .trophy-label{position:absolute;bottom:0;left:0;right:0;padding:1.5rem;background:linear-gradient(to top,rgba(8,14,28,.95),transparent);text-align:center;}
+
+    /* HIGHLIGHTS */
+    .highlights{padding:7rem 2rem;background:linear-gradient(180deg,rgba(8,14,28,0) 0%,rgba(13,21,38,.5) 50%,rgba(8,14,28,0) 100%);}
+    .h-card{background:rgba(255,255,255,0.025);border:1px solid rgba(234,179,8,0.12);border-radius:18px;overflow:hidden;backdrop-filter:blur(10px);transition:all .4s cubic-bezier(.23,1,.32,1);position:relative;}
+    .h-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#EAB308,transparent);opacity:0;transition:opacity .3s;}
+    .h-card:hover{transform:translateY(-10px);border-color:rgba(234,179,8,0.4);box-shadow:0 30px 70px rgba(0,0,0,0.5),0 0 40px rgba(234,179,8,0.1);}
+    .h-card:hover::before{opacity:1;}
+    .h-card-img{width:100%;height:210px;object-fit:cover;transition:transform .5s;}
+    .h-card:hover .h-card-img{transform:scale(1.06);}
+    .h-tag{display:inline-block;background:rgba(234,179,8,0.1);border:1px solid rgba(234,179,8,0.3);color:#EAB308;font-size:.68rem;letter-spacing:2px;padding:3px 11px;border-radius:2px;text-transform:uppercase;margin-bottom:.8rem;}
+
+    /* COUNTDOWN */
+    .countdown{padding:6rem 2rem;text-align:center;position:relative;overflow:hidden;}
+    .countdown-bg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1920&q=60') center/cover;opacity:.05;}
+    .cd-item{background:rgba(255,255,255,0.035);border:1px solid rgba(234,179,8,0.18);border-radius:14px;width:116px;padding:1.6rem 1rem;position:relative;overflow:hidden;}
+    .cd-item::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(234,179,8,0.08),transparent 70%);}
+    .cd-item::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(234,179,8,0.4),transparent);}
+    .cd-num{font-family:'Orbitron',monospace;font-size:2.6rem;font-weight:900;color:#EAB308;line-height:1;filter:drop-shadow(0 0 15px rgba(234,179,8,0.5));}
+    .cd-unit{font-size:.68rem;letter-spacing:3px;text-transform:uppercase;color:#475569;margin-top:7px;}
+
+    /* FOOTER */
+    .footer{background:rgba(5,8,18,.98);border-top:1px solid rgba(234,179,8,0.12);padding:3.5rem 2rem;}
+    .si{width:42px;height:42px;background:rgba(255,255,255,0.04);border:1px solid rgba(234,179,8,0.15);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#475569;text-decoration:none;transition:all .3s;}
+    .si:hover{background:rgba(234,179,8,0.1);border-color:rgba(234,179,8,0.5);color:#EAB308;transform:translateY(-4px);box-shadow:0 8px 20px rgba(234,179,8,0.2);}
+
+    /* ANIMATIONS */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
+    .fade-in{opacity:0;transform:translateY(35px);transition:opacity .7s ease,transform .7s ease;}
+    .fade-in.visible{opacity:1;transform:translateY(0);}
+
+    /* MOBILE MENU */
+    .mob-menu{display:none;position:fixed;top:72px;left:0;right:0;background:rgba(8,14,28,.98);backdrop-filter:blur(24px);border-bottom:1px solid rgba(234,179,8,0.2);padding:1.5rem 2rem;z-index:999;flex-direction:column;gap:1rem;}
+    .mob-menu.open{display:flex;}
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar{width:5px;}
+    ::-webkit-scrollbar-track{background:var(--bg);}
+    ::-webkit-scrollbar-thumb{background:rgba(234,179,8,0.35);border-radius:3px;}
+    ::-webkit-scrollbar-thumb:hover{background:rgba(234,179,8,0.6);}
+
+    /* GOLD DIVIDER */
+    .gd{height:1px;background:linear-gradient(90deg,transparent,rgba(234,179,8,0.35),transparent);}
+
+    /* PARTICLES */
+    .particle{position:absolute;border-radius:50%;pointer-events:none;}
+  
+    /* ── ENHANCED THEME OVERRIDE ── */
+    :root {
+      --gold:#EAB308;--gold-light:#FDE047;--gold-dark:#CA8A04;
+      --cyan:#06B6D4;--cyan-light:#67E8F9;
+      --bg:#05091A;--bg2:#0A1020;--border:rgba(6,182,212,0.18);
+      --border-gold:rgba(234,179,8,0.18);
+    }
+    body { background: #05091A !important; }
+    .glass-nav {
+      background: rgba(5,9,26,0.85) !important;
+      border-bottom: 1px solid rgba(6,182,212,0.18) !important;
+      box-shadow: 0 4px 40px rgba(6,182,212,0.06) !important;
+    }
+    .nav-logo {
+      background: linear-gradient(135deg,#06B6D4,#67E8F9,#EAB308) !important;
+      -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important;
+      background-clip: text !important;
+    }
+    .nav-logo::after { background: linear-gradient(90deg,transparent,#06B6D4,#EAB308,transparent) !important; }
+    .nav-link:hover { color:#67E8F9 !important; }
+    .nav-link:hover::after,.nav-link.active::after { background: linear-gradient(90deg,#06B6D4,#EAB308) !important; width:100%; }
+    .nav-link.active { color:#06B6D4 !important; }
+    ::-webkit-scrollbar-thumb { background: rgba(6,182,212,0.35) !important; border-radius:3px; }
+    .gd { background: linear-gradient(90deg,transparent,rgba(6,182,212,.25),rgba(234,179,8,.12),transparent) !important; }
+    .section-label { color:#06B6D4 !important; }
+    .section-label::before { background: linear-gradient(90deg,#06B6D4,#67E8F9) !important; }
+
+  
+    /* ── THEME VARIABLE CONSUMERS (shared) ── */
+    body{background:var(--bg)!important;color:var(--text-secondary)!important;}
+    .glass-nav{background:var(--bg-nav)!important;border-bottom:1px solid var(--border)!important;box-shadow:var(--shadow-nav)!important;}
+    .nav-link{color:var(--text-muted)!important;}
+    .nav-link:hover,.nav-link.active{color:var(--cyan)!important;}
+    .nav-link::after,.nav-link:hover::after,.nav-link.active::after{background:linear-gradient(90deg,var(--cyan),var(--gold))!important;}
+    .mob-menu{background:var(--bg-mob-menu)!important;border-color:var(--border)!important;}
+    .gd{background:linear-gradient(90deg,transparent,var(--border),transparent)!important;}
+    ::-webkit-scrollbar-track{background:var(--bg)!important;}
+    ::-webkit-scrollbar-thumb{background:var(--scrollbar-thumb)!important;}
+    /* Light mode body background override */
+    :root:not([data-theme="dark"]) body,
+    html:not([data-theme="dark"]) body{
+      background:var(--bg)!important;
+    }
+
+  
+    /* ── LIGHT MODE SECTION OVERRIDES ── */
+    :root body,.glass-nav{transition:background-color .3s ease,border-color .3s ease,box-shadow .3s ease;}
+    /* Cards / panels */
+    [data-theme]:not([data-theme="dark"]) .h-card,
+    html:not([data-theme="dark"]) .h-card{background:rgba(255,255,255,0.9)!important;border-color:var(--border-card)!important;box-shadow:0 4px 20px rgba(0,0,0,0.08)!important;}
+    html:not([data-theme="dark"]) .stat-item::after{background:linear-gradient(to bottom,transparent,var(--border),transparent)!important;}
+    html:not([data-theme="dark"]) .stats-bar{background:linear-gradient(90deg,rgba(240,244,248,.98),rgba(230,240,252,.95),rgba(240,244,248,.98))!important;border-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .stat-num{color:var(--gold)!important;}
+    html:not([data-theme="dark"]) .stat-lbl{color:var(--text-muted)!important;}
+    html:not([data-theme="dark"]) .cd-item{background:rgba(255,255,255,0.9)!important;border-color:var(--border-card)!important;}
+    html:not([data-theme="dark"]) .cd-num{color:var(--gold)!important;}
+    html:not([data-theme="dark"]) .cd-unit{color:var(--text-muted)!important;}
+    html:not([data-theme="dark"]) .footer{background:rgba(224,234,248,.98)!important;border-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .section-title{color:var(--text-primary)!important;}
+    html:not([data-theme="dark"]) .feature-row{background:rgba(6,182,212,0.04)!important;border-left-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .feature-row:hover{background:rgba(6,182,212,0.10)!important;border-left-color:var(--cyan)!important;}
+    html:not([data-theme="dark"]) .h-tag{background:rgba(202,138,4,0.10)!important;border-color:var(--border-gold)!important;color:var(--gold)!important;}
+    html:not([data-theme="dark"]) .hero-overlay{background:linear-gradient(135deg,rgba(240,244,248,0.88) 0%,rgba(215,232,250,0.72) 50%,rgba(180,210,248,0.28) 100%)!important;}
+    html:not([data-theme="dark"]) .si{background:rgba(0,0,0,0.04)!important;border-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .si:hover{background:rgba(6,182,212,0.12)!important;}
+    html:not([data-theme="dark"]) .hero-title{color:var(--text-primary)!important;text-shadow:0 0 60px rgba(6,182,212,0.15)!important;}
+    html:not([data-theme="dark"]) .hero-sub{color:var(--text-muted)!important;}
+
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="glass-nav fixed top-0 left-0 right-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 md:h-20">
+      <a href="index.html" class="nav-logo">FIFO</a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="schedule.html" class="nav-link">Schedule</a>
+        <a href="players.html" class="nav-link">Players</a>
+        <a href="tournaments.html" class="nav-link">Tournaments</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="register.html" class="nav-link">Register</a>
+        <a href="admin.html" class="nav-link">Admin</a>
+      </div>
+      <a href="register.html" class="nav-cta hidden md:inline-flex items-center gap-2">
+        <span>REGISTER</span>
+        <i data-lucide="zap" style="width:13px;height:13px;"></i>
+      </a>
+      <button
+        id="theme-toggle"
+        class="theme-toggle-btn hidden md:inline-flex"
+        aria-label="Switch to Light Mode"
+        aria-pressed="false"
+        title="Toggle dark / light mode"
+      >
+        <span class="toggle-track"></span>
+        <i data-lucide="sun" class="theme-icon"></i>
+        <span class="theme-label">LIGHT</span>
+      </button>
+      <button onclick="toggleMenu()" class="md:hidden text-slate-400 hover:text-yellow-400 transition-colors">
+        <i data-lucide="menu" id="menu-icon" style="width:24px;height:24px;"></i>
+      </button>
+    </div>
+  </div>
+  <div class="mob-menu" id="mobile-menu">
+    <a href="index.html" class="nav-link active">Home</a>
+    <a href="schedule.html" class="nav-link">Schedule</a>
+    <a href="players.html" class="nav-link">Players</a>
+    <a href="contact.html" class="nav-link">Contact</a>
+    <a href="signup.html" class="nav-cta text-center" style="margin-top:.5rem;"><span>REGISTER NOW</span></a>
+      <button
+      id="theme-toggle-mobile"
+      class="theme-toggle-btn"
+      style="margin-top:.5rem;width:100%;justify-content:center;"
+      aria-label="Switch to Light Mode"
+      aria-pressed="false"
+      onclick="FIFO_Theme.toggle()"
+    >
+      <span class="toggle-track"></span>
+      <i data-lucide="sun" class="theme-icon"></i>
+      <span class="theme-label">LIGHT MODE</span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-orb"></div>
+
+  <!-- Floating particles -->
+  <div id="particles" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;"></div>
+
+  <div class="hero-content">
+    <div style="font-family:'Orbitron',monospace;font-size:.65rem;letter-spacing:6px;color:rgba(234,179,8,0.55);text-transform:uppercase;margin-bottom:.8rem;animation:fadeUp .7s ease both;">⚡ Season 2025 – 2026</div>
+    <div class="hero-badge">Official World Tournament · 26th Edition</div>
+
+    <h1 class="hero-title">
+      Battle of
+      <span class="gold-word">Legends</span>
+    </h1>
+
+    <p class="hero-sub">The Greatest Stage · The Greatest Players</p>
+
+    <!-- Match chip -->
+    <div class="match-chip">
+      <div class="match-chip-team">
+        <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=80&h=80&fit=crop&q=80" alt="Ronaldo"/>
+        <span>RONALDO</span>
+      </div>
+      <div class="vs">VS</div>
+      <div class="match-chip-team">
+        <img src="https://images.unsplash.com/photo-1539701938214-0d9736e1c16b?w=80&h=80&fit=crop&q=80" alt="Messi"/>
+        <span>MESSI</span>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-wrap">
+      <div class="cta-ring"></div>
+      <div class="cta-ring2"></div>
+      <a href="signup.html" class="btn-hero">
+        <span data-lucide="zap" style="width:16px;height:16px;"></span>
+        <span>REGISTER NOW</span>
+      </a>
+    </div>
+
+    <div class="hero-links">
+      <a href="schedule.html" class="hero-link">
+        <i data-lucide="calendar" style="width:14px;height:14px;"></i> View Schedule
+      </a>
+      <a href="players.html" class="hero-link">
+        <i data-lucide="users" style="width:14px;height:14px;"></i> Meet Players
+      </a>
+    </div>
+  </div>
+
+  <div class="scroll-ind">
+    <div class="scroll-mouse"><div class="scroll-dot"></div></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="max-w-5xl mx-auto">
+    <div class="grid grid-cols-2 md:grid-cols-4">
+      <div class="stat-item fade-in"><div class="stat-num" id="stat-teams">32</div><div class="stat-lbl">Teams</div></div>
+      <div class="stat-item fade-in" style="transition-delay:.1s"><div class="stat-num" id="stat-players">128</div><div class="stat-lbl">Players</div></div>
+      <div class="stat-item fade-in" style="transition-delay:.2s"><div class="stat-num" id="stat-matches">64</div><div class="stat-lbl">Matches</div></div>
+      <div class="stat-item fade-in" style="transition-delay:.3s"><div class="stat-num" id="stat-prize">$5M</div><div class="stat-lbl">Prize Pool</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="gd"></div>
+
+<!-- ABOUT -->
+<section class="about">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid md:grid-cols-2 gap-20 items-center">
+      <div class="fade-in">
+        <div class="section-label">About the Tournament</div>
+        <h2 class="section-title" style="margin-bottom:1.5rem;">
+          A Legacy of<br/>
+          <span style="color:#EAB308;filter:drop-shadow(0 0 20px rgba(234,179,8,0.4));">Champions</span>
+        </h2>
+        <p style="color:#94a3b8;font-size:1.05rem;line-height:1.95;margin-bottom:2rem;">
+          Founded in 1998, the Football International Federation Organization — <strong style="color:#EAB308;">FIFO</strong> — has grown into the world's most prestigious independent football tournament. 26 seasons of legendary moments and record-breaking performances.
+        </p>
+        <div style="margin-bottom:2.5rem;">
+          <div class="feature-row">
+            <div class="feat-icon"><i data-lucide="trophy" style="width:18px;height:18px;"></i></div>
+            <div>
+              <h4 style="font-weight:700;color:#f1f5f9;margin-bottom:4px;font-size:1rem;">World-Class Competition</h4>
+              <p style="color:#64748b;font-size:.9rem;line-height:1.6;">Top 32 national teams compete across 6 continental zones.</p>
+            </div>
+          </div>
+          <div class="feature-row">
+            <div class="feat-icon"><i data-lucide="globe" style="width:18px;height:18px;"></i></div>
+            <div>
+              <h4 style="font-weight:700;color:#f1f5f9;margin-bottom:4px;font-size:1rem;">Global Broadcast Reach</h4>
+              <p style="color:#64748b;font-size:.9rem;line-height:1.6;">Live in 180+ countries with over 2 billion viewers per finale.</p>
+            </div>
+          </div>
+          <div class="feature-row">
+            <div class="feat-icon"><i data-lucide="star" style="width:18px;height:18px;"></i></div>
+            <div>
+              <h4 style="font-weight:700;color:#f1f5f9;margin-bottom:4px;font-size:1rem;">Elite Player Recognition</h4>
+              <p style="color:#64748b;font-size:.9rem;line-height:1.6;">Annual Golden Boot, Goalkeeper, and Fair Play awards.</p>
+            </div>
+          </div>
+        </div>
+        <a href="signup.html" style="display:inline-flex;align-items:center;gap:.6rem;background:rgba(234,179,8,0.08);border:1px solid rgba(234,179,8,0.3);color:#EAB308;font-family:'Orbitron',monospace;font-size:.7rem;letter-spacing:2px;padding:13px 28px;border-radius:4px;text-decoration:none;transition:all .3s;text-transform:uppercase;" onmouseover="this.style.background='rgba(234,179,8,0.15)';this.style.borderColor='rgba(234,179,8,0.6)'" onmouseout="this.style.background='rgba(234,179,8,0.08)';this.style.borderColor='rgba(234,179,8,0.3)'">
+          Join FIFO 2026 <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+        </a>
+      </div>
+
+      <!-- Trophy -->
+      <div class="trophy-wrap fade-in" style="transition-delay:.25s;">
+        <div class="trophy-card">
+          <img src="https://images.unsplash.com/photo-1567442648424-56df23da11f5?w=600&h=700&fit=crop&q=80" alt="FIFO Trophy"/>
+          <div class="trophy-overlay"></div>
+          <div class="trophy-shine"></div>
+          <div class="trophy-label">
+            <h3 style="font-family:'Bebas Neue',cursive;font-size:1.9rem;letter-spacing:4px;color:#EAB308;">FIFO CHAMPIONSHIP CUP</h3>
+            <p style="color:#94a3b8;font-size:.8rem;letter-spacing:2px;">EST. 1998 · 26TH EDITION</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="gd"></div>
+
+<!-- HIGHLIGHTS -->
+<section class="highlights">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14 fade-in">
+      <div class="section-label" style="justify-content:center;">
+        <span style="width:40px;height:2px;background:linear-gradient(90deg,#EAB308,#FDE047);display:block;"></span>
+        Latest News
+        <span style="width:40px;height:2px;background:linear-gradient(90deg,#FDE047,#EAB308);display:block;"></span>
+      </div>
+      <h2 class="section-title">Tournament <span style="color:#EAB308;">Highlights</span></h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-7">
+      <div class="h-card fade-in">
+        <div style="overflow:hidden;"><img class="h-card-img" src="https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=500&h=300&fit=crop&q=80" alt="Match"/></div>
+        <div style="padding:1.5rem;">
+          <span class="h-tag">Match Report</span>
+          <h3 style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.2rem;color:#f1f5f9;margin-bottom:.5rem;line-height:1.3;">Group Stage: Brazil vs Argentina Ends 3–3</h3>
+          <p style="color:#64748b;font-size:.88rem;line-height:1.65;margin-bottom:1rem;">An electric match keeping 80,000 fans on their feet. Messi's hat-trick was answered in spectacular fashion.</p>
+          <div style="font-size:.78rem;color:#475569;display:flex;align-items:center;gap:.4rem;"><i data-lucide="clock" style="width:12px;height:12px;color:#EAB308;"></i>March 15, 2026</div>
+        </div>
+      </div>
+      <div class="h-card fade-in" style="transition-delay:.15s;">
+        <div style="overflow:hidden;"><img class="h-card-img" src="https://images.unsplash.com/photo-1609710228159-0fa9bd7c0827?w=500&h=300&fit=crop&q=80" alt="Stadium"/></div>
+        <div style="padding:1.5rem;">
+          <span class="h-tag">Stadium</span>
+          <h3 style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.2rem;color:#f1f5f9;margin-bottom:.5rem;line-height:1.3;">Maracanã Confirmed as FIFO 2026 Final Venue</h3>
+          <p style="color:#64748b;font-size:.88rem;line-height:1.65;margin-bottom:1rem;">The iconic Brazilian stadium hosts the season finale for the first time since its 2024 renovation.</p>
+          <div style="font-size:.78rem;color:#475569;display:flex;align-items:center;gap:.4rem;"><i data-lucide="clock" style="width:12px;height:12px;color:#EAB308;"></i>March 10, 2026</div>
+        </div>
+      </div>
+      <div class="h-card fade-in" style="transition-delay:.3s;">
+        <div style="overflow:hidden;"><img class="h-card-img" src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?w=500&h=300&fit=crop&q=80" alt="Player"/></div>
+        <div style="padding:1.5rem;">
+          <span class="h-tag">Player Spotlight</span>
+          <h3 style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.2rem;color:#f1f5f9;margin-bottom:.5rem;line-height:1.3;">Ronaldo Jr. Named FIFO's Rising Star of Season</h3>
+          <p style="color:#64748b;font-size:.88rem;line-height:1.65;margin-bottom:1rem;">At just 19, he's scored 7 goals and 4 assists in the group stage — matching his father's legendary record.</p>
+          <div style="font-size:.78rem;color:#475569;display:flex;align-items:center;gap:.4rem;"><i data-lucide="clock" style="width:12px;height:12px;color:#EAB308;"></i>March 8, 2026</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="gd"></div>
+
+<!-- COUNTDOWN -->
+<section class="countdown">
+  <div class="countdown-bg"></div>
+  <div style="position:relative;z-index:1;">
+    <div class="section-label fade-in" style="justify-content:center;margin-bottom:.5rem;">
+      <span style="width:40px;height:2px;background:#EAB308;display:block;"></span>
+      Finals Day
+      <span style="width:40px;height:2px;background:#EAB308;display:block;"></span>
+    </div>
+    <h2 class="section-title fade-in" style="margin-bottom:.8rem;">Time Until the <span style="color:#EAB308;">Grand Final</span></h2>
+    <p style="color:#475569;font-size:.85rem;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:0;" class="fade-in">June 21, 2026 · Maracanã Stadium · Rio de Janeiro</p>
+    <div style="display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;margin-top:3rem;">
+      <div class="cd-item fade-in"><div class="cd-num" id="cd-days">--</div><div class="cd-unit">Days</div></div>
+      <div class="cd-item fade-in" style="transition-delay:.1s"><div class="cd-num" id="cd-hours">--</div><div class="cd-unit">Hours</div></div>
+      <div class="cd-item fade-in" style="transition-delay:.2s"><div class="cd-num" id="cd-mins">--</div><div class="cd-unit">Minutes</div></div>
+      <div class="cd-item fade-in" style="transition-delay:.3s"><div class="cd-num" id="cd-secs">--</div><div class="cd-unit">Seconds</div></div>
+    </div>
+    <div style="margin-top:3.5rem;" class="fade-in">
+      <a href="schedule.html" style="display:inline-flex;align-items:center;gap:.6rem;background:linear-gradient(135deg,#EAB308,#CA8A04);color:#080E1C;font-family:'Orbitron',monospace;font-weight:700;font-size:.8rem;letter-spacing:3px;padding:16px 40px;border-radius:6px;text-decoration:none;transition:all .3s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 20px 50px rgba(234,179,8,0.5)'" onmouseout="this.style.transform='none';this.style.boxShadow='none'">
+        VIEW FULL SCHEDULE <i data-lucide="arrow-right" style="width:16px;height:16px;"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="max-w-6xl mx-auto text-center">
+    <div style="font-family:'Orbitron',monospace;font-weight:900;font-size:1.7rem;background:linear-gradient(135deg,#EAB308,#FDE047);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:5px;margin-bottom:.4rem;">FIFO</div>
+    <p style="color:#334155;font-size:.82rem;letter-spacing:1px;margin-bottom:1.8rem;">Football International Federation Organization</p>
+    <div style="display:flex;justify-content:center;gap:.75rem;margin-bottom:2rem;">
+      <a href="#" class="si"><i data-lucide="twitter" style="width:16px;height:16px;"></i></a>
+      <a href="#" class="si"><i data-lucide="instagram" style="width:16px;height:16px;"></i></a>
+      <a href="#" class="si"><i data-lucide="facebook" style="width:16px;height:16px;"></i></a>
+      <a href="#" class="si"><i data-lucide="youtube" style="width:16px;height:16px;"></i></a>
+    </div>
+    <div style="display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-bottom:2rem;">
+      <a href="index.html" style="color:#EAB308;font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;">Home</a>
+      <a href="schedule.html" style="color:#475569;font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:color .3s;" onmouseover="this.style.color='#EAB308'" onmouseout="this.style.color='#475569'">Schedule</a>
+      <a href="players.html" style="color:#475569;font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:color .3s;" onmouseover="this.style.color='#EAB308'" onmouseout="this.style.color='#475569'">Players</a>
+      <a href="tournaments.html" style="color:#475569;font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:color .3s;" onmouseover="this.style.color='#06B6D4'" onmouseout="this.style.color='#475569'">Tournaments</a>
+      <a href="contact.html" style="color:#475569;font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:color .3s;" onmouseover="this.style.color='#EAB308'" onmouseout="this.style.color='#475569'">Contact</a>
+    </div>
+    <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(234,179,8,0.2),transparent);margin-bottom:1.5rem;"></div>
+    <p style="color:#1e293b;font-size:.78rem;letter-spacing:1px;">&copy; 2026 FIFO – Football International Federation Organization. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  lucide.createIcons();
+
+  // FADE IN
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  },{threshold:.1});
+  document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el));
+
+  // MOBILE MENU
+  function toggleMenu(){
+    const m=document.getElementById('mobile-menu'),i=document.getElementById('menu-icon');
+    m.classList.toggle('open');
+    i.setAttribute('data-lucide',m.classList.contains('open')?'x':'menu');
+    lucide.createIcons();
+  }
+
+  // COUNTDOWN
+  const finalDate=new Date('2026-06-21T20:00:00');
+  function updateCountdown(){
+    const now=new Date(),diff=finalDate-now;
+    if(diff<=0)return;
+    document.getElementById('cd-days').textContent=String(Math.floor(diff/86400000)).padStart(2,'0');
+    document.getElementById('cd-hours').textContent=String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+    document.getElementById('cd-mins').textContent=String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+    document.getElementById('cd-secs').textContent=String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+  }
+  updateCountdown();setInterval(updateCountdown,1000);
+
+  // PARTICLES
+  const container=document.getElementById('particles');
+  for(let i=0;i<20;i++){
+    const p=document.createElement('div');
+    const size=Math.random()*3+1;
+    p.style.cssText=`position:absolute;border-radius:50%;width:${size}px;height:${size}px;background:#EAB308;left:${Math.random()*100}%;top:${Math.random()*100}%;opacity:${Math.random()*.5+.1};animation:twinkle ${Math.random()*4+2}s infinite ${Math.random()*3}s;`;
+    container.appendChild(p);
+  }
+  const style=document.createElement('style');
+  style.textContent='@keyframes twinkle{0%,100%{opacity:.1;transform:scale(1);}50%{opacity:.8;transform:scale(1.6);}}';
+  document.head.appendChild(style);
+</script>
+
+<!-- ===== AI CHATBOT ===== -->
+<button id="chat-toggle" onclick="toggleChat()" aria-label="Open Chat" style="position:fixed;bottom:28px;right:28px;width:62px;height:62px;background:linear-gradient(135deg,#CA8A04,#EAB308);border:none;border-radius:50%;cursor:pointer;box-shadow:0 8px 30px rgba(234,179,8,0.45);display:flex;align-items:center;justify-content:center;z-index:10000;transition:all 0.3s;animation:pulse-chat 2.5s infinite;" onmouseover="this.style.transform='scale(1.1) translateY(-3px)'" onmouseout="this.style.transform='none'">
+  <svg id="chat-open-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+  <svg id="chat-close-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2.5" style="display:none;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  <span id="chat-badge" style="position:absolute;top:-4px;right:-4px;width:20px;height:20px;background:#ef4444;border-radius:50%;font-size:0.65rem;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;border:2px solid #0F172A;">1</span>
+</button>
+
+<div id="chat-window" style="position:fixed;bottom:105px;right:28px;width:360px;max-height:520px;background:rgba(15,23,42,0.97);border:1px solid rgba(234,179,8,0.25);border-radius:20px;box-shadow:0 24px 64px rgba(0,0,0,0.6);display:none;flex-direction:column;overflow:hidden;z-index:9999;backdrop-filter:blur(20px);font-family:'Rajdhani',sans-serif;">
+  <div style="background:linear-gradient(135deg,rgba(202,138,4,0.15),rgba(234,179,8,0.08));border-bottom:1px solid rgba(234,179,8,0.2);padding:1rem 1.25rem;display:flex;align-items:center;gap:0.75rem;">
+    <div style="width:42px;height:42px;background:linear-gradient(135deg,#CA8A04,#EAB308);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+    </div>
+    <div style="flex:1;">
+      <div style="font-family:'Orbitron',monospace;font-size:0.78rem;font-weight:700;color:#FDE047;letter-spacing:2px;">FIFO ASSIST</div>
+      <div style="display:flex;align-items:center;gap:0.4rem;margin-top:2px;">
+        <span style="width:7px;height:7px;background:#4ade80;border-radius:50%;display:inline-block;animation:chat-blink 1.4s infinite;"></span>
+        <span style="font-size:0.75rem;color:#64748b;">AI Assistant &middot; Online</span>
+      </div>
+    </div>
+    <button onclick="clearChat()" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:7px;padding:5px 8px;color:#475569;font-size:0.7rem;cursor:pointer;font-family:'Orbitron',monospace;letter-spacing:1px;transition:all 0.3s;" onmouseover="this.style.color='#EAB308'" onmouseout="this.style.color='#475569'">CLEAR</button>
+  </div>
+
+  <div style="padding:0.75rem 1rem;border-bottom:1px solid rgba(234,179,8,0.08);display:flex;gap:0.5rem;flex-wrap:wrap;">
+    <button onclick="quickAsk('How do I register?')" style="background:rgba(234,179,8,0.07);border:1px solid rgba(234,179,8,0.18);border-radius:20px;padding:5px 11px;font-size:0.72rem;color:#EAB308;cursor:pointer;font-family:'Rajdhani',sans-serif;font-weight:600;transition:all 0.2s;" onmouseover="this.style.background='rgba(234,179,8,0.18)'" onmouseout="this.style.background='rgba(234,179,8,0.07)'">How to register?</button>
+    <button onclick="quickAsk('Show me the leaderboard')" style="background:rgba(234,179,8,0.07);border:1px solid rgba(234,179,8,0.18);border-radius:20px;padding:5px 11px;font-size:0.72rem;color:#EAB308;cursor:pointer;font-family:'Rajdhani',sans-serif;font-weight:600;transition:all 0.2s;" onmouseover="this.style.background='rgba(234,179,8,0.18)'" onmouseout="this.style.background='rgba(234,179,8,0.07)'">Leaderboard</button>
+    <button onclick="quickAsk('What is FIFO tournament?')" style="background:rgba(234,179,8,0.07);border:1px solid rgba(234,179,8,0.18);border-radius:20px;padding:5px 11px;font-size:0.72rem;color:#EAB308;cursor:pointer;font-family:'Rajdhani',sans-serif;font-weight:600;transition:all 0.2s;" onmouseover="this.style.background='rgba(234,179,8,0.18)'" onmouseout="this.style.background='rgba(234,179,8,0.07)'">About FIFO</button>
+    <button onclick="quickAsk('Match schedule and fixtures')" style="background:rgba(234,179,8,0.07);border:1px solid rgba(234,179,8,0.18);border-radius:20px;padding:5px 11px;font-size:0.72rem;color:#EAB308;cursor:pointer;font-family:'Rajdhani',sans-serif;font-weight:600;transition:all 0.2s;" onmouseover="this.style.background='rgba(234,179,8,0.18)'" onmouseout="this.style.background='rgba(234,179,8,0.07)'">Schedule</button>
+  </div>
+
+  <div id="chat-messages" style="flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:0.85rem;min-height:200px;max-height:280px;">
+    <div style="display:flex;gap:0.6rem;align-items:flex-start;">
+      <div style="width:28px;height:28px;background:linear-gradient(135deg,#CA8A04,#EAB308);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+      </div>
+      <div style="background:rgba(234,179,8,0.07);border:1px solid rgba(234,179,8,0.15);border-radius:4px 14px 14px 14px;padding:0.7rem 0.9rem;max-width:80%;font-size:0.88rem;color:#cbd5e1;line-height:1.6;">
+        👋 Hello! I'm <strong style="color:#EAB308;">FIFO Assist</strong>. Ask me anything — registration, leaderboard, schedule, players, tickets and more! 🏆
+      </div>
+    </div>
+  </div>
+
+  <div style="padding:0.85rem 1rem;border-top:1px solid rgba(234,179,8,0.12);display:flex;gap:0.6rem;align-items:center;">
+    <input id="chat-input" type="text" placeholder="Ask about FIFO..." onkeydown="if(event.key==='Enter')sendChat()" style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:10px 14px;color:#e2e8f0;font-family:'Rajdhani',sans-serif;font-size:0.9rem;outline:none;transition:all 0.3s;" onfocus="this.style.borderColor='rgba(234,179,8,0.4)'" onblur="this.style.borderColor='rgba(255,255,255,0.09)'"/>
+    <button onclick="sendChat()" id="chat-send-btn" style="width:40px;height:40px;background:linear-gradient(135deg,#CA8A04,#EAB308);border:none;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.3s;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='none'">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+
+<style>
+  @keyframes pulse-chat { 0%,100%{box-shadow:0 8px 30px rgba(234,179,8,0.45),0 0 0 0 rgba(234,179,8,0.3);} 70%{box-shadow:0 8px 30px rgba(234,179,8,0.45),0 0 0 14px rgba(234,179,8,0);} }
+  @keyframes chat-blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+  @keyframes chat-fadeup { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+  @keyframes dot-bounce { 0%,60%,100%{transform:translateY(0);opacity:0.4;} 30%{transform:translateY(-5px);opacity:1;} }
+  .chat-anim { animation: chat-fadeup 0.3s ease; }
+  #chat-messages::-webkit-scrollbar{width:4px;}
+  #chat-messages::-webkit-scrollbar-thumb{background:rgba(234,179,8,0.3);border-radius:2px;}
+</style>
+
+<script>
+  var FIFO_SYS = "You are FIFO Assist, the official AI chatbot for the FIFO Tournament 2026 (Football International Federation Organization). You help users with questions about the tournament.\n\nKey facts:\n- FIFO is a premier international football tournament in 2026\n- Headquarters: PAF Complex, Sector E-9, Islamabad, Pakistan\n- Grand Final venue: Maracana Stadium, Rio de Janeiro on June 21, 2026\n\nREGISTRATION:\n- Visit signup.html on this website\n- Fill personal details, team affiliation, role (player/coach/manager)\n- Submit team registration with all player details\n- Registration fee applies by team category\n- Deadline: March 31, 2026\n- Email info@fifotournament.com for support\n\nLEADERBOARD / RANKINGS:\n- View standings on players.html\n- Rankings based on goals, assists, clean sheets, overall performance\n- Updated after every match day\n- Top players featured on homepage\n\nSCHEDULE / FIXTURES:\n- Full schedule on schedule.html\n- Group stage: January-April 2026\n- Knockout rounds: May 2026\n- Grand Final: June 21, 2026 at Maracana\n\nPLAYERS:\n- Profiles on players.html with stats: goals, assists, rating, nationality\n- 32 international teams participating\n\nTICKETS:\n- Group stage from $25, knockout from $60, Grand Final from $200\n- Email tickets@fifotournament.com for group bookings\n\nCONTACT:\n- Email: info@fifotournament.com | Press: press@fifotournament.com\n- Phone: +1 (800) FIFO-2026\n- Contact form on contact.html\n\nKeep answers concise, helpful, football-enthusiastic. Use emojis sparingly. If unsure, direct to contact form or email.";
+
+  var chatHistory = [];
+  var chatOpen = false;
+  var chatTyping = false;
+
+  function toggleChat() {
+    chatOpen = !chatOpen;
+    var win = document.getElementById('chat-window');
+    var openIco = document.getElementById('chat-open-icon');
+    var closeIco = document.getElementById('chat-close-icon');
+    var badge = document.getElementById('chat-badge');
+    if (chatOpen) {
+      win.style.display = 'flex';
+      win.style.flexDirection = 'column';
+      openIco.style.display = 'none';
+      closeIco.style.display = 'block';
+      badge.style.display = 'none';
+      document.getElementById('chat-input').focus();
+    } else {
+      win.style.display = 'none';
+      openIco.style.display = 'block';
+      closeIco.style.display = 'none';
+    }
+  }
+
+  function clearChat() {
+    chatHistory = [];
+    document.getElementById('chat-messages').innerHTML = '<div style="display:flex;gap:0.6rem;align-items:flex-start;" class="chat-anim"><div style="width:28px;height:28px;background:linear-gradient(135deg,#CA8A04,#EAB308);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div><div style="background:rgba(234,179,8,0.07);border:1px solid rgba(234,179,8,0.15);border-radius:4px 14px 14px 14px;padding:0.7rem 0.9rem;max-width:80%;font-size:0.88rem;color:#cbd5e1;line-height:1.6;">Chat cleared! Ask me anything about FIFO 2026 🏆</div></div>';
+  }
+
+  function quickAsk(q) {
+    document.getElementById('chat-input').value = q;
+    sendChat();
+  }
+
+  function appendMsg(role, text) {
+    var msgs = document.getElementById('chat-messages');
+    var div = document.createElement('div');
+    div.className = 'chat-anim';
+    var safeText = text.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+    if (role === 'user') {
+      div.innerHTML = '<div style="display:flex;justify-content:flex-end;"><div style="background:linear-gradient(135deg,rgba(202,138,4,0.2),rgba(234,179,8,0.12));border:1px solid rgba(234,179,8,0.25);border-radius:14px 4px 14px 14px;padding:0.7rem 0.9rem;max-width:80%;font-size:0.88rem;color:#f1f5f9;line-height:1.6;">' + safeText + '</div></div>';
+    } else {
+      div.innerHTML = '<div style="display:flex;gap:0.6rem;align-items:flex-start;"><div style="width:28px;height:28px;background:linear-gradient(135deg,#CA8A04,#EAB308);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div><div style="background:rgba(234,179,8,0.07);border:1px solid rgba(234,179,8,0.15);border-radius:4px 14px 14px 14px;padding:0.7rem 0.9rem;max-width:80%;font-size:0.88rem;color:#cbd5e1;line-height:1.6;">' + text.replace(/\n/g,'<br>') + '</div></div>';
+    }
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function showTypingDots() {
+    var msgs = document.getElementById('chat-messages');
+    var div = document.createElement('div');
+    div.id = 'chat-typing';
+    div.className = 'chat-anim';
+    div.innerHTML = '<div style="display:flex;gap:0.6rem;align-items:flex-start;"><div style="width:28px;height:28px;background:linear-gradient(135deg,#CA8A04,#EAB308);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div><div style="background:rgba(234,179,8,0.07);border:1px solid rgba(234,179,8,0.15);border-radius:4px 14px 14px 14px;padding:0.8rem 1rem;display:flex;gap:5px;align-items:center;"><span style="width:6px;height:6px;background:#EAB308;border-radius:50%;display:inline-block;animation:dot-bounce 1.2s infinite 0s;"></span><span style="width:6px;height:6px;background:#EAB308;border-radius:50%;display:inline-block;animation:dot-bounce 1.2s infinite 0.2s;"></span><span style="width:6px;height:6px;background:#EAB308;border-radius:50%;display:inline-block;animation:dot-bounce 1.2s infinite 0.4s;"></span></div></div>';
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function removeTypingDots() {
+    var t = document.getElementById('chat-typing');
+    if (t) t.remove();
+  }
+
+  async function sendChat() {
+    if (chatTyping) return;
+    var input = document.getElementById('chat-input');
+    var userText = input.value.trim();
+    if (!userText) return;
+    input.value = '';
+    appendMsg('user', userText);
+    chatHistory.push({ role: 'user', content: userText });
+    chatTyping = true;
+    showTypingDots();
+    document.getElementById('chat-send-btn').style.opacity = '0.5';
+    try {
+      var resp = await fetch('http://localhost:3000/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: chatHistory })
+      });
+      var data = await resp.json();
+      var reply = data.reply || 'Sorry, I could not respond. Please try again or email info@fifotournament.com';
+      chatHistory.push({ role: 'assistant', content: reply });
+      removeTypingDots();
+      appendMsg('bot', reply);
+    } catch(err) {
+      removeTypingDots();
+      appendMsg('bot', 'Connection issue — make sure the backend is running. Or email info@fifotournament.com 📧');
+    }
+    chatTyping = false;
+    document.getElementById('chat-send-btn').style.opacity = '1';
+  }
+
+  // Load live stats from backend
+  (async function loadStats() {
+    try {
+      const [pr, tr] = await Promise.all([
+        fetch('http://localhost:3000/players'),
+        fetch('http://localhost:3000/tournaments')
+      ]);
+      if (pr.ok && tr.ok) {
+        const players     = await pr.json();
+        const tournaments = await tr.json();
+        const totalTeams   = tournaments.reduce((s, t) => s + (t.teams   || 0), 0);
+        const totalMatches = tournaments.reduce((s, t) => s + (t.matches || 0), 0);
+        if (totalTeams)           document.getElementById('stat-teams').textContent   = totalTeams;
+        if (players.length)       document.getElementById('stat-players').textContent = players.length;
+        if (totalMatches)         document.getElementById('stat-matches').textContent = totalMatches;
+      }
+    } catch (e) { /* keep static fallback values */ }
+  })();
+</script>
+
+</body>
+</html>

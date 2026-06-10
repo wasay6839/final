@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Schedule – FIFO Tournament 2026</title>
+  <script src="theme.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--gold:#EAB308;--gold-light:#FDE047;--bg:#080E1C;--border:rgba(234,179,8,0.18);}
+    *{box-sizing:border-box;}
+    body{background:var(--bg);font-family:'Rajdhani',sans-serif;color:#e2e8f0;overflow-x:hidden;min-height:100vh;}
+    body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9998;opacity:0.5;}
+    .glass-nav{background:rgba(8,14,28,0.8);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);box-shadow:0 4px 40px rgba(234,179,8,0.07);}
+    .nav-logo{font-family:'Orbitron',monospace;font-weight:900;font-size:1.9rem;background:linear-gradient(135deg,#EAB308,#FDE047,#CA8A04);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:5px;position:relative;text-decoration:none;}
+    .nav-logo::after{content:'';position:absolute;bottom:-5px;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#EAB308,transparent);animation:shimmer 3s infinite;}
+    @keyframes shimmer{0%,100%{opacity:0.3;}50%{opacity:1;}}
+    .nav-link{font-family:'Rajdhani',sans-serif;font-weight:600;font-size:.9rem;letter-spacing:2.5px;text-transform:uppercase;color:#94a3b8;position:relative;padding-bottom:4px;transition:color .3s;text-decoration:none;}
+    .nav-link::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:#EAB308;transition:width .3s;}
+    .nav-link:hover{color:#EAB308;}.nav-link:hover::after,.nav-link.active::after{width:100%;}.nav-link.active{color:#EAB308;}
+    .nav-cta{font-family:'Orbitron',monospace;font-size:.72rem;letter-spacing:2px;background:linear-gradient(135deg,#EAB308,#CA8A04);color:#080E1C;font-weight:700;padding:9px 22px;border-radius:4px;text-decoration:none;transition:all .3s;}
+    .nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(234,179,8,0.5);}
+    .mob-menu{display:none;position:fixed;top:72px;left:0;right:0;background:rgba(8,14,28,.98);backdrop-filter:blur(24px);border-bottom:1px solid rgba(234,179,8,0.2);padding:1.5rem 2rem;z-index:999;flex-direction:column;gap:1rem;}
+    .mob-menu.open{display:flex;}
+    .gd{height:1px;background:linear-gradient(90deg,transparent,rgba(234,179,8,0.35),transparent);}
+    .section-label{font-family:'Orbitron',monospace;font-size:.68rem;letter-spacing:5px;color:#EAB308;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:1rem;}
+    .section-label::before{content:'';width:40px;height:2px;background:linear-gradient(90deg,#EAB308,#FDE047);}
+    .section-title{font-family:'Bebas Neue',cursive;font-size:clamp(2.8rem,5.5vw,4.5rem);letter-spacing:2px;color:#f1f5f9;line-height:.95;}
+    .fade-in{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease;}
+    .fade-in.visible{opacity:1;transform:translateY(0);}
+    .footer{background:rgba(5,8,18,.98);border-top:1px solid rgba(234,179,8,0.12);padding:3.5rem 2rem;}
+    .si{width:42px;height:42px;background:rgba(255,255,255,0.04);border:1px solid rgba(234,179,8,0.15);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#475569;text-decoration:none;transition:all .3s;}
+    .si:hover{background:rgba(234,179,8,0.1);border-color:rgba(234,179,8,0.5);color:#EAB308;transform:translateY(-4px);}
+    ::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:rgba(234,179,8,0.35);border-radius:3px;}
+
+    /* PAGE HEADER */
+    .page-hdr{padding-top:130px;padding-bottom:60px;position:relative;overflow:hidden;}
+    .page-hdr::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(234,179,8,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(234,179,8,0.04) 1px,transparent 1px);background-size:55px 55px;}
+    .hdr-bg{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1920&q=60');background-size:cover;background-position:center;opacity:.07;}
+    .hdr-grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,14,28,.2) 0%,rgba(8,14,28,1) 100%);}
+
+    /* FILTER TABS */
+    .filter-tab{font-family:'Orbitron',monospace;font-size:.65rem;letter-spacing:2px;padding:9px 20px;border-radius:4px;border:1px solid rgba(255,255,255,0.08);color:#64748b;cursor:pointer;background:transparent;transition:all .3s;text-transform:uppercase;}
+    .filter-tab:hover{border-color:rgba(234,179,8,0.3);color:#EAB308;}
+    .filter-tab.active{background:rgba(234,179,8,0.1);border-color:rgba(234,179,8,0.45);color:#EAB308;}
+
+    /* MATCH TABLE */
+    .match-table{width:100%;border-collapse:collapse;}
+    .match-row{border-bottom:1px solid rgba(255,255,255,0.04);transition:background .2s;}
+    .match-row:hover{background:rgba(234,179,8,0.04);}
+    .match-row td{padding:1.2rem 1rem;vertical-align:middle;}
+
+    /* MATCH CARD (mobile) */
+    .match-card{background:rgba(255,255,255,0.025);border:1px solid rgba(234,179,8,0.1);border-radius:14px;padding:1.2rem;margin-bottom:.75rem;transition:all .3s;}
+    .match-card:hover{border-color:rgba(234,179,8,0.35);background:rgba(234,179,8,0.04);}
+
+    /* STATUS BADGES */
+    .badge-live{background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.4);color:#f87171;font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:1.5px;padding:3px 9px;border-radius:3px;animation:livePulse 1.5s infinite;}
+    @keyframes livePulse{0%,100%{opacity:1;}50%{opacity:.5;}}
+    .badge-upcoming{background:rgba(234,179,8,0.1);border:1px solid rgba(234,179,8,0.3);color:#EAB308;font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:1.5px;padding:3px 9px;border-radius:3px;}
+    .badge-done{background:rgba(71,85,105,0.3);border:1px solid rgba(71,85,105,0.4);color:#64748b;font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:1.5px;padding:3px 9px;border-radius:3px;}
+    .badge-qf{background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);color:#a78bfa;}
+    .badge-sf{background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.3);color:#fb923c;}
+    .badge-f{background:rgba(234,179,8,0.15);border:1px solid rgba(234,179,8,0.5);color:#FDE047;}
+
+    /* SCORE */
+    .score{font-family:'Orbitron',monospace;font-weight:900;font-size:1.4rem;color:#EAB308;min-width:60px;text-align:center;}
+    .score-vs{font-family:'Orbitron',monospace;font-size:.85rem;color:#334155;min-width:60px;text-align:center;}
+
+    /* SIDEBAR CARD */
+    .side-card{background:rgba(255,255,255,0.025);border:1px solid rgba(234,179,8,0.12);border-radius:16px;overflow:hidden;margin-bottom:1.25rem;}
+    .side-card-head{background:linear-gradient(135deg,rgba(234,179,8,0.08),rgba(234,179,8,0.03));border-bottom:1px solid rgba(234,179,8,0.12);padding:.9rem 1.3rem;font-family:'Orbitron',monospace;font-size:.65rem;letter-spacing:2.5px;color:#EAB308;text-transform:uppercase;display:flex;align-items:center;gap:.5rem;}
+  
+    /* ── ENHANCED THEME OVERRIDE ── */
+    :root {
+      --gold:#EAB308;--gold-light:#FDE047;--gold-dark:#CA8A04;
+      --cyan:#06B6D4;--cyan-light:#67E8F9;
+      --bg:#05091A;--bg2:#0A1020;--border:rgba(6,182,212,0.18);
+      --border-gold:rgba(234,179,8,0.18);
+    }
+    body { background: #05091A !important; }
+    .glass-nav {
+      background: rgba(5,9,26,0.85) !important;
+      border-bottom: 1px solid rgba(6,182,212,0.18) !important;
+      box-shadow: 0 4px 40px rgba(6,182,212,0.06) !important;
+    }
+    .nav-logo {
+      background: linear-gradient(135deg,#06B6D4,#67E8F9,#EAB308) !important;
+      -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important;
+      background-clip: text !important;
+    }
+    .nav-logo::after { background: linear-gradient(90deg,transparent,#06B6D4,#EAB308,transparent) !important; }
+    .nav-link:hover { color:#67E8F9 !important; }
+    .nav-link:hover::after,.nav-link.active::after { background: linear-gradient(90deg,#06B6D4,#EAB308) !important; width:100%; }
+    .nav-link.active { color:#06B6D4 !important; }
+    ::-webkit-scrollbar-thumb { background: rgba(6,182,212,0.35) !important; border-radius:3px; }
+    .gd { background: linear-gradient(90deg,transparent,rgba(6,182,212,.25),rgba(234,179,8,.12),transparent) !important; }
+    .section-label { color:#06B6D4 !important; }
+    .section-label::before { background: linear-gradient(90deg,#06B6D4,#67E8F9) !important; }
+
+  
+    /* ── THEME VARIABLE CONSUMERS (shared) ── */
+    body{background:var(--bg)!important;color:var(--text-secondary)!important;}
+    .glass-nav{background:var(--bg-nav)!important;border-bottom:1px solid var(--border)!important;box-shadow:var(--shadow-nav)!important;}
+    .nav-link{color:var(--text-muted)!important;}
+    .nav-link:hover,.nav-link.active{color:var(--cyan)!important;}
+    .nav-link::after,.nav-link:hover::after,.nav-link.active::after{background:linear-gradient(90deg,var(--cyan),var(--gold))!important;}
+    .mob-menu{background:var(--bg-mob-menu)!important;border-color:var(--border)!important;}
+    .gd{background:linear-gradient(90deg,transparent,var(--border),transparent)!important;}
+    ::-webkit-scrollbar-track{background:var(--bg)!important;}
+    ::-webkit-scrollbar-thumb{background:var(--scrollbar-thumb)!important;}
+    /* Light mode body background override */
+    :root:not([data-theme="dark"]) body,
+    html:not([data-theme="dark"]) body{
+      background:var(--bg)!important;
+    }
+
+  
+    /* ── LIGHT MODE SECTION OVERRIDES ── */
+    :root body,.glass-nav{transition:background-color .3s ease,border-color .3s ease,box-shadow .3s ease;}
+    /* Cards / panels */
+    [data-theme]:not([data-theme="dark"]) .h-card,
+    html:not([data-theme="dark"]) .h-card{background:rgba(255,255,255,0.9)!important;border-color:var(--border-card)!important;box-shadow:0 4px 20px rgba(0,0,0,0.08)!important;}
+    html:not([data-theme="dark"]) .stat-item::after{background:linear-gradient(to bottom,transparent,var(--border),transparent)!important;}
+    html:not([data-theme="dark"]) .stats-bar{background:linear-gradient(90deg,rgba(240,244,248,.98),rgba(230,240,252,.95),rgba(240,244,248,.98))!important;border-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .stat-num{color:var(--gold)!important;}
+    html:not([data-theme="dark"]) .stat-lbl{color:var(--text-muted)!important;}
+    html:not([data-theme="dark"]) .cd-item{background:rgba(255,255,255,0.9)!important;border-color:var(--border-card)!important;}
+    html:not([data-theme="dark"]) .cd-num{color:var(--gold)!important;}
+    html:not([data-theme="dark"]) .cd-unit{color:var(--text-muted)!important;}
+    html:not([data-theme="dark"]) .footer{background:rgba(224,234,248,.98)!important;border-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .section-title{color:var(--text-primary)!important;}
+    html:not([data-theme="dark"]) .feature-row{background:rgba(6,182,212,0.04)!important;border-left-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .feature-row:hover{background:rgba(6,182,212,0.10)!important;border-left-color:var(--cyan)!important;}
+    html:not([data-theme="dark"]) .h-tag{background:rgba(202,138,4,0.10)!important;border-color:var(--border-gold)!important;color:var(--gold)!important;}
+    html:not([data-theme="dark"]) .hero-overlay{background:linear-gradient(135deg,rgba(240,244,248,0.88) 0%,rgba(215,232,250,0.72) 50%,rgba(180,210,248,0.28) 100%)!important;}
+    html:not([data-theme="dark"]) .si{background:rgba(0,0,0,0.04)!important;border-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .si:hover{background:rgba(6,182,212,0.12)!important;}
+    html:not([data-theme="dark"]) .hero-title{color:var(--text-primary)!important;text-shadow:0 0 60px rgba(6,182,212,0.15)!important;}
+    html:not([data-theme="dark"]) .hero-sub{color:var(--text-muted)!important;}
+
+  </style>
+</head>
+<body>
+<nav class="glass-nav fixed top-0 left-0 right-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 md:h-20">
+      <a href="index.html" class="nav-logo">FIFO</a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="schedule.html" class="nav-link active">Schedule</a>
+        <a href="players.html" class="nav-link">Players</a>
+        <a href="tournaments.html" class="nav-link">Tournaments</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </div>
+      <a href="signup.html" class="nav-cta hidden md:inline-flex items-center gap-2"><span>REGISTER</span></a>
+      <button
+        id="theme-toggle"
+        class="theme-toggle-btn hidden md:inline-flex"
+        aria-label="Switch to Light Mode"
+        aria-pressed="false"
+        title="Toggle dark / light mode"
+      >
+        <span class="toggle-track"></span>
+        <i data-lucide="sun" class="theme-icon"></i>
+        <span class="theme-label">LIGHT</span>
+      </button>
+      <button onclick="toggleMenu()" class="md:hidden text-slate-400 hover:text-yellow-400 transition-colors">
+        <i data-lucide="menu" id="menu-icon" style="width:24px;height:24px;"></i>
+      </button>
+    </div>
+  </div>
+  <div class="mob-menu" id="mobile-menu">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="schedule.html" class="nav-link active">Schedule</a>
+    <a href="players.html" class="nav-link">Players</a>
+    <a href="tournaments.html" class="nav-link">Tournaments</a>
+    <a href="contact.html" class="nav-link">Contact</a>
+      <button
+      id="theme-toggle-mobile"
+      class="theme-toggle-btn"
+      style="margin-top:.5rem;width:100%;justify-content:center;"
+      aria-label="Switch to Light Mode"
+      aria-pressed="false"
+      onclick="FIFO_Theme.toggle()"
+    >
+      <span class="toggle-track"></span>
+      <i data-lucide="sun" class="theme-icon"></i>
+      <span class="theme-label">LIGHT MODE</span>
+    </button>
+  </div>
+</nav>
+
+<!-- HEADER -->
+<header class="page-hdr">
+  <div class="hdr-bg"></div>
+  <div class="hdr-grad"></div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style="position:relative;z-index:1;">
+    <div class="section-label">Season 2025–2026</div>
+    <h1 class="section-title" style="margin-bottom:1rem;">Match <span style="color:#EAB308;">Schedule</span></h1>
+    <p style="color:#64748b;font-size:1rem;letter-spacing:1px;max-width:520px;line-height:1.7;">
+      Full fixture list for FIFO 2026. Group stages, knockout rounds, and the Grand Final at Maracanã on June 21.
+    </p>
+  </div>
+</header>
+<div class="gd"></div>
+
+<main style="padding:4rem 1.5rem;">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid lg:grid-cols-4 gap-8 items-start">
+
+      <!-- MAIN (3/4) -->
+      <div class="lg:col-span-3">
+        <!-- Filters -->
+        <div class="flex flex-wrap gap-3 mb-6 fade-in">
+          <button class="filter-tab active" onclick="filterMatches('all',this)">All Matches</button>
+          <button class="filter-tab" onclick="filterMatches('group',this)">Group Stage</button>
+          <button class="filter-tab" onclick="filterMatches('qf',this)">Quarter-Finals</button>
+          <button class="filter-tab" onclick="filterMatches('sf',this)">Semi-Finals</button>
+          <button class="filter-tab" onclick="filterMatches('final',this)">Final</button>
+        </div>
+
+        <!-- DESKTOP TABLE -->
+        <div class="hidden md:block fade-in" style="background:rgba(255,255,255,0.02);border:1px solid rgba(234,179,8,0.1);border-radius:16px;overflow:hidden;">
+          <table class="match-table">
+            <thead>
+              <tr style="border-bottom:1px solid rgba(234,179,8,0.15);background:rgba(234,179,8,0.04);">
+                <th style="padding:1rem;font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:2px;color:#475569;text-align:left;text-transform:uppercase;">Date</th>
+                <th style="padding:1rem;font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:2px;color:#475569;text-align:left;text-transform:uppercase;">Match</th>
+                <th style="padding:1rem;font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:2px;color:#475569;text-align:center;text-transform:uppercase;">Score</th>
+                <th style="padding:1rem;font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:2px;color:#475569;text-align:center;text-transform:uppercase;">Stage</th>
+                <th style="padding:1rem;font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:2px;color:#475569;text-align:center;text-transform:uppercase;">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="match-row" data-type="group">
+                <td><div style="font-family:'Orbitron',monospace;font-size:.72rem;color:#EAB308;">Mar 15</div><div style="font-size:.75rem;color:#475569;">18:00 UTC</div></td>
+                <td><div style="display:flex;align-items:center;gap:.75rem;"><img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=60&h=60&fit=crop&q=80" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid rgba(234,179,8,0.3);"/><span style="font-weight:700;font-size:1rem;">Brazil</span><span style="color:#334155;font-size:.8rem;margin:0 .4rem;">vs</span><span style="font-weight:700;font-size:1rem;">Argentina</span><img src="https://images.unsplash.com/photo-1539701938214-0d9736e1c16b?w=60&h=60&fit=crop&q=80" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid rgba(234,179,8,0.3);"/></div></td>
+                <td><div class="score">3 – 3</div></td>
+                <td style="text-align:center;"><span style="font-family:'Orbitron',monospace;font-size:.6rem;color:#64748b;letter-spacing:1px;">GROUP A</span></td>
+                <td style="text-align:center;"><span class="badge-done">ENDED</span></td>
+              </tr>
+              <tr class="match-row" data-type="group">
+                <td><div style="font-family:'Orbitron',monospace;font-size:.72rem;color:#EAB308;">Mar 18</div><div style="font-size:.75rem;color:#475569;">15:00 UTC</div></td>
+                <td><div style="display:flex;align-items:center;gap:.75rem;"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&q=80" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid rgba(234,179,8,0.3);"/><span style="font-weight:700;font-size:1rem;">France</span><span style="color:#334155;font-size:.8rem;margin:0 .4rem;">vs</span><span style="font-weight:700;font-size:1rem;">Germany</span><img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=60&h=60&fit=crop&q=80" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid rgba(234,179,8,0.3);"/></div></td>
+                <td><div class="score">2 – 1</div></td>
+                <td style="text-align:center;"><span style="font-family:'Orbitron',monospace;font-size:.6rem;color:#64748b;letter-spacing:1px;">GROUP B</span></td>
+                <td style="text-align:center;"><span class="badge-done">ENDED</span></td>
+              </tr>
+              <tr class="match-row" data-type="group">
+                <td><div style="font-family:'Orbitron',monospace;font-size:.72rem;color:#EAB308;">Mar 22</div><div style="font-size:.75rem;color:#475569;">20:00 UTC</div></td>
+                <td><div style="display:flex;align-items:center;gap:.75rem;"><img src="https://images.unsplash.com/photo-1552058544-f2b08422138a?w=60&h=60&fit=crop&q=80" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid rgba(234,179,8,0.3);"/><span style="font-weight:700;font-size:1rem;">England</span><span style="color:#334155;font-size:.8rem;margin:0 .4rem;">vs</span><span style="font-weight:700;font-size:1rem;">Spain</span><img src="https://images.unsplash.com/photo-1499996860823-5214fcc65f8f?w=60&h=60&fit=crop&q=80" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid rgba(234,179,8,0.3);"/></div></td>
+                <td><div class="score">1 – 1</div></td>
+                <td style="text-align:center;"><span style="font-family:'Orbitron',monospace;font-size:.6rem;color:#64748b;letter-spacing:1px;">GROUP C</span></td>
+                <td style="text-align:center;"><span class="badge-done">ENDED</span></td>
+              </tr>
+              <tr class="match-row" data-type="qf">
+                <td><div style="font-family:'Orbitron',monospace;font-size:.72rem;color:#a78bfa;">Apr 5</div><div style="font-size:.75rem;color:#475569;">17:00 UTC</div></td>
+                <td><div style="display:flex;align-items:center;gap:.75rem;"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=60&h=60&fit=crop&q=80" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid rgba(139,92,246,0.4);"/><span style="font-weight:700;font-size:1rem;">England</span><span style="color:#334155;font-size:.8rem;margin:0 .4rem;">vs</span><span style="font-weight:700;font-size:1rem;">Italy</span><img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=60&h=60&fit=crop&q=80" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid rgba(139,92,246,0.4);"/></div></td>
+                <td><div class="score-vs">? – ?</div></td>
+                <td style="text-align:center;"><span class="badge-done badge-qf" style="font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:1.5px;padding:3px 9px;border-radius:3px;">QF</span></td>
+                <td style="text-align:center;"><span class="badge-upcoming">UPCOMING</span></td>
+              </tr>
+              <tr class="match-row" data-type="qf">
+                <td><div style="font-family:'Orbitron',monospace;font-size:.72rem;color:#a78bfa;">Apr 6</div><div style="font-size:.75rem;color:#475569;">19:00 UTC</div></td>
+                <td><div style="display:flex;align-items:center;gap:.75rem;"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&h=60&fit=crop&q=80" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid rgba(139,92,246,0.4);"/><span style="font-weight:700;font-size:1rem;">Argentina</span><span style="color:#334155;font-size:.8rem;margin:0 .4rem;">vs</span><span style="font-weight:700;font-size:1rem;">Portugal</span><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&q=80" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid rgba(139,92,246,0.4);"/></div></td>
+                <td><div class="score-vs">? – ?</div></td>
+                <td style="text-align:center;"><span class="badge-done badge-qf" style="font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:1.5px;padding:3px 9px;border-radius:3px;">QF</span></td>
+                <td style="text-align:center;"><span class="badge-upcoming">UPCOMING</span></td>
+              </tr>
+              <tr class="match-row" data-type="sf">
+                <td><div style="font-family:'Orbitron',monospace;font-size:.72rem;color:#fb923c;">May 10</div><div style="font-size:.75rem;color:#475569;">20:00 UTC</div></td>
+                <td><div style="display:flex;align-items:center;gap:.75rem;"><span style="font-weight:700;font-size:1rem;color:#64748b;">TBD</span><span style="color:#334155;font-size:.8rem;margin:0 .4rem;">vs</span><span style="font-weight:700;font-size:1rem;color:#64748b;">TBD</span></div></td>
+                <td><div class="score-vs">– – –</div></td>
+                <td style="text-align:center;"><span class="badge-done badge-sf" style="font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:1.5px;padding:3px 9px;border-radius:3px;">SF</span></td>
+                <td style="text-align:center;"><span style="font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:1.5px;padding:3px 9px;border-radius:3px;background:rgba(71,85,105,0.2);border:1px solid rgba(71,85,105,0.3);color:#475569;">PENDING</span></td>
+              </tr>
+              <tr class="match-row" data-type="final">
+                <td><div style="font-family:'Orbitron',monospace;font-size:.72rem;color:#FDE047;">Jun 21</div><div style="font-size:.75rem;color:#475569;">20:00 UTC</div></td>
+                <td><div style="display:flex;align-items:center;gap:.75rem;font-family:'Bebas Neue',cursive;font-size:1.2rem;letter-spacing:2px;color:#FDE047;">GRAND FINAL – MARACANÃ</div></td>
+                <td><div class="score-vs" style="color:#FDE047;">– – –</div></td>
+                <td style="text-align:center;"><span class="badge-done badge-f" style="font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:1.5px;padding:3px 9px;border-radius:3px;">FINAL</span></td>
+                <td style="text-align:center;"><span style="font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:1.5px;padding:3px 9px;border-radius:3px;background:rgba(71,85,105,0.2);border:1px solid rgba(71,85,105,0.3);color:#475569;">PENDING</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- MOBILE CARDS -->
+        <div class="md:hidden" id="mobile-cards">
+          <div class="match-card" data-type="group"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem;"><span style="font-family:'Orbitron',monospace;font-size:.65rem;color:#EAB308;">Mar 15 · 18:00 UTC</span><span class="badge-done">ENDED</span></div><div style="display:flex;align-items:center;justify-content:center;gap:1rem;"><span style="font-weight:700;">Brazil</span><span style="font-family:'Orbitron',monospace;font-weight:900;font-size:1.3rem;color:#EAB308;">3 – 3</span><span style="font-weight:700;">Argentina</span></div></div>
+          <div class="match-card" data-type="group"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem;"><span style="font-family:'Orbitron',monospace;font-size:.65rem;color:#EAB308;">Mar 18 · 15:00 UTC</span><span class="badge-done">ENDED</span></div><div style="display:flex;align-items:center;justify-content:center;gap:1rem;"><span style="font-weight:700;">France</span><span style="font-family:'Orbitron',monospace;font-weight:900;font-size:1.3rem;color:#EAB308;">2 – 1</span><span style="font-weight:700;">Germany</span></div></div>
+          <div class="match-card" data-type="qf"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem;"><span style="font-family:'Orbitron',monospace;font-size:.65rem;color:#a78bfa;">Apr 5 · 17:00 UTC</span><span class="badge-upcoming">UPCOMING</span></div><div style="display:flex;align-items:center;justify-content:center;gap:1rem;"><span style="font-weight:700;">England</span><span style="font-family:'Orbitron',monospace;font-weight:900;font-size:1.3rem;color:#475569;">? – ?</span><span style="font-weight:700;">Italy</span></div></div>
+          <div class="match-card" data-type="final"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem;"><span style="font-family:'Orbitron',monospace;font-size:.65rem;color:#FDE047;">Jun 21 · 20:00 UTC</span><span style="font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:1.5px;padding:3px 9px;border-radius:3px;background:rgba(71,85,105,0.2);border:1px solid rgba(71,85,105,0.3);color:#475569;">PENDING</span></div><div style="text-align:center;font-family:'Bebas Neue',cursive;font-size:1.2rem;color:#FDE047;letter-spacing:2px;">GRAND FINAL – MARACANÃ</div></div>
+        </div>
+      </div>
+
+      <!-- SIDEBAR (1/4) -->
+      <div class="space-y-5">
+        <!-- Live Match -->
+        <div class="side-card fade-in">
+          <div class="side-card-head"><i data-lucide="radio" style="width:13px;height:13px;"></i> Live Now</div>
+          <div style="padding:1.2rem;">
+            <div style="text-align:center;padding:.5rem 0;">
+              <div style="font-size:.72rem;color:#475569;letter-spacing:1px;margin-bottom:.5rem;">QUARTER-FINAL IN PROGRESS</div>
+              <div style="display:flex;align-items:center;justify-content:center;gap:.8rem;margin-bottom:.6rem;">
+                <span style="font-weight:700;font-size:1.05rem;">France</span>
+                <span style="font-family:'Orbitron',monospace;font-weight:900;font-size:1.6rem;color:#ef4444;filter:drop-shadow(0 0 10px rgba(239,68,68,0.5));">1 <span style="color:#475569;font-size:1rem;">–</span> 0</span>
+                <span style="font-weight:700;font-size:1.05rem;">Morocco</span>
+              </div>
+              <span class="badge-live">LIVE · 67'</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top Scorers -->
+        <div class="side-card fade-in" style="transition-delay:.1s;">
+          <div class="side-card-head"><i data-lucide="trending-up" style="width:13px;height:13px;"></i> Top Scorers</div>
+          <div>
+            <div style="padding:1rem 1.3rem;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;align-items:center;gap:.8rem;">
+              <span style="font-family:'Orbitron',monospace;font-size:.65rem;color:#EAB308;font-weight:900;min-width:18px;">1</span>
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&h=60&fit=crop&q=80" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid rgba(234,179,8,0.4);"/>
+              <div style="flex:1;"><div style="font-weight:700;font-size:.92rem;">L. Messi</div><div style="font-size:.72rem;color:#475569;">Argentina</div></div>
+              <div style="font-family:'Orbitron',monospace;font-weight:900;font-size:1.2rem;color:#EAB308;">7</div>
+            </div>
+            <div style="padding:1rem 1.3rem;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;align-items:center;gap:.8rem;">
+              <span style="font-family:'Orbitron',monospace;font-size:.65rem;color:#94a3b8;font-weight:900;min-width:18px;">2</span>
+              <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&q=80" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid rgba(148,163,184,0.3);"/>
+              <div style="flex:1;"><div style="font-weight:700;font-size:.92rem;">C. Ronaldo</div><div style="font-size:.72rem;color:#475569;">Portugal</div></div>
+              <div style="font-family:'Orbitron',monospace;font-weight:900;font-size:1.2rem;color:#94a3b8;">6</div>
+            </div>
+            <div style="padding:1rem 1.3rem;display:flex;align-items:center;gap:.8rem;">
+              <span style="font-family:'Orbitron',monospace;font-size:.65rem;color:#cd7f32;font-weight:900;min-width:18px;">3</span>
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&q=80" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid rgba(205,127,50,0.3);"/>
+              <div style="flex:1;"><div style="font-weight:700;font-size:.92rem;">K. Mbappé</div><div style="font-size:.72rem;color:#475569;">France</div></div>
+              <div style="font-family:'Orbitron',monospace;font-weight:900;font-size:1.2rem;color:#cd7f32;">5</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Next Match CTA -->
+        <div class="fade-in" style="transition-delay:.2s;background:linear-gradient(135deg,rgba(234,179,8,0.08),rgba(234,179,8,0.03));border:1px solid rgba(234,179,8,0.2);border-radius:16px;padding:1.5rem;text-align:center;">
+          <div style="font-family:'Orbitron',monospace;font-size:.62rem;letter-spacing:3px;color:#EAB308;margin-bottom:.7rem;">Next Match</div>
+          <div style="font-family:'Bebas Neue',cursive;font-size:1.5rem;color:#f1f5f9;margin-bottom:.3rem;">England vs Italy</div>
+          <div style="font-size:.82rem;color:#64748b;margin-bottom:.4rem;">Quarter-Final</div>
+          <div style="font-size:.82rem;color:#475569;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:center;gap:.4rem;"><i data-lucide="calendar" style="width:13px;height:13px;color:#EAB308;"></i>Apr 5, 2026 · 17:00 UTC</div>
+          <a href="#" style="display:block;background:linear-gradient(135deg,#EAB308,#CA8A04);color:#080E1C;font-family:'Orbitron',monospace;font-size:.62rem;letter-spacing:2px;padding:10px;border-radius:5px;text-decoration:none;font-weight:700;transition:all .3s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 10px 30px rgba(234,179,8,0.4)'" onmouseout="this.style.transform='none';this.style.boxShadow='none'">Set Reminder</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="max-w-6xl mx-auto text-center">
+    <div style="font-family:'Orbitron',monospace;font-weight:900;font-size:1.7rem;background:linear-gradient(135deg,#EAB308,#FDE047);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:5px;margin-bottom:.4rem;">FIFO</div>
+    <p style="color:#334155;font-size:.82rem;letter-spacing:1px;margin-bottom:1.8rem;">Football International Federation Organization</p>
+    <div style="display:flex;justify-content:center;gap:.75rem;margin-bottom:2rem;">
+      <a href="#" class="si"><i data-lucide="twitter" style="width:16px;height:16px;"></i></a>
+      <a href="#" class="si"><i data-lucide="instagram" style="width:16px;height:16px;"></i></a>
+      <a href="#" class="si"><i data-lucide="facebook" style="width:16px;height:16px;"></i></a>
+      <a href="#" class="si"><i data-lucide="youtube" style="width:16px;height:16px;"></i></a>
+    </div>
+    <div style="display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-bottom:2rem;">
+      <a href="index.html" style="color:#475569;font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:color .3s;" onmouseover="this.style.color='#EAB308'" onmouseout="this.style.color='#475569'">Home</a>
+      <a href="schedule.html" style="color:#EAB308;font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;">Schedule</a>
+      <a href="players.html" style="color:#475569;font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:color .3s;" onmouseover="this.style.color='#EAB308'" onmouseout="this.style.color='#475569'">Players</a>
+      <a href="tournaments.html" style="color:#475569;font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:color .3s;" onmouseover="this.style.color='#06B6D4'" onmouseout="this.style.color='#475569'">Tournaments</a>
+      <a href="contact.html" style="color:#475569;font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:color .3s;" onmouseover="this.style.color='#EAB308'" onmouseout="this.style.color='#475569'">Contact</a>
+    </div>
+    <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(234,179,8,0.2),transparent);margin-bottom:1.5rem;"></div>
+    <p style="color:#1e293b;font-size:.78rem;letter-spacing:1px;">&copy; 2026 FIFO – Football International Federation Organization. All rights reserved.</p>
+  </div>
+</footer>
+<script>
+  lucide.createIcons();
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:.08});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  function toggleMenu(){const m=document.getElementById('mobile-menu'),i=document.getElementById('menu-icon');m.classList.toggle('open');i.setAttribute('data-lucide',m.classList.contains('open')?'x':'menu');lucide.createIcons();}
+  function filterMatches(type,btn){
+    document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.match-row,.match-card').forEach(r=>{
+      r.style.display=(type==='all'||r.dataset.type===type)?'':'none';
+    });
+  }
+</script>
+</body></html>

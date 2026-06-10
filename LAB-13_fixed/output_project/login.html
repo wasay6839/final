@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FIFO – Login</title>
+  <script src="theme.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--gold:#EAB308;--gold-light:#FDE047;--bg:#080E1C;--border:rgba(234,179,8,0.2);}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--bg);font-family:'Rajdhani',sans-serif;color:#e2e8f0;overflow-x:hidden;min-height:100vh;}
+    body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9998;opacity:0.5;}
+
+    /* BG */
+    .page-bg{position:fixed;inset:0;background-image:url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1920&q=60');background-size:cover;background-position:center;z-index:-2;}
+    .page-bg-ov{position:fixed;inset:0;background:linear-gradient(135deg,rgba(8,14,28,.97) 0%,rgba(8,14,28,.88) 60%,rgba(70,40,0,.4) 100%);z-index:-1;}
+    .grid-ov{position:fixed;inset:0;background-image:linear-gradient(rgba(234,179,8,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(234,179,8,0.04) 1px,transparent 1px);background-size:65px 65px;z-index:-1;}
+
+    /* NAV */
+    .glass-nav{background:rgba(8,14,28,0.75);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);box-shadow:0 4px 40px rgba(234,179,8,0.07);}
+    .nav-logo{font-family:'Orbitron',monospace;font-weight:900;font-size:1.9rem;background:linear-gradient(135deg,#EAB308,#FDE047,#CA8A04);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:5px;position:relative;text-decoration:none;}
+    .nav-logo::after{content:'';position:absolute;bottom:-5px;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#EAB308,transparent);animation:shimmer 3s infinite;}
+    @keyframes shimmer{0%,100%{opacity:.3;}50%{opacity:1;}}
+    .nav-link{font-family:'Rajdhani',sans-serif;font-weight:600;font-size:.9rem;letter-spacing:2.5px;text-transform:uppercase;color:#94a3b8;position:relative;padding-bottom:4px;transition:color .3s;text-decoration:none;}
+    .nav-link::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:#EAB308;transition:width .3s;}
+    .nav-link:hover{color:#EAB308;}.nav-link:hover::after{width:100%;}
+
+    /* SPLIT LAYOUT */
+    .split{display:grid;grid-template-columns:1fr 1fr;min-height:100vh;}
+    @media(max-width:768px){.split{grid-template-columns:1fr;}.split-art{display:none;}}
+
+    /* ART SIDE */
+    .split-art{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+    .art-bg{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1551958219-acbc595d7ce5?w=1000&q=80');background-size:cover;background-position:center;animation:artZoom 20s ease-in-out infinite alternate;}
+    @keyframes artZoom{0%{transform:scale(1);}100%{transform:scale(1.08);}}
+    .art-ov{position:absolute;inset:0;background:linear-gradient(135deg,rgba(8,14,28,.85),rgba(8,14,28,.6),rgba(100,70,0,.3));}
+    .art-content{position:relative;z-index:2;text-align:center;padding:3rem;}
+    .art-logo{font-family:'Bebas Neue',cursive;font-size:clamp(5rem,10vw,8rem);color:rgba(234,179,8,.9);letter-spacing:8px;line-height:1;filter:drop-shadow(0 0 40px rgba(234,179,8,.4));animation:float 6s ease-in-out infinite;}
+    @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+    .art-tagline{font-family:'Orbitron',monospace;font-size:.75rem;letter-spacing:5px;color:rgba(234,179,8,.5);text-transform:uppercase;margin-top:.5rem;}
+    .art-stats{display:flex;gap:2rem;justify-content:center;margin-top:2rem;}
+    .art-stat{text-align:center;}
+    .art-stat-num{font-family:'Orbitron',monospace;font-size:1.8rem;font-weight:900;color:#EAB308;filter:drop-shadow(0 0 10px rgba(234,179,8,.4));}
+    .art-stat-lbl{font-size:.7rem;letter-spacing:2px;color:#475569;text-transform:uppercase;margin-top:3px;}
+    /* Floating orb */
+    .art-orb{position:absolute;width:400px;height:400px;background:radial-gradient(circle,rgba(234,179,8,.08),transparent 70%);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;animation:orbP 5s ease-in-out infinite;}
+    @keyframes orbP{0%,100%{transform:translate(-50%,-50%) scale(1);}50%{transform:translate(-50%,-50%) scale(1.2);}}
+
+    /* FORM SIDE */
+    .split-form{display:flex;align-items:center;justify-content:center;padding:8rem 3rem 4rem;position:relative;}
+    .form-card{width:100%;max-width:440px;animation:fadeUp .7s ease both;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+
+    .form-header{margin-bottom:2.5rem;}
+    .form-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.3);color:#EAB308;font-family:'Orbitron',monospace;font-size:.62rem;letter-spacing:3px;padding:5px 16px;border-radius:2px;margin-bottom:1.2rem;}
+    .form-title{font-family:'Bebas Neue',cursive;font-size:3.5rem;letter-spacing:4px;color:#fff;line-height:.95;}
+    .form-title span{background:linear-gradient(135deg,#EAB308,#FDE047);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .form-sub{color:#475569;font-size:.88rem;letter-spacing:1.5px;margin-top:.5rem;text-transform:uppercase;}
+
+    /* INPUTS */
+    .ig{margin-bottom:1.4rem;}
+    .il{display:block;font-family:'Orbitron',monospace;font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:#64748b;margin-bottom:7px;transition:color .3s;}
+    .ig:focus-within .il{color:#EAB308;}
+    .fi{width:100%;background:rgba(255,255,255,0.035);border:1px solid rgba(234,179,8,.18);border-radius:9px;padding:14px 18px;color:#e2e8f0;font-family:'Rajdhani',sans-serif;font-size:1.05rem;font-weight:500;transition:all .3s;outline:none;}
+    .fi:focus{border-color:#EAB308;background:rgba(234,179,8,.05);box-shadow:0 0 0 3px rgba(234,179,8,.1),0 0 20px rgba(234,179,8,.08);}
+    .fi::placeholder{color:#334155;font-weight:400;}
+    .fi.err{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.04);}
+    .err-msg{font-size:.76rem;color:#f87171;margin-top:5px;font-weight:600;letter-spacing:.5px;display:none;}
+    .err-msg.show{display:block;}
+    .pwd-wrap{position:relative;}
+    .pwd-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#475569;transition:color .3s;}
+    .pwd-toggle:hover{color:#EAB308;}
+
+    /* SUBMIT */
+    .btn-submit{width:100%;background:linear-gradient(135deg,#EAB308,#CA8A04);color:#080E1C;font-family:'Orbitron',monospace;font-weight:700;font-size:.85rem;letter-spacing:3px;padding:17px;border-radius:9px;border:none;cursor:pointer;position:relative;overflow:hidden;transition:all .3s;margin-top:.5rem;}
+    .btn-submit::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#FDE047,#EAB308);opacity:0;transition:opacity .3s;}
+    .btn-submit:hover::before{opacity:1;}.btn-submit:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(234,179,8,.6),0 16px 50px rgba(234,179,8,.35);}
+    .btn-submit span{position:relative;z-index:1;}
+
+    /* DIVIDER */
+    .gline{height:1px;background:linear-gradient(90deg,transparent,rgba(234,179,8,.25),transparent);margin:1.6rem 0;}
+    .gold-link{color:#EAB308;font-weight:700;text-decoration:none;transition:color .3s;}
+    .gold-link:hover{color:#FDE047;}
+
+    ::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:rgba(234,179,8,.35);border-radius:3px;}
+  
+    /* ── ENHANCED THEME OVERRIDE ── */
+    :root {
+      --gold:#EAB308;--gold-light:#FDE047;--gold-dark:#CA8A04;
+      --cyan:#06B6D4;--cyan-light:#67E8F9;
+      --bg:#05091A;--bg2:#0A1020;--border:rgba(6,182,212,0.18);
+      --border-gold:rgba(234,179,8,0.18);
+    }
+    body { background: #05091A !important; }
+    .glass-nav {
+      background: rgba(5,9,26,0.85) !important;
+      border-bottom: 1px solid rgba(6,182,212,0.18) !important;
+      box-shadow: 0 4px 40px rgba(6,182,212,0.06) !important;
+    }
+    .nav-logo {
+      background: linear-gradient(135deg,#06B6D4,#67E8F9,#EAB308) !important;
+      -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important;
+      background-clip: text !important;
+    }
+    .nav-logo::after { background: linear-gradient(90deg,transparent,#06B6D4,#EAB308,transparent) !important; }
+    .nav-link:hover { color:#67E8F9 !important; }
+    .nav-link:hover::after,.nav-link.active::after { background: linear-gradient(90deg,#06B6D4,#EAB308) !important; width:100%; }
+    .nav-link.active { color:#06B6D4 !important; }
+    ::-webkit-scrollbar-thumb { background: rgba(6,182,212,0.35) !important; border-radius:3px; }
+    .gd { background: linear-gradient(90deg,transparent,rgba(6,182,212,.25),rgba(234,179,8,.12),transparent) !important; }
+    .section-label { color:#06B6D4 !important; }
+    .section-label::before { background: linear-gradient(90deg,#06B6D4,#67E8F9) !important; }
+
+  
+    /* ── THEME VARIABLE CONSUMERS (shared) ── */
+    body{background:var(--bg)!important;color:var(--text-secondary)!important;}
+    .glass-nav{background:var(--bg-nav)!important;border-bottom:1px solid var(--border)!important;box-shadow:var(--shadow-nav)!important;}
+    .nav-link{color:var(--text-muted)!important;}
+    .nav-link:hover,.nav-link.active{color:var(--cyan)!important;}
+    .nav-link::after,.nav-link:hover::after,.nav-link.active::after{background:linear-gradient(90deg,var(--cyan),var(--gold))!important;}
+    .mob-menu{background:var(--bg-mob-menu)!important;border-color:var(--border)!important;}
+    .gd{background:linear-gradient(90deg,transparent,var(--border),transparent)!important;}
+    ::-webkit-scrollbar-track{background:var(--bg)!important;}
+    ::-webkit-scrollbar-thumb{background:var(--scrollbar-thumb)!important;}
+    /* Light mode body background override */
+    :root:not([data-theme="dark"]) body,
+    html:not([data-theme="dark"]) body{
+      background:var(--bg)!important;
+    }
+
+  
+    /* ── LIGHT MODE SECTION OVERRIDES ── */
+    :root body,.glass-nav{transition:background-color .3s ease,border-color .3s ease,box-shadow .3s ease;}
+    /* Cards / panels */
+    [data-theme]:not([data-theme="dark"]) .h-card,
+    html:not([data-theme="dark"]) .h-card{background:rgba(255,255,255,0.9)!important;border-color:var(--border-card)!important;box-shadow:0 4px 20px rgba(0,0,0,0.08)!important;}
+    html:not([data-theme="dark"]) .stat-item::after{background:linear-gradient(to bottom,transparent,var(--border),transparent)!important;}
+    html:not([data-theme="dark"]) .stats-bar{background:linear-gradient(90deg,rgba(240,244,248,.98),rgba(230,240,252,.95),rgba(240,244,248,.98))!important;border-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .stat-num{color:var(--gold)!important;}
+    html:not([data-theme="dark"]) .stat-lbl{color:var(--text-muted)!important;}
+    html:not([data-theme="dark"]) .cd-item{background:rgba(255,255,255,0.9)!important;border-color:var(--border-card)!important;}
+    html:not([data-theme="dark"]) .cd-num{color:var(--gold)!important;}
+    html:not([data-theme="dark"]) .cd-unit{color:var(--text-muted)!important;}
+    html:not([data-theme="dark"]) .footer{background:rgba(224,234,248,.98)!important;border-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .section-title{color:var(--text-primary)!important;}
+    html:not([data-theme="dark"]) .feature-row{background:rgba(6,182,212,0.04)!important;border-left-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .feature-row:hover{background:rgba(6,182,212,0.10)!important;border-left-color:var(--cyan)!important;}
+    html:not([data-theme="dark"]) .h-tag{background:rgba(202,138,4,0.10)!important;border-color:var(--border-gold)!important;color:var(--gold)!important;}
+    html:not([data-theme="dark"]) .hero-overlay{background:linear-gradient(135deg,rgba(240,244,248,0.88) 0%,rgba(215,232,250,0.72) 50%,rgba(180,210,248,0.28) 100%)!important;}
+    html:not([data-theme="dark"]) .si{background:rgba(0,0,0,0.04)!important;border-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .si:hover{background:rgba(6,182,212,0.12)!important;}
+    html:not([data-theme="dark"]) .hero-title{color:var(--text-primary)!important;text-shadow:0 0 60px rgba(6,182,212,0.15)!important;}
+    html:not([data-theme="dark"]) .hero-sub{color:var(--text-muted)!important;}
+
+  </style>
+</head>
+<body>
+
+<div class="page-bg"></div>
+<div class="page-bg-ov"></div>
+<div class="grid-ov"></div>
+
+<!-- NAV -->
+<nav class="glass-nav fixed top-0 left-0 right-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between" style="height:72px;">
+      <a href="index.html" class="nav-logo">FIFO</a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="schedule.html" class="nav-link">Schedule</a>
+        <a href="players.html" class="nav-link">Players</a>
+        <a href="tournaments.html" class="nav-link">Tournaments</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </div>
+      <a href="signup.html" style="font-family:'Orbitron',monospace;font-size:.72rem;letter-spacing:2px;background:linear-gradient(135deg,#EAB308,#CA8A04);color:#080E1C;font-weight:700;padding:9px 22px;border-radius:4px;text-decoration:none;transition:all .3s;" onmouseover="this.style.boxShadow='0 8px 30px rgba(234,179,8,0.5)'" onmouseout="this.style.boxShadow='none'">SIGN UP</a>
+    </div>
+  <button
+        id="theme-toggle"
+        class="theme-toggle-btn hidden md:inline-flex"
+        aria-label="Switch to Light Mode"
+        aria-pressed="false"
+        title="Toggle dark / light mode"
+      >
+        <span class="toggle-track"></span>
+        <i data-lucide="sun" class="theme-icon"></i>
+        <span class="theme-label">LIGHT</span>
+      </button>
+    </div>
+</nav>
+
+<div class="split" style="padding-top:72px;">
+
+  <!-- ART SIDE -->
+  <div class="split-art">
+    <div class="art-bg"></div>
+    <div class="art-ov"></div>
+    <div class="art-orb"></div>
+    <div class="art-content">
+      <div class="art-logo">FIFO</div>
+      <div class="art-tagline">Football International Federation Org</div>
+      <div class="art-stats">
+        <div class="art-stat"><div class="art-stat-num">32</div><div class="art-stat-lbl">Teams</div></div>
+        <div class="art-stat"><div class="art-stat-num">128</div><div class="art-stat-lbl">Players</div></div>
+        <div class="art-stat"><div class="art-stat-num">$5M</div><div class="art-stat-lbl">Prize Pool</div></div>
+      </div>
+      <!-- Floating particles -->
+      <div id="art-particles" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1;"></div>
+    </div>
+  </div>
+
+  <!-- FORM SIDE -->
+  <div class="split-form">
+    <div class="form-card">
+      <div class="form-header">
+        <div class="form-badge"><i data-lucide="shield-check" style="width:11px;height:11px;"></i> SECURE ACCESS</div>
+        <h1 class="form-title">Welcome <span>Back</span></h1>
+        <p class="form-sub">FIFO Member Portal</p>
+      </div>
+
+      <form id="loginForm" novalidate>
+        <div class="ig">
+          <label class="il" for="email">Email Address</label>
+          <input class="fi" type="email" id="email" placeholder="your@email.com"/>
+          <div class="err-msg" id="emailErr">⚠ Please enter a valid email</div>
+        </div>
+
+        <div class="ig">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;">
+            <label class="il" for="password" style="margin-bottom:0;">Password</label>
+            <a href="#" class="gold-link" style="font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:2px;">Forgot?</a>
+          </div>
+          <div class="pwd-wrap">
+            <input class="fi" type="password" id="password" placeholder="Your password" style="padding-right:50px;"/>
+            <button type="button" class="pwd-toggle" id="pwdBtn" onclick="togglePwd()">
+              <i data-lucide="eye-off" style="width:16px;height:16px;"></i>
+            </button>
+          </div>
+          <div class="err-msg" id="passErr">⚠ Password is required</div>
+        </div>
+
+        <div class="gline"></div>
+
+        <button type="submit" class="btn-submit">
+          <span>⚡ LOGIN TO FIFO</span>
+        </button>
+
+        <p style="text-align:center;margin-top:1.5rem;color:#475569;font-size:.92rem;">
+          Don't have an account? <a href="signup.html" class="gold-link">Create Account →</a>
+        </p>
+      </form>
+
+      <p style="text-align:center;margin-top:2.5rem;color:#1e293b;font-size:.72rem;letter-spacing:1.5px;">© 2026 FIFO · All rights reserved</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  lucide.createIcons();
+
+  // PARTICLES on art side
+  const pc = document.getElementById('art-particles');
+  for(let i=0;i<18;i++){
+    const p=document.createElement('div');
+    const s=Math.random()*3+1;
+    p.style.cssText=`position:absolute;border-radius:50%;width:${s}px;height:${s}px;background:#EAB308;left:${Math.random()*100}%;top:${Math.random()*100}%;opacity:${Math.random()*.4+.1};animation:twinkle ${Math.random()*4+3}s infinite ${Math.random()*3}s;`;
+    pc.appendChild(p);
+  }
+  const st=document.createElement('style');
+  st.textContent='@keyframes twinkle{0%,100%{opacity:.1;transform:scale(1);}50%{opacity:.8;transform:scale(1.8);}}';
+  document.head.appendChild(st);
+
+  function togglePwd(){
+    const inp=document.getElementById('password'),btn=document.getElementById('pwdBtn');
+    if(inp.type==='password'){inp.type='text';btn.innerHTML='<i data-lucide="eye" style="width:16px;height:16px;"></i>';}
+    else{inp.type='password';btn.innerHTML='<i data-lucide="eye-off" style="width:16px;height:16px;"></i>';}
+    lucide.createIcons();
+  }
+
+  ['email','password'].forEach(id=>{
+    document.getElementById(id).addEventListener('input',function(){
+      this.classList.remove('err');
+      const err=document.getElementById(id==='email'?'emailErr':'passErr');
+      if(err) err.classList.remove('show');
+    });
+  });
+
+  document.getElementById('loginForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    let ok=true;
+    const email=document.getElementById('email').value.trim();
+    const pass=document.getElementById('password').value;
+
+    if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+      document.getElementById('email').classList.add('err');
+      document.getElementById('emailErr').classList.add('show');
+      ok=false;
+    }
+    if(!pass){
+      document.getElementById('password').classList.add('err');
+      document.getElementById('passErr').classList.add('show');
+      ok=false;
+    }
+    if(ok){
+      const btn=document.querySelector('.btn-submit span');
+      btn.textContent='⏳ LOGGING IN...';
+      try {
+        const res = await fetch('http://localhost:3000/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password: pass })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          localStorage.setItem('fifo_token', data.token);
+          localStorage.setItem('fifo_user', data.username);
+          btn.textContent = '✅ SUCCESS!';
+          setTimeout(() => { window.location.href = 'index.html'; }, 800);
+        } else {
+          const msg = data.message || 'Login failed. Please try again.';
+          document.getElementById('emailErr').textContent = msg;
+          document.getElementById('emailErr').classList.add('show');
+          btn.textContent = '⚡ LOGIN TO FIFO';
+        }
+      } catch(err) {
+        document.getElementById('emailErr').textContent = 'Cannot reach server. Is the backend running?';
+        document.getElementById('emailErr').classList.add('show');
+        btn.textContent = '⚡ LOGIN TO FIFO';
+      }
+    }
+  });
+</script>
+</body>
+</html>

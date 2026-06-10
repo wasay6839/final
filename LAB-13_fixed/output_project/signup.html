@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FIFO – Create Account</title>
+  <script src="theme.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--gold:#EAB308;--gold-light:#FDE047;--bg:#080E1C;--border:rgba(234,179,8,0.2);}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--bg);font-family:'Rajdhani',sans-serif;color:#e2e8f0;overflow-x:hidden;min-height:100vh;}
+    body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9998;opacity:0.5;}
+    .page-bg{position:fixed;inset:0;background-image:url('https://images.unsplash.com/photo-1551958219-acbc595d7ce5?w=1920&q=60');background-size:cover;background-position:center;z-index:-2;}
+    .page-bg-ov{position:fixed;inset:0;background:linear-gradient(135deg,rgba(8,14,28,.97) 0%,rgba(8,14,28,.90) 100%);z-index:-1;}
+    .grid-ov{position:fixed;inset:0;background-image:linear-gradient(rgba(234,179,8,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(234,179,8,0.04) 1px,transparent 1px);background-size:65px 65px;z-index:-1;}
+
+    /* NAV */
+    .glass-nav{background:rgba(8,14,28,0.8);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);box-shadow:0 4px 40px rgba(234,179,8,0.07);}
+    .nav-logo{font-family:'Orbitron',monospace;font-weight:900;font-size:1.9rem;background:linear-gradient(135deg,#EAB308,#FDE047,#CA8A04);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:5px;position:relative;text-decoration:none;}
+    .nav-logo::after{content:'';position:absolute;bottom:-5px;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#EAB308,transparent);animation:shimmer 3s infinite;}
+    @keyframes shimmer{0%,100%{opacity:.3;}50%{opacity:1;}}
+    .nav-link{font-family:'Rajdhani',sans-serif;font-weight:600;font-size:.9rem;letter-spacing:2.5px;text-transform:uppercase;color:#94a3b8;position:relative;padding-bottom:4px;transition:color .3s;text-decoration:none;}
+    .nav-link::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:#EAB308;transition:width .3s;}
+    .nav-link:hover{color:#EAB308;}.nav-link:hover::after{width:100%;}
+
+    /* MAIN LAYOUT */
+    main{padding-top:100px;padding-bottom:4rem;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding-left:1.5rem;padding-right:1.5rem;}
+    .form-wrap{width:100%;max-width:640px;animation:fadeUp .7s ease both;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+
+    /* STEPS INDICATOR */
+    .steps{display:flex;align-items:center;gap:.5rem;margin-bottom:2.5rem;justify-content:center;}
+    .step{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:.68rem;font-weight:700;border:1px solid rgba(255,255,255,.12);color:#475569;transition:all .3s;}
+    .step.active{background:linear-gradient(135deg,#EAB308,#CA8A04);color:#080E1C;border-color:#EAB308;box-shadow:0 0 20px rgba(234,179,8,.4);}
+    .step.done{background:rgba(34,197,94,.15);border-color:rgba(34,197,94,.4);color:#4ade80;}
+    .step-line{flex:1;height:2px;background:rgba(255,255,255,.08);max-width:60px;position:relative;overflow:hidden;}
+    .step-line-fill{position:absolute;inset:0;background:#EAB308;transform:scaleX(0);transform-origin:left;transition:transform .5s;}
+    .step-line-fill.done{transform:scaleX(1);}
+
+    /* FORM CARD */
+    .fc{background:rgba(8,14,28,.75);border:1px solid rgba(234,179,8,.2);border-radius:20px;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:0 40px 80px rgba(0,0,0,.6),0 0 0 1px rgba(234,179,8,.05);padding:2.8rem;position:relative;overflow:hidden;}
+    .fc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#EAB308,#FDE047,#EAB308,transparent);animation:shimmer 4s infinite;}
+    .form-title{font-family:'Bebas Neue',cursive;font-size:3.2rem;letter-spacing:4px;color:#fff;line-height:.95;}
+    .form-title span{background:linear-gradient(135deg,#EAB308,#FDE047);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+    /* INPUTS */
+    .ig{margin-bottom:1.25rem;}
+    .il{display:block;font-family:'Orbitron',monospace;font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:#64748b;margin-bottom:7px;transition:color .3s;}
+    .ig:focus-within .il{color:#EAB308;}
+    .fi{width:100%;background:rgba(255,255,255,0.035);border:1px solid rgba(234,179,8,.18);border-radius:9px;padding:13px 16px;color:#e2e8f0;font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:500;transition:all .3s;outline:none;}
+    .fi:focus{border-color:#EAB308;background:rgba(234,179,8,.05);box-shadow:0 0 0 3px rgba(234,179,8,.1);}
+    .fi::placeholder{color:#334155;font-weight:400;}
+    .fi.err{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,.04);}
+    .fi.ok{border-color:rgba(34,197,94,.45);background:rgba(34,197,94,.04);}
+    .fmsg{font-size:.76rem;margin-top:5px;font-weight:600;letter-spacing:.5px;display:none;}
+    .fmsg.show{display:block;}.fmsg.e{color:#f87171;}.fmsg.s{color:#4ade80;}
+
+    /* PASSWORD STRENGTH */
+    .str-wrap{margin-top:8px;display:none;}
+    .str-wrap.show{display:block;}
+    .str-track{height:5px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden;}
+    .str-fill{height:100%;border-radius:99px;width:0;transition:width .4s ease,background .4s ease;}
+    .str-lbl{font-size:.72rem;margin-top:4px;font-weight:600;letter-spacing:1px;color:#64748b;transition:color .3s;}
+
+    /* SUBMIT */
+    .btn-sub{width:100%;background:linear-gradient(135deg,#EAB308,#CA8A04);color:#080E1C;font-family:'Orbitron',monospace;font-weight:700;font-size:.85rem;letter-spacing:3px;padding:17px;border-radius:9px;border:none;cursor:pointer;position:relative;overflow:hidden;transition:all .3s;margin-top:.5rem;}
+    .btn-sub::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#FDE047,#EAB308);opacity:0;transition:opacity .3s;}
+    .btn-sub:hover::before{opacity:1;}.btn-sub:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(234,179,8,.55),0 16px 50px rgba(234,179,8,.3);}
+    .btn-sub span{position:relative;z-index:1;}
+    .gline{height:1px;background:linear-gradient(90deg,transparent,rgba(234,179,8,.25),transparent);margin:1.5rem 0;}
+
+    /* ROLE SELECTOR */
+    .role-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;}
+    .role-btn{display:flex;flex-direction:column;align-items:center;gap:.5rem;padding:12px 10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;cursor:pointer;transition:all .3s;color:#64748b;}
+    .role-btn:hover{background:rgba(234,179,8,.07);border-color:rgba(234,179,8,.25);color:#EAB308;}
+    .role-btn.selected{background:rgba(234,179,8,.12);border-color:rgba(234,179,8,.5);color:#EAB308;box-shadow:0 0 20px rgba(234,179,8,.12);}
+    .role-btn-lbl{font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:1.5px;font-weight:700;text-align:center;}
+
+    /* SUCCESS */
+    .success-ov{display:none;position:fixed;inset:0;background:rgba(8,14,28,.97);z-index:1000;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:2rem;}
+    .success-ov.show{display:flex;}
+    .suc-icon{width:90px;height:90px;border-radius:50%;background:rgba(34,197,94,.12);border:2px solid rgba(34,197,94,.5);display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;animation:popIn .6s cubic-bezier(.23,1,.32,1) both;}
+    @keyframes popIn{from{transform:scale(.4);opacity:0;}to{transform:scale(1);opacity:1;}}
+    ::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:rgba(234,179,8,.35);border-radius:3px;}
+  
+    /* ── ENHANCED THEME OVERRIDE ── */
+    :root {
+      --gold:#EAB308;--gold-light:#FDE047;--gold-dark:#CA8A04;
+      --cyan:#06B6D4;--cyan-light:#67E8F9;
+      --bg:#05091A;--bg2:#0A1020;--border:rgba(6,182,212,0.18);
+      --border-gold:rgba(234,179,8,0.18);
+    }
+    body { background: #05091A !important; }
+    .glass-nav {
+      background: rgba(5,9,26,0.85) !important;
+      border-bottom: 1px solid rgba(6,182,212,0.18) !important;
+      box-shadow: 0 4px 40px rgba(6,182,212,0.06) !important;
+    }
+    .nav-logo {
+      background: linear-gradient(135deg,#06B6D4,#67E8F9,#EAB308) !important;
+      -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important;
+      background-clip: text !important;
+    }
+    .nav-logo::after { background: linear-gradient(90deg,transparent,#06B6D4,#EAB308,transparent) !important; }
+    .nav-link:hover { color:#67E8F9 !important; }
+    .nav-link:hover::after,.nav-link.active::after { background: linear-gradient(90deg,#06B6D4,#EAB308) !important; width:100%; }
+    .nav-link.active { color:#06B6D4 !important; }
+    ::-webkit-scrollbar-thumb { background: rgba(6,182,212,0.35) !important; border-radius:3px; }
+    .gd { background: linear-gradient(90deg,transparent,rgba(6,182,212,.25),rgba(234,179,8,.12),transparent) !important; }
+    .section-label { color:#06B6D4 !important; }
+    .section-label::before { background: linear-gradient(90deg,#06B6D4,#67E8F9) !important; }
+
+  
+    /* ── THEME VARIABLE CONSUMERS (shared) ── */
+    body{background:var(--bg)!important;color:var(--text-secondary)!important;}
+    .glass-nav{background:var(--bg-nav)!important;border-bottom:1px solid var(--border)!important;box-shadow:var(--shadow-nav)!important;}
+    .nav-link{color:var(--text-muted)!important;}
+    .nav-link:hover,.nav-link.active{color:var(--cyan)!important;}
+    .nav-link::after,.nav-link:hover::after,.nav-link.active::after{background:linear-gradient(90deg,var(--cyan),var(--gold))!important;}
+    .mob-menu{background:var(--bg-mob-menu)!important;border-color:var(--border)!important;}
+    .gd{background:linear-gradient(90deg,transparent,var(--border),transparent)!important;}
+    ::-webkit-scrollbar-track{background:var(--bg)!important;}
+    ::-webkit-scrollbar-thumb{background:var(--scrollbar-thumb)!important;}
+    /* Light mode body background override */
+    :root:not([data-theme="dark"]) body,
+    html:not([data-theme="dark"]) body{
+      background:var(--bg)!important;
+    }
+
+  
+    /* ── LIGHT MODE SECTION OVERRIDES ── */
+    :root body,.glass-nav{transition:background-color .3s ease,border-color .3s ease,box-shadow .3s ease;}
+    /* Cards / panels */
+    [data-theme]:not([data-theme="dark"]) .h-card,
+    html:not([data-theme="dark"]) .h-card{background:rgba(255,255,255,0.9)!important;border-color:var(--border-card)!important;box-shadow:0 4px 20px rgba(0,0,0,0.08)!important;}
+    html:not([data-theme="dark"]) .stat-item::after{background:linear-gradient(to bottom,transparent,var(--border),transparent)!important;}
+    html:not([data-theme="dark"]) .stats-bar{background:linear-gradient(90deg,rgba(240,244,248,.98),rgba(230,240,252,.95),rgba(240,244,248,.98))!important;border-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .stat-num{color:var(--gold)!important;}
+    html:not([data-theme="dark"]) .stat-lbl{color:var(--text-muted)!important;}
+    html:not([data-theme="dark"]) .cd-item{background:rgba(255,255,255,0.9)!important;border-color:var(--border-card)!important;}
+    html:not([data-theme="dark"]) .cd-num{color:var(--gold)!important;}
+    html:not([data-theme="dark"]) .cd-unit{color:var(--text-muted)!important;}
+    html:not([data-theme="dark"]) .footer{background:rgba(224,234,248,.98)!important;border-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .section-title{color:var(--text-primary)!important;}
+    html:not([data-theme="dark"]) .feature-row{background:rgba(6,182,212,0.04)!important;border-left-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .feature-row:hover{background:rgba(6,182,212,0.10)!important;border-left-color:var(--cyan)!important;}
+    html:not([data-theme="dark"]) .h-tag{background:rgba(202,138,4,0.10)!important;border-color:var(--border-gold)!important;color:var(--gold)!important;}
+    html:not([data-theme="dark"]) .hero-overlay{background:linear-gradient(135deg,rgba(240,244,248,0.88) 0%,rgba(215,232,250,0.72) 50%,rgba(180,210,248,0.28) 100%)!important;}
+    html:not([data-theme="dark"]) .si{background:rgba(0,0,0,0.04)!important;border-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .si:hover{background:rgba(6,182,212,0.12)!important;}
+    html:not([data-theme="dark"]) .hero-title{color:var(--text-primary)!important;text-shadow:0 0 60px rgba(6,182,212,0.15)!important;}
+    html:not([data-theme="dark"]) .hero-sub{color:var(--text-muted)!important;}
+
+  </style>
+</head>
+<body>
+<div class="page-bg"></div>
+<div class="page-bg-ov"></div>
+<div class="grid-ov"></div>
+
+<!-- NAV -->
+<nav class="glass-nav fixed top-0 left-0 right-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between" style="height:72px;">
+      <a href="index.html" class="nav-logo">FIFO</a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="schedule.html" class="nav-link">Schedule</a>
+        <a href="players.html" class="nav-link">Players</a>
+        <a href="tournaments.html" class="nav-link">Tournaments</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </div>
+      <a href="login.html" style="font-family:'Orbitron',monospace;font-size:.72rem;letter-spacing:2px;color:#EAB308;text-decoration:none;border:1px solid rgba(234,179,8,.35);padding:9px 22px;border-radius:4px;transition:all .3s;" onmouseover="this.style.background='rgba(234,179,8,.1)'" onmouseout="this.style.background='transparent'">LOGIN</a>
+    </div>
+  <button
+        id="theme-toggle"
+        class="theme-toggle-btn hidden md:inline-flex"
+        aria-label="Switch to Light Mode"
+        aria-pressed="false"
+        title="Toggle dark / light mode"
+      >
+        <span class="toggle-track"></span>
+        <i data-lucide="sun" class="theme-icon"></i>
+        <span class="theme-label">LIGHT</span>
+      </button>
+    </div>
+</nav>
+
+<main>
+  <div class="form-wrap">
+    <!-- Header -->
+    <div style="text-align:center;margin-bottom:2rem;">
+      <div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.3);color:#EAB308;font-family:'Orbitron',monospace;font-size:.62rem;letter-spacing:3px;padding:6px 18px;border-radius:2px;margin-bottom:1rem;">
+        <i data-lucide="zap" style="width:11px;height:11px;"></i> JOIN THE LEGEND
+      </div>
+      <h1 style="font-family:'Bebas Neue',cursive;font-size:3.2rem;letter-spacing:4px;color:#fff;line-height:.95;margin-bottom:.5rem;">Create <span style="background:linear-gradient(135deg,#EAB308,#FDE047);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Account</span></h1>
+      <p style="color:#475569;font-size:.88rem;letter-spacing:2px;text-transform:uppercase;">FIFO Season 2025–2026 Registration</p>
+    </div>
+
+    <!-- STEP INDICATOR -->
+    <div class="steps">
+      <div class="step active" id="s1">1</div>
+      <div class="step-line"><div class="step-line-fill" id="sl1"></div></div>
+      <div class="step" id="s2">2</div>
+      <div class="step-line"><div class="step-line-fill" id="sl2"></div></div>
+      <div class="step" id="s3">3</div>
+    </div>
+
+    <!-- FORM CARD -->
+    <div class="fc">
+      <form id="signupForm" novalidate>
+
+        <!-- ROW 1 -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+          <div class="ig">
+            <label class="il" for="firstName">First Name</label>
+            <input class="fi" type="text" id="firstName" placeholder="Cristiano"/>
+            <div class="fmsg e" id="fnErr">⚠ First name required</div>
+          </div>
+          <div class="ig">
+            <label class="il" for="lastName">Last Name</label>
+            <input class="fi" type="text" id="lastName" placeholder="Ronaldo"/>
+            <div class="fmsg e" id="lnErr">⚠ Last name required</div>
+          </div>
+        </div>
+
+        <!-- ROW 2 -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+          <div class="ig">
+            <label class="il" for="age">Age</label>
+            <input class="fi" type="number" id="age" placeholder="25" min="16" max="60"/>
+            <div class="fmsg e" id="ageErr">⚠ Valid age required (16–60)</div>
+          </div>
+          <div class="ig">
+            <label class="il" for="email">Email</label>
+            <input class="fi" type="email" id="email" placeholder="cr7@fifo.com" oninput="liveEmail(this)"/>
+            <div class="fmsg" id="emailMsg"></div>
+          </div>
+        </div>
+
+        <!-- ROLE SELECTOR -->
+        <div class="ig">
+          <label class="il" style="display:block;margin-bottom:.75rem;">Your Role</label>
+          <div class="role-grid">
+            <div class="role-btn" onclick="selectRole(this,'player')">
+              <i data-lucide="user" style="width:20px;height:20px;"></i>
+              <span class="role-btn-lbl">Player</span>
+            </div>
+            <div class="role-btn" onclick="selectRole(this,'coach')">
+              <i data-lucide="briefcase" style="width:20px;height:20px;"></i>
+              <span class="role-btn-lbl">Coach</span>
+            </div>
+            <div class="role-btn" onclick="selectRole(this,'manager')">
+              <i data-lucide="shield" style="width:20px;height:20px;"></i>
+              <span class="role-btn-lbl">Manager</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="ig">
+          <label class="il" for="password">Password</label>
+          <div style="position:relative;">
+            <input class="fi" type="password" id="password" placeholder="Create strong password" style="padding-right:48px;" oninput="checkStrength(this)"/>
+            <button type="button" onclick="togglePwd('password','pBtn')" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#475569;transition:color .3s;" id="pBtn" onmouseover="this.style.color='#EAB308'" onmouseout="this.style.color='#475569'"><i data-lucide="eye-off" style="width:16px;height:16px;"></i></button>
+          </div>
+          <div class="str-wrap" id="strWrap">
+            <div class="str-track"><div class="str-fill" id="strFill"></div></div>
+            <div class="str-lbl" id="strLbl">Strength: –</div>
+          </div>
+          <div class="fmsg e" id="pwdErr"></div>
+        </div>
+
+        <!-- CONFIRM -->
+        <div class="ig">
+          <label class="il" for="confirmPwd">Confirm Password</label>
+          <div style="position:relative;">
+            <input class="fi" type="password" id="confirmPwd" placeholder="Repeat password" style="padding-right:48px;"/>
+            <button type="button" onclick="togglePwd('confirmPwd','cBtn')" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#475569;transition:color .3s;" id="cBtn" onmouseover="this.style.color='#EAB308'" onmouseout="this.style.color='#475569'"><i data-lucide="eye-off" style="width:16px;height:16px;"></i></button>
+          </div>
+          <div class="fmsg e" id="cpErr"></div>
+        </div>
+
+        <div class="gline"></div>
+        <button type="submit" class="btn-sub"><span>⚡ CREATE MY ACCOUNT</span></button>
+
+        <p style="text-align:center;margin-top:1.3rem;color:#475569;font-size:.9rem;">
+          Already have an account? <a href="login.html" style="color:#EAB308;font-weight:700;text-decoration:none;" onmouseover="this.style.color='#FDE047'" onmouseout="this.style.color='#EAB308'">Login Here →</a>
+        </p>
+      </form>
+    </div>
+  </div>
+</main>
+
+<!-- SUCCESS -->
+<div class="success-ov" id="successOv">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(234,179,8,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(234,179,8,0.03) 1px,transparent 1px);background-size:65px 65px;pointer-events:none;"></div>
+  <div class="suc-icon"><i data-lucide="check" style="width:40px;height:40px;color:#4ade80;"></i></div>
+  <h2 style="font-family:'Bebas Neue',cursive;font-size:3.5rem;letter-spacing:4px;color:#fff;margin-bottom:.5rem;">Welcome to <span style="color:#EAB308;">FIFO!</span></h2>
+  <p style="color:#64748b;font-size:1rem;letter-spacing:2px;margin-bottom:2rem;text-transform:uppercase;">Account created successfully 🏆</p>
+  <a href="login.html" style="font-family:'Orbitron',monospace;font-size:.78rem;letter-spacing:3px;background:linear-gradient(135deg,#EAB308,#CA8A04);color:#080E1C;font-weight:700;padding:15px 40px;border-radius:6px;text-decoration:none;transition:all .3s;" onmouseover="this.style.boxShadow='0 16px 50px rgba(234,179,8,0.5)'" onmouseout="this.style.boxShadow='none'">PROCEED TO LOGIN</a>
+</div>
+
+<script>
+  lucide.createIcons();
+  let selectedRole = null;
+  const emailRe=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  function selectRole(el,val){
+    document.querySelectorAll('.role-btn').forEach(b=>b.classList.remove('selected'));
+    el.classList.add('selected'); selectedRole=val;
+  }
+
+  function togglePwd(id,btnId){
+    const inp=document.getElementById(id),btn=document.getElementById(btnId);
+    if(inp.type==='password'){inp.type='text';btn.innerHTML='<i data-lucide="eye" style="width:16px;height:16px;"></i>';}
+    else{inp.type='password';btn.innerHTML='<i data-lucide="eye-off" style="width:16px;height:16px;"></i>';}
+    lucide.createIcons();
+  }
+
+  function liveEmail(el){
+    const msg=document.getElementById('emailMsg');
+    msg.classList.remove('show','e','s');
+    if(!el.value) return;
+    if(emailRe.test(el.value.trim())){el.classList.remove('err');el.classList.add('ok');msg.textContent='✅ Valid email';msg.classList.add('show','s');}
+    else{el.classList.remove('ok');el.classList.add('err');msg.textContent='❌ Invalid email';msg.classList.add('show','e');}
+    updateStep();
+  }
+
+  function checkStrength(el){
+    const v=el.value,w=document.getElementById('strWrap'),f=document.getElementById('strFill'),l=document.getElementById('strLbl');
+    if(!v.length){w.classList.remove('show');return;}
+    w.classList.add('show');
+    let sc=0;
+    if(v.length>=8)sc++;if(/[A-Z]/.test(v))sc++;if(/[a-z]/.test(v))sc++;if(/[0-9]/.test(v))sc++;if(/[@#$%^&*!]/.test(v))sc++;
+    const lvls=[{p:'20%',c:'#ef4444',t:'Very Weak'},{p:'40%',c:'#f97316',t:'Weak'},{p:'60%',c:'#eab308',t:'Fair'},{p:'80%',c:'#84cc16',t:'Strong'},{p:'100%',c:'#22c55e',t:'Very Strong'}];
+    const lv=lvls[Math.max(0,sc-1)];
+    f.style.width=lv.p;f.style.background=lv.c;
+    l.textContent='Strength: '+lv.t;l.style.color=lv.c;
+  }
+
+  function updateStep(){
+    const fn=document.getElementById('firstName').value.trim();
+    const ln=document.getElementById('lastName').value.trim();
+    const em=document.getElementById('email').value.trim();
+    const pw=document.getElementById('password').value;
+    const step=fn&&ln?2:1;
+    const step2=step===2&&emailRe.test(em)&&pw.length>=8?3:step;
+    [1,2,3].forEach(i=>{
+      const s=document.getElementById('s'+i);
+      if(i<step2){s.className='step done';s.innerHTML='<i data-lucide="check" style="width:13px;height:13px;"></i>';}
+      else if(i===step2){s.className='step active';s.textContent=i;}
+      else{s.className='step';s.textContent=i;}
+    });
+    if(step2>1) document.getElementById('sl1').classList.add('done'); else document.getElementById('sl1').classList.remove('done');
+    if(step2>2) document.getElementById('sl2').classList.add('done'); else document.getElementById('sl2').classList.remove('done');
+    lucide.createIcons();
+  }
+
+  ['firstName','lastName','password','confirmPwd','age'].forEach(id=>{
+    document.getElementById(id).addEventListener('input',updateStep);
+  });
+
+  function showErr(id,msg){const el=document.getElementById(id);el.textContent=msg;el.classList.add('show');}
+  function clearMsg(id){document.getElementById(id).classList.remove('show');}
+  function setInput(id,state){const el=document.getElementById(id);el.classList.remove('err','ok');if(state)el.classList.add(state);}
+
+  document.getElementById('signupForm').addEventListener('submit', async function(e){
+    e.preventDefault();let ok=true;
+    ['fnErr','lnErr','ageErr','pwdErr','cpErr'].forEach(clearMsg);
+    ['firstName','lastName','age','email','password','confirmPwd'].forEach(id=>setInput(id,null));
+    const fn=document.getElementById('firstName').value.trim();
+    const ln=document.getElementById('lastName').value.trim();
+    const age=parseInt(document.getElementById('age').value);
+    const em=document.getElementById('email').value.trim();
+    const pw=document.getElementById('password').value;
+    const cp=document.getElementById('confirmPwd').value;
+    if(!fn){showErr('fnErr','⚠ First name required');setInput('firstName','err');ok=false;}else setInput('firstName','ok');
+    if(!ln){showErr('lnErr','⚠ Last name required');setInput('lastName','err');ok=false;}else setInput('lastName','ok');
+    if(!age||age<16||age>60){showErr('ageErr','⚠ Age must be 16–60');setInput('age','err');ok=false;}else setInput('age','ok');
+    if(!em||!emailRe.test(em)){setInput('email','err');ok=false;}
+    const pe=[];
+    if(pw.length<8)pe.push('8+ characters');
+    if(!/[A-Z]/.test(pw))pe.push('uppercase');
+    if(!/[0-9]/.test(pw))pe.push('number');
+    if(!/[@#$%^&*!]/.test(pw))pe.push('special char (@#$%^&*!)');
+    if(!pw){showErr('pwdErr','⚠ Password required');setInput('password','err');ok=false;}
+    else if(pe.length){showErr('pwdErr','⚠ Needs: '+pe.join(', '));setInput('password','err');ok=false;}
+    else setInput('password','ok');
+    if(!cp){showErr('cpErr','⚠ Please confirm password');setInput('confirmPwd','err');ok=false;}
+    else if(cp!==pw){showErr('cpErr','⚠ Passwords do not match');setInput('confirmPwd','err');ok=false;}
+    else setInput('confirmPwd','ok');
+    if(ok){
+      const btn = document.querySelector('.btn-submit span') || document.querySelector('[type="submit"]');
+      if(btn) btn.textContent = '⏳ CREATING ACCOUNT...';
+      try {
+        const res = await fetch('http://localhost:3000/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: fn + ' ' + ln, email: em, password: pw })
+        });
+        const data = await res.json();
+        if(res.ok){
+          document.getElementById('successOv').classList.add('show');
+        } else {
+          const msg = data.message || (data.errors && data.errors[0] && data.errors[0].msg) || 'Registration failed.';
+          showErr('fnErr', '⚠ ' + msg);
+          if(btn) btn.textContent = '⚡ CREATE ACCOUNT';
+        }
+      } catch(err) {
+        showErr('fnErr', '⚠ Cannot reach server. Is the backend running?');
+        if(btn) btn.textContent = '⚡ CREATE ACCOUNT';
+      }
+    }
+  });
+</script>
+</body>
+</html>

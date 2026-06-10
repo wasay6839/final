@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tournaments – FIFO 2026</title>
+  <script src="theme.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ── ENHANCED COLOR THEME ── */
+    :root {
+      --gold:       #EAB308;
+      --gold-light: #FDE047;
+      --gold-dark:  #CA8A04;
+      --cyan:       #06B6D4;
+      --cyan-light: #67E8F9;
+      --cyan-dim:   rgba(6,182,212,0.15);
+      --magenta:    #E879F9;
+      --bg:         #05091A;
+      --bg2:        #0A1020;
+      --bg3:        #0E1628;
+      --border:     rgba(6,182,212,0.2);
+      --border-gold:rgba(234,179,8,0.2);
+      --glass:      rgba(6,182,212,0.04);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      font-family: 'Rajdhani', sans-serif;
+      color: #e2e8f0;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* NOISE GRAIN */
+    body::after {
+      content:'';position:fixed;inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events:none;z-index:9998;opacity:0.4;
+    }
+
+    /* ── NAV ── */
+    .glass-nav {
+      background: rgba(5,9,26,0.85);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border-bottom: 1px solid rgba(6,182,212,0.18);
+      box-shadow: 0 4px 40px rgba(6,182,212,0.06), 0 0 0 1px rgba(6,182,212,0.04);
+    }
+    .nav-logo {
+      font-family:'Orbitron',monospace;font-weight:900;font-size:1.9rem;
+      background:linear-gradient(135deg,#06B6D4,#67E8F9,#EAB308);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+      letter-spacing:5px;position:relative;text-decoration:none;
+    }
+    .nav-logo::after {
+      content:'';position:absolute;bottom:-5px;left:0;right:0;height:2px;
+      background:linear-gradient(90deg,transparent,#06B6D4,#EAB308,transparent);
+      animation:shimmer 3s infinite;
+    }
+    @keyframes shimmer { 0%,100%{opacity:.3;}50%{opacity:1;} }
+    .nav-link {
+      font-family:'Rajdhani',sans-serif;font-weight:600;font-size:.9rem;
+      letter-spacing:2.5px;text-transform:uppercase;color:#94a3b8;
+      position:relative;padding-bottom:4px;transition:color .3s;text-decoration:none;
+    }
+    .nav-link::after {
+      content:'';position:absolute;bottom:0;left:0;width:0;height:2px;
+      background:linear-gradient(90deg,#06B6D4,#EAB308);transition:width .3s;
+    }
+    .nav-link:hover { color:#67E8F9; }
+    .nav-link:hover::after,.nav-link.active::after { width:100%; }
+    .nav-link.active { color:#06B6D4; }
+    .mob-menu {
+      display:none;position:fixed;top:72px;left:0;right:0;
+      background:rgba(5,9,26,.98);backdrop-filter:blur(24px);
+      border-bottom:1px solid rgba(6,182,212,0.2);
+      padding:1.5rem 2rem;z-index:999;flex-direction:column;gap:1rem;
+    }
+    .mob-menu.open { display:flex; }
+
+    /* ── PAGE HEADER ── */
+    .page-hdr {
+      padding-top: 130px;
+      padding-bottom: 70px;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hdr::before {
+      content:'';position:absolute;inset:0;
+      background-image:
+        linear-gradient(rgba(6,182,212,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(6,182,212,0.05) 1px, transparent 1px);
+      background-size: 55px 55px;
+    }
+    .hdr-bg {
+      position:absolute;inset:0;
+      background-image:url('https://images.unsplash.com/photo-1522778526097-ce0a22ceb253?w=1920&q=60');
+      background-size:cover;background-position:center;opacity:.08;
+    }
+    .hdr-grad {
+      position:absolute;inset:0;
+      background:linear-gradient(180deg,rgba(5,9,26,.1) 0%,rgba(5,9,26,1) 100%);
+    }
+    .hdr-word {
+      position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+      font-family:'Bebas Neue',cursive;font-size:18vw;
+      color:rgba(6,182,212,0.04);pointer-events:none;white-space:nowrap;letter-spacing:10px;
+    }
+    /* Animated floating orbs */
+    .hdr-orb1 {
+      position:absolute;width:500px;height:500px;border-radius:50%;top:-100px;right:-100px;
+      background:radial-gradient(circle,rgba(6,182,212,0.06),transparent 70%);
+      animation:orbFloat1 8s ease-in-out infinite;pointer-events:none;
+    }
+    .hdr-orb2 {
+      position:absolute;width:400px;height:400px;border-radius:50%;bottom:-50px;left:-80px;
+      background:radial-gradient(circle,rgba(234,179,8,0.05),transparent 70%);
+      animation:orbFloat2 10s ease-in-out infinite;pointer-events:none;
+    }
+    @keyframes orbFloat1{0%,100%{transform:translate(0,0);}50%{transform:translate(-30px,20px);}}
+    @keyframes orbFloat2{0%,100%{transform:translate(0,0);}50%{transform:translate(20px,-25px);}}
+
+    .section-label {
+      font-family:'Orbitron',monospace;font-size:.68rem;letter-spacing:5px;
+      color:#06B6D4;text-transform:uppercase;margin-bottom:.8rem;
+      display:flex;align-items:center;gap:1rem;
+    }
+    .section-label::before { content:'';width:40px;height:2px;background:linear-gradient(90deg,#06B6D4,#67E8F9); }
+    .section-title {
+      font-family:'Bebas Neue',cursive;font-size:clamp(2.8rem,5.5vw,4.5rem);
+      letter-spacing:2px;color:#f1f5f9;line-height:.95;
+    }
+
+    /* ── FILTER BAR (tournament version) ── */
+    .tourn-filter-bar {
+      display:flex;flex-wrap:wrap;gap:1rem;align-items:center;
+      background:rgba(10,16,32,0.9);
+      border:1px solid rgba(6,182,212,0.2);
+      border-radius:14px;padding:1.25rem 1.5rem;
+      backdrop-filter:blur(20px);
+      margin-bottom:2.5rem;
+      position:sticky;top:80px;z-index:40;
+      box-shadow:0 8px 40px rgba(0,0,0,0.5),0 0 0 1px rgba(6,182,212,0.05);
+    }
+    .tourn-filter-bar::before {
+      content:'';position:absolute;top:0;left:0;right:0;height:2px;
+      background:linear-gradient(90deg,transparent,#06B6D4,#EAB308,transparent);
+      border-radius:14px 14px 0 0;opacity:.6;
+    }
+    .t-search-wrap { position:relative;flex:1;min-width:220px; }
+    .t-search-icon {
+      position:absolute;left:14px;top:50%;transform:translateY(-50%);
+      color:#475569;pointer-events:none;transition:color .3s;
+    }
+    .t-search-wrap:focus-within .t-search-icon { color:#06B6D4; }
+    .t-search {
+      width:100%;background:rgba(255,255,255,0.04);
+      border:1px solid rgba(6,182,212,0.2);border-radius:9px;
+      padding:12px 18px 12px 42px;color:#e2e8f0;
+      font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:500;
+      outline:none;transition:all .3s;
+    }
+    .t-search:focus {
+      border-color:#06B6D4;background:rgba(6,182,212,0.06);
+      box-shadow:0 0 0 3px rgba(6,182,212,0.12);
+    }
+    .t-search::placeholder { color:#334155; }
+    .t-select {
+      background:rgba(255,255,255,0.04);border:1px solid rgba(6,182,212,0.2);
+      border-radius:9px;padding:12px 38px 12px 16px;color:#94a3b8;
+      font-family:'Orbitron',monospace;font-size:.62rem;font-weight:700;letter-spacing:1.5px;
+      outline:none;cursor:pointer;transition:all .3s;
+      appearance:none;-webkit-appearance:none;min-width:160px;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2306B6D4' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;background-position:right 12px center;
+      background-color:rgba(255,255,255,0.04);
+    }
+    .t-select:focus,.t-select:hover {
+      border-color:rgba(6,182,212,0.5);color:#06B6D4;
+      background-color:rgba(6,182,212,0.06);
+    }
+    .t-select option { background:#0A1020;color:#e2e8f0; }
+    .t-count {
+      font-family:'Orbitron',monospace;font-size:.62rem;letter-spacing:2px;
+      color:#475569;white-space:nowrap;margin-left:auto;
+    }
+    .t-count span { color:#06B6D4;font-size:1.1rem;font-weight:900; }
+
+    /* VIEW TOGGLE */
+    .view-toggle {
+      display:flex;gap:.3rem;background:rgba(255,255,255,0.04);
+      border:1px solid rgba(6,182,212,0.15);border-radius:8px;padding:4px;
+    }
+    .vt-btn {
+      width:34px;height:34px;border-radius:6px;border:none;cursor:pointer;
+      background:transparent;color:#475569;display:flex;align-items:center;justify-content:center;
+      transition:all .3s;
+    }
+    .vt-btn.active { background:rgba(6,182,212,0.15);color:#06B6D4; }
+    .vt-btn:hover:not(.active) { background:rgba(255,255,255,0.06);color:#94a3b8; }
+
+    /* ── TOURNAMENTS GRID ── */
+    .tournaments-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+      gap:2rem;
+      perspective:1200px;
+    }
+    .tournaments-grid.list-view {
+      grid-template-columns:1fr;
+    }
+
+    /* ── TOURNAMENT CARD SCENE (flip like player cards) ── */
+    .tourn-scene {
+      height: 420px;
+      perspective: 1000px;
+    }
+    .tournaments-grid.list-view .tourn-scene {
+      height: 140px;
+    }
+    .tourn-flipper {
+      position:relative;width:100%;height:100%;
+      transition:transform 0.75s cubic-bezier(0.23,1,0.32,1);
+      transform-style:preserve-3d;
+    }
+    .tourn-scene:hover .tourn-flipper { transform:rotateY(180deg); }
+
+    /* FLIP-IN spawn animation */
+    @keyframes tournFlipIn {
+      0%   { opacity:0;transform:rotateY(-90deg) scale(.85); }
+      60%  { transform:rotateY(12deg) scale(1.02); }
+      80%  { transform:rotateY(-5deg) scale(.99); }
+      100% { opacity:1;transform:rotateY(0deg) scale(1); }
+    }
+    .tourn-scene.flip-in {
+      animation:tournFlipIn 0.65s cubic-bezier(0.23,1,0.32,1) both;
+      animation-delay:calc(var(--i,0) * 0.07s);
+    }
+
+    .tourn-front, .tourn-back {
+      position:absolute;inset:0;backface-visibility:hidden;
+      -webkit-backface-visibility:hidden;border-radius:20px;overflow:hidden;
+    }
+    .tourn-back { transform:rotateY(180deg); }
+
+    /* ── FRONT FACE ── */
+    .tourn-front {
+      background:rgba(10,16,32,0.96);
+      border:1px solid rgba(6,182,212,0.18);
+      display:flex;flex-direction:column;
+      box-shadow:0 20px 60px rgba(0,0,0,0.6);
+      transition:border-color .3s,box-shadow .3s;
+    }
+    .tourn-scene:hover .tourn-front {
+      border-color:rgba(6,182,212,0.5);
+    }
+
+    /* FEATURED/MEGA card variant */
+    .tourn-scene.featured .tourn-front {
+      border-color:rgba(234,179,8,0.5);
+      box-shadow:
+        0 0 0 2px rgba(234,179,8,0.25),
+        0 0 40px rgba(234,179,8,0.2),
+        0 20px 60px rgba(0,0,0,0.6);
+      animation:megaPulse 3s ease-in-out infinite;
+    }
+    @keyframes megaPulse {
+      0%,100%{ box-shadow:0 0 0 2px rgba(234,179,8,.25),0 0 40px rgba(234,179,8,.2),0 20px 60px rgba(0,0,0,.6); }
+      50%    { box-shadow:0 0 0 3px rgba(234,179,8,.5),0 0 60px rgba(234,179,8,.35),0 20px 60px rgba(0,0,0,.6); }
+    }
+    .tourn-scene.featured .tourn-front::after {
+      content:'⭐ FEATURED';position:absolute;top:14px;right:14px;
+      font-family:'Orbitron',monospace;font-size:.52rem;letter-spacing:2px;
+      background:linear-gradient(135deg,#EAB308,#FDE047);color:#080E1C;
+      font-weight:900;padding:4px 10px;border-radius:3px;z-index:5;
+      animation:badgePop 2s ease-in-out infinite;
+    }
+    @keyframes badgePop {
+      0%,100%{filter:brightness(1) drop-shadow(0 0 6px rgba(234,179,8,.8));}
+      50%{filter:brightness(1.2) drop-shadow(0 0 14px rgba(234,179,8,1));}
+    }
+
+    /* Card image */
+    .tourn-img-wrap { position:relative;height:200px;overflow:hidden;flex-shrink:0; }
+    .tournaments-grid.list-view .tourn-img-wrap { height:140px;width:180px;flex-shrink:0; }
+    .tourn-img {
+      width:100%;height:100%;object-fit:cover;object-position:center;
+      transition:transform .7s ease;display:block;
+    }
+    .tourn-scene:hover .tourn-img { transform:scale(1.08); }
+    .tourn-img-overlay {
+      position:absolute;inset:0;
+      background:linear-gradient(to bottom,rgba(5,9,26,.1) 30%,rgba(5,9,26,.65) 70%,rgba(5,9,26,1) 100%);
+    }
+
+    /* Status badge */
+    .tourn-status {
+      position:absolute;top:14px;left:14px;
+      font-family:'Orbitron',monospace;font-size:.56rem;letter-spacing:2px;
+      padding:4px 10px;border-radius:4px;font-weight:700;text-transform:uppercase;z-index:3;
+    }
+    .status-live {
+      background:rgba(239,68,68,.2);border:1px solid rgba(239,68,68,.5);color:#f87171;
+      animation:livePulse 1.5s infinite;
+    }
+    @keyframes livePulse{0%,100%{opacity:1;}50%{opacity:.5;}}
+    .status-upcoming { background:rgba(6,182,212,.15);border:1px solid rgba(6,182,212,.4);color:#67E8F9; }
+    .status-completed { background:rgba(71,85,105,.3);border:1px solid rgba(71,85,105,.4);color:#64748b; }
+    .status-qualifying { background:rgba(234,179,8,.12);border:1px solid rgba(234,179,8,.35);color:#EAB308; }
+
+    /* Prize tag */
+    .tourn-prize {
+      position:absolute;bottom:14px;right:14px;
+      font-family:'Orbitron',monospace;font-size:.65rem;letter-spacing:1.5px;
+      background:rgba(5,9,26,.85);border:1px solid rgba(234,179,8,.35);
+      color:#EAB308;padding:4px 10px;border-radius:5px;backdrop-filter:blur(8px);
+      font-weight:700;z-index:3;
+    }
+
+    /* Card body */
+    .tourn-body { padding:1rem 1.2rem 1.2rem;flex:1;display:flex;flex-direction:column; }
+    .tourn-type-tag {
+      display:inline-block;font-family:'Orbitron',monospace;font-size:.56rem;
+      letter-spacing:2.5px;color:#06B6D4;text-transform:uppercase;margin-bottom:.35rem;
+    }
+    .tourn-name {
+      font-family:'Bebas Neue',cursive;font-size:1.55rem;letter-spacing:2px;
+      color:#fff;line-height:1;margin-bottom:.5rem;
+    }
+    .tourn-stadium-row {
+      display:flex;align-items:center;gap:.45rem;margin-bottom:.6rem;
+    }
+    .tourn-stadium-text { font-size:.8rem;color:#64748b;letter-spacing:.8px; }
+    .tourn-stats-row {
+      display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-top:auto;
+    }
+    .tourn-stat {
+      background:rgba(6,182,212,.05);border:1px solid rgba(6,182,212,.1);
+      border-radius:8px;padding:.5rem .4rem;text-align:center;
+    }
+    .tourn-stat-val {
+      font-family:'Orbitron',monospace;font-size:.88rem;font-weight:900;color:#67E8F9;line-height:1;
+    }
+    .tourn-stat-lbl { font-size:.58rem;letter-spacing:1.5px;color:#475569;text-transform:uppercase;margin-top:2px; }
+    .tourn-flip-hint {
+      text-align:center;font-family:'Orbitron',monospace;font-size:.5rem;
+      letter-spacing:2px;color:#1e293b;margin-top:.6rem;padding-top:.6rem;
+      border-top:1px solid rgba(255,255,255,.04);
+    }
+
+    /* ── BACK FACE ── */
+    .tourn-back {
+      background:linear-gradient(135deg,rgba(10,16,32,.98),rgba(5,9,26,.98));
+      border:1px solid rgba(6,182,212,.25);
+      padding:1.4rem;display:flex;flex-direction:column;gap:.7rem;
+    }
+    .tourn-back-header { border-bottom:1px solid rgba(6,182,212,.12);padding-bottom:.8rem;margin-bottom:.2rem; }
+    .tourn-back-name {
+      font-family:'Bebas Neue',cursive;font-size:1.7rem;letter-spacing:3px;
+      color:#fff;line-height:1;
+    }
+    .tourn-back-sub { font-size:.75rem;color:#06B6D4;letter-spacing:1.5px;margin-top:2px; }
+    .back-row {
+      display:flex;align-items:center;justify-content:space-between;
+      padding:.4rem .6rem;background:rgba(6,182,212,.04);border-radius:8px;
+      border-left:3px solid rgba(6,182,212,.3);transition:all .2s;
+    }
+    .back-row:hover { background:rgba(6,182,212,.08);border-left-color:#06B6D4; }
+    .back-row-key {
+      font-family:'Orbitron',monospace;font-size:.56rem;letter-spacing:2px;
+      color:#475569;text-transform:uppercase;
+    }
+    .back-row-val { font-family:'Orbitron',monospace;font-size:.78rem;font-weight:700;color:#06B6D4; }
+    .back-row-val.gold { color:#EAB308; }
+    /* Stat bars on back */
+    .back-bar-wrap { margin-top:2px; }
+    .back-bar-label {
+      display:flex;justify-content:space-between;font-size:.58rem;
+      color:#475569;margin-bottom:4px;font-family:'Orbitron',monospace;letter-spacing:1px;
+    }
+    .back-bar { height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden; }
+    .back-bar-fill {
+      height:100%;
+      background:linear-gradient(90deg,#06B6D4,#67E8F9);
+      border-radius:3px;transition:width 1s ease;
+    }
+    .back-bar-fill.gold { background:linear-gradient(90deg,#CA8A04,#EAB308,#FDE047); }
+
+    /* ── LIST VIEW CARD ── */
+    .tournaments-grid.list-view .tourn-scene {
+      height:130px;
+    }
+    .tourn-list-card {
+      display:flex;flex-direction:row;height:130px;border-radius:14px;overflow:hidden;
+      background:rgba(10,16,32,.95);border:1px solid rgba(6,182,212,.15);
+      transition:all .3s;
+    }
+    .tourn-list-card:hover {
+      border-color:rgba(6,182,212,.4);
+      box-shadow:0 8px 40px rgba(6,182,212,.1);transform:translateX(6px);
+    }
+    .tourn-list-img { width:160px;height:100%;object-fit:cover;flex-shrink:0; }
+    .tourn-list-body {
+      padding:.9rem 1.2rem;flex:1;display:flex;align-items:center;gap:1.5rem;
+    }
+    .tourn-list-info { flex:1; }
+    .tourn-list-name {
+      font-family:'Bebas Neue',cursive;font-size:1.35rem;letter-spacing:2px;color:#fff;line-height:1;
+    }
+    .tourn-list-meta { font-size:.78rem;color:#475569;letter-spacing:.8px;margin-top:3px; }
+    .tourn-list-stats { display:flex;gap:1.2rem; }
+    .tourn-list-stat { text-align:center; }
+    .tourn-list-stat-val { font-family:'Orbitron',monospace;font-size:.9rem;font-weight:900;color:#67E8F9; }
+    .tourn-list-stat-lbl { font-size:.58rem;letter-spacing:1.5px;color:#475569;text-transform:uppercase; }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      grid-column:1/-1;text-align:center;padding:5rem 2rem;
+    }
+    .empty-state-icon { font-size:4rem;margin-bottom:1rem;opacity:.3; }
+    .empty-state-title {
+      font-family:'Bebas Neue',cursive;font-size:2rem;letter-spacing:3px;color:#334155;margin-bottom:.5rem;
+    }
+    .empty-state-sub { color:#1e293b;font-size:.9rem;letter-spacing:1.5px; }
+
+    /* ── FEATURED HERO BANNER ── */
+    .hero-banner {
+      position:relative;border-radius:24px;overflow:hidden;
+      border:1px solid rgba(234,179,8,.3);margin-bottom:2.5rem;
+      box-shadow:0 0 0 1px rgba(234,179,8,.1),0 30px 80px rgba(0,0,0,.7);
+    }
+    .hero-banner-img {
+      width:100%;height:320px;object-fit:cover;display:block;
+      filter:brightness(.7);
+    }
+    .hero-banner-ov {
+      position:absolute;inset:0;
+      background:linear-gradient(135deg,rgba(5,9,26,.92) 0%,rgba(5,9,26,.5) 60%,rgba(100,70,0,.2) 100%);
+    }
+    .hero-banner-content {
+      position:absolute;inset:0;display:flex;align-items:center;padding:2.5rem 3rem;
+    }
+    .hb-badge {
+      display:inline-flex;align-items:center;gap:.4rem;
+      background:rgba(234,179,8,.12);border:1px solid rgba(234,179,8,.4);
+      color:#EAB308;font-family:'Orbitron',monospace;font-size:.6rem;
+      letter-spacing:3px;padding:5px 14px;border-radius:3px;margin-bottom:1rem;
+    }
+    .hb-title {
+      font-family:'Bebas Neue',cursive;font-size:clamp(2.5rem,5vw,3.8rem);
+      letter-spacing:3px;color:#fff;line-height:.95;margin-bottom:.8rem;
+    }
+    .hb-title span { color:#EAB308;filter:drop-shadow(0 0 20px rgba(234,179,8,.5)); }
+    .hb-meta { display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem; }
+    .hb-meta-item {
+      display:flex;align-items:center;gap:.4rem;
+      font-size:.82rem;color:#94a3b8;letter-spacing:1px;
+    }
+    .hb-stats { display:flex;gap:2rem; }
+    .hb-stat { text-align:center; }
+    .hb-stat-val {
+      font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:900;
+      color:#EAB308;filter:drop-shadow(0 0 10px rgba(234,179,8,.4));line-height:1;
+    }
+    .hb-stat-lbl { font-size:.6rem;letter-spacing:2px;color:#475569;text-transform:uppercase; }
+    .hb-cta {
+      display:inline-flex;align-items:center;gap:.5rem;
+      background:linear-gradient(135deg,#EAB308,#CA8A04);color:#080E1C;
+      font-family:'Orbitron',monospace;font-weight:700;font-size:.72rem;
+      letter-spacing:2px;padding:12px 28px;border-radius:6px;text-decoration:none;
+      transition:all .3s;position:relative;overflow:hidden;
+    }
+    .hb-cta:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(234,179,8,.5);}
+
+    /* ── SECTION HEADERS ── */
+    .sub-header {
+      display:flex;align-items:center;justify-content:space-between;
+      margin-bottom:1.5rem;
+    }
+    .sub-header-title {
+      font-family:'Bebas Neue',cursive;font-size:1.8rem;letter-spacing:3px;color:#f1f5f9;
+    }
+    .sub-header-title span { color:#06B6D4; }
+
+    /* ── DIVIDER ── */
+    .gd { height:1px;background:linear-gradient(90deg,transparent,rgba(6,182,212,.25),rgba(234,179,8,.15),transparent); }
+
+    /* ── FOOTER ── */
+    .footer { background:rgba(3,5,14,.98);border-top:1px solid rgba(6,182,212,.1);padding:3.5rem 2rem; }
+    .si {
+      width:42px;height:42px;background:rgba(255,255,255,.04);
+      border:1px solid rgba(6,182,212,.15);border-radius:8px;
+      display:flex;align-items:center;justify-content:center;
+      color:#475569;text-decoration:none;transition:all .3s;
+    }
+    .si:hover { background:rgba(6,182,212,.1);border-color:rgba(6,182,212,.5);color:#06B6D4;transform:translateY(-4px); }
+
+    /* ANIMATIONS */
+    .fade-in { opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease; }
+    .fade-in.visible { opacity:1;transform:translateY(0); }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);} }
+
+    ::-webkit-scrollbar{width:5px;}
+    ::-webkit-scrollbar-track{background:var(--bg);}
+    ::-webkit-scrollbar-thumb{background:rgba(6,182,212,.3);border-radius:3px;}
+  
+    /* ── THEME VARIABLE CONSUMERS (shared) ── */
+    body{background:var(--bg)!important;color:var(--text-secondary)!important;}
+    .glass-nav{background:var(--bg-nav)!important;border-bottom:1px solid var(--border)!important;box-shadow:var(--shadow-nav)!important;}
+    .nav-link{color:var(--text-muted)!important;}
+    .nav-link:hover,.nav-link.active{color:var(--cyan)!important;}
+    .nav-link::after,.nav-link:hover::after,.nav-link.active::after{background:linear-gradient(90deg,var(--cyan),var(--gold))!important;}
+    .mob-menu{background:var(--bg-mob-menu)!important;border-color:var(--border)!important;}
+    .gd{background:linear-gradient(90deg,transparent,var(--border),transparent)!important;}
+    ::-webkit-scrollbar-track{background:var(--bg)!important;}
+    ::-webkit-scrollbar-thumb{background:var(--scrollbar-thumb)!important;}
+    /* Light mode body background override */
+    :root:not([data-theme="dark"]) body,
+    html:not([data-theme="dark"]) body{
+      background:var(--bg)!important;
+    }
+
+  
+    /* ── LIGHT MODE SECTION OVERRIDES ── */
+    :root body,.glass-nav{transition:background-color .3s ease,border-color .3s ease,box-shadow .3s ease;}
+    /* Cards / panels */
+    [data-theme]:not([data-theme="dark"]) .h-card,
+    html:not([data-theme="dark"]) .h-card{background:rgba(255,255,255,0.9)!important;border-color:var(--border-card)!important;box-shadow:0 4px 20px rgba(0,0,0,0.08)!important;}
+    html:not([data-theme="dark"]) .stat-item::after{background:linear-gradient(to bottom,transparent,var(--border),transparent)!important;}
+    html:not([data-theme="dark"]) .stats-bar{background:linear-gradient(90deg,rgba(240,244,248,.98),rgba(230,240,252,.95),rgba(240,244,248,.98))!important;border-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .stat-num{color:var(--gold)!important;}
+    html:not([data-theme="dark"]) .stat-lbl{color:var(--text-muted)!important;}
+    html:not([data-theme="dark"]) .cd-item{background:rgba(255,255,255,0.9)!important;border-color:var(--border-card)!important;}
+    html:not([data-theme="dark"]) .cd-num{color:var(--gold)!important;}
+    html:not([data-theme="dark"]) .cd-unit{color:var(--text-muted)!important;}
+    html:not([data-theme="dark"]) .footer{background:rgba(224,234,248,.98)!important;border-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .section-title{color:var(--text-primary)!important;}
+    html:not([data-theme="dark"]) .feature-row{background:rgba(6,182,212,0.04)!important;border-left-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .feature-row:hover{background:rgba(6,182,212,0.10)!important;border-left-color:var(--cyan)!important;}
+    html:not([data-theme="dark"]) .h-tag{background:rgba(202,138,4,0.10)!important;border-color:var(--border-gold)!important;color:var(--gold)!important;}
+    html:not([data-theme="dark"]) .hero-overlay{background:linear-gradient(135deg,rgba(240,244,248,0.88) 0%,rgba(215,232,250,0.72) 50%,rgba(180,210,248,0.28) 100%)!important;}
+    html:not([data-theme="dark"]) .si{background:rgba(0,0,0,0.04)!important;border-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .si:hover{background:rgba(6,182,212,0.12)!important;}
+    html:not([data-theme="dark"]) .hero-title{color:var(--text-primary)!important;text-shadow:0 0 60px rgba(6,182,212,0.15)!important;}
+    html:not([data-theme="dark"]) .hero-sub{color:var(--text-muted)!important;}
+
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="glass-nav fixed top-0 left-0 right-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between" style="height:72px;">
+      <a href="index.html" class="nav-logo">FIFO</a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="schedule.html" class="nav-link">Schedule</a>
+        <a href="players.html" class="nav-link">Players</a>
+        <a href="tournaments.html" class="nav-link active">Tournaments</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="register.html" class="nav-link">Register</a>
+        <a href="admin.html" class="nav-link">Admin</a>
+      </div>
+      <a href="register.html" style="font-family:'Orbitron',monospace;font-size:.72rem;letter-spacing:2px;background:linear-gradient(135deg,#06B6D4,#0891B2);color:#fff;font-weight:700;padding:9px 22px;border-radius:4px;text-decoration:none;transition:all .3s;box-shadow:0 0 20px rgba(6,182,212,.25);" onmouseover="this.style.boxShadow='0 8px 30px rgba(6,182,212,0.6)'" onmouseout="this.style.boxShadow='0 0 20px rgba(6,182,212,.25)'">REGISTER</a>
+      <button
+        id="theme-toggle"
+        class="theme-toggle-btn hidden md:inline-flex"
+        aria-label="Switch to Light Mode"
+        aria-pressed="false"
+        title="Toggle dark / light mode"
+      >
+        <span class="toggle-track"></span>
+        <i data-lucide="sun" class="theme-icon"></i>
+        <span class="theme-label">LIGHT</span>
+      </button>
+      <button onclick="toggleMenu()" class="md:hidden text-slate-400 hover:text-cyan-400 transition-colors">
+        <i data-lucide="menu" id="menu-icon" style="width:24px;height:24px;"></i>
+      </button>
+    </div>
+  </div>
+  <div class="mob-menu" id="mobile-menu">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="schedule.html" class="nav-link">Schedule</a>
+    <a href="players.html" class="nav-link">Players</a>
+    <a href="tournaments.html" class="nav-link active">Tournaments</a>
+    <a href="contact.html" class="nav-link">Contact</a>
+    <a href="register.html" class="nav-link">Register</a>
+    <a href="admin.html" class="nav-link">Admin</a>
+    <a href="register.html" style="font-family:'Orbitron',monospace;font-size:.7rem;letter-spacing:2px;background:linear-gradient(135deg,#06B6D4,#0891B2);color:#fff;font-weight:700;padding:10px 20px;border-radius:4px;text-decoration:none;text-align:center;margin-top:.5rem;">REGISTER NOW</a>
+      <button
+      id="theme-toggle-mobile"
+      class="theme-toggle-btn"
+      style="margin-top:.5rem;width:100%;justify-content:center;"
+      aria-label="Switch to Light Mode"
+      aria-pressed="false"
+      onclick="FIFO_Theme.toggle()"
+    >
+      <span class="toggle-track"></span>
+      <i data-lucide="sun" class="theme-icon"></i>
+      <span class="theme-label">LIGHT MODE</span>
+    </button>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-hdr">
+  <div class="hdr-bg"></div>
+  <div class="hdr-grad"></div>
+  <div class="hdr-orb1"></div>
+  <div class="hdr-orb2"></div>
+  <div class="hdr-word">TOURNAMENTS</div>
+  <div id="hdr-particles" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;"></div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="section-label fade-in">
+      <i data-lucide="trophy" style="width:14px;height:14px;"></i> OFFICIAL COMPETITIONS
+    </div>
+    <h1 class="section-title fade-in" style="transition-delay:.1s;">
+      World Tournaments<br/>
+      <span style="background:linear-gradient(135deg,#06B6D4,#67E8F9,#EAB308);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">& Championships</span>
+    </h1>
+    <p style="color:#475569;font-size:.88rem;letter-spacing:2px;text-transform:uppercase;margin-top:.8rem;" class="fade-in">
+      Hover cards to flip &nbsp;·&nbsp; ⭐ Featured = FIFO Grand Slam
+    </p>
+  </div>
+</div>
+
+<div class="gd"></div>
+
+<!-- MAIN -->
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+  <!-- FEATURED HERO BANNER -->
+  <div class="hero-banner fade-in">
+    <img class="hero-banner-img" src="https://images.unsplash.com/photo-1577223625816-7546f13df25d?w=1600&q=80" alt="FIFO Grand Final"/>
+    <div class="hero-banner-ov"></div>
+    <div class="hero-banner-content">
+      <div style="max-width:600px;">
+        <div class="hb-badge">
+          <i data-lucide="star" style="width:10px;height:10px;"></i> FLAGSHIP TOURNAMENT
+        </div>
+        <h2 class="hb-title">FIFO World <span>Championship</span></h2>
+        <div class="hb-meta">
+          <div class="hb-meta-item">
+            <i data-lucide="map-pin" style="width:13px;height:13px;color:#EAB308;"></i>
+            Maracanã · Rio de Janeiro, Brazil
+          </div>
+          <div class="hb-meta-item">
+            <i data-lucide="calendar" style="width:13px;height:13px;color:#06B6D4;"></i>
+            March – June 2026
+          </div>
+        </div>
+        <div class="hb-stats" style="margin-bottom:1.5rem;">
+          <div class="hb-stat"><div class="hb-stat-val">32</div><div class="hb-stat-lbl">Teams</div></div>
+          <div class="hb-stat"><div class="hb-stat-val">64</div><div class="hb-stat-lbl">Matches</div></div>
+          <div class="hb-stat"><div class="hb-stat-val">$5M</div><div class="hb-stat-lbl">Prize</div></div>
+          <div class="hb-stat"><div class="hb-stat-val">2B+</div><div class="hb-stat-lbl">Viewers</div></div>
+        </div>
+        <a href="schedule.html" class="hb-cta">
+          <i data-lucide="calendar" style="width:14px;height:14px;"></i> View Schedule
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="tourn-filter-bar fade-in" style="position:relative;">
+    <div class="t-search-wrap">
+      <i data-lucide="search" class="t-search-icon" style="width:16px;height:16px;"></i>
+      <input id="tournSearch" class="t-search" type="text" placeholder="Search tournament name…" autocomplete="off"/>
+    </div>
+    <select id="regionFilter" class="t-select">
+      <option value="all">ALL REGIONS</option>
+    </select>
+    <select id="statusFilter" class="t-select">
+      <option value="all">ANY STATUS</option>
+      <option value="live">LIVE NOW</option>
+      <option value="upcoming">UPCOMING</option>
+      <option value="qualifying">QUALIFYING</option>
+      <option value="completed">COMPLETED</option>
+    </select>
+    <select id="typeFilter" class="t-select">
+      <option value="all">ALL TYPES</option>
+      <option value="World Cup">World Cup</option>
+      <option value="Continental">Continental</option>
+      <option value="Club">Club</option>
+      <option value="Youth">Youth</option>
+    </select>
+    <div class="t-count"><span id="tournCount">0</span> TOURNAMENTS</div>
+    <div class="view-toggle">
+      <button class="vt-btn active" id="gridBtn" onclick="setView('grid')" title="Grid View">
+        <i data-lucide="grid-3x3" style="width:15px;height:15px;"></i>
+      </button>
+      <button class="vt-btn" id="listBtn" onclick="setView('list')" title="List View">
+        <i data-lucide="list" style="width:15px;height:15px;"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- SECTION: LIVE & UPCOMING -->
+  <div class="sub-header fade-in">
+    <h2 class="sub-header-title">Active <span>Competitions</span></h2>
+    <span style="font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:2px;color:#475569;">SEASON 2025–2026</span>
+  </div>
+
+  <!-- GRID -->
+  <div id="tournamentsGrid" class="tournaments-grid">
+    <div style="grid-column:1/-1;text-align:center;padding:4rem;color:#334155;font-family:'Orbitron',monospace;font-size:.7rem;letter-spacing:3px;">
+      LOADING TOURNAMENT DATA…
+    </div>
+  </div>
+
+</main>
+
+<div class="gd"></div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="max-w-6xl mx-auto text-center">
+    <div style="font-family:'Orbitron',monospace;font-weight:900;font-size:1.7rem;background:linear-gradient(135deg,#06B6D4,#67E8F9,#EAB308);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:5px;margin-bottom:.4rem;">FIFO</div>
+    <p style="color:#1e293b;font-size:.82rem;letter-spacing:1px;margin-bottom:1.8rem;">Football International Federation Organization</p>
+    <div style="display:flex;justify-content:center;gap:.75rem;margin-bottom:2rem;">
+      <a href="#" class="si"><i data-lucide="twitter" style="width:16px;height:16px;"></i></a>
+      <a href="#" class="si"><i data-lucide="instagram" style="width:16px;height:16px;"></i></a>
+      <a href="#" class="si"><i data-lucide="facebook" style="width:16px;height:16px;"></i></a>
+      <a href="#" class="si"><i data-lucide="youtube" style="width:16px;height:16px;"></i></a>
+    </div>
+    <div style="display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-bottom:2rem;">
+      <a href="index.html"       style="color:#475569;font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:color .3s;" onmouseover="this.style.color='#06B6D4'" onmouseout="this.style.color='#475569'">Home</a>
+      <a href="schedule.html"    style="color:#475569;font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:color .3s;" onmouseover="this.style.color='#06B6D4'" onmouseout="this.style.color='#475569'">Schedule</a>
+      <a href="players.html"     style="color:#475569;font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:color .3s;" onmouseover="this.style.color='#06B6D4'" onmouseout="this.style.color='#475569'">Players</a>
+      <a href="tournaments.html" style="color:#06B6D4;font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;">Tournaments</a>
+      <a href="contact.html"     style="color:#475569;font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:color .3s;" onmouseover="this.style.color='#06B6D4'" onmouseout="this.style.color='#475569'">Contact</a>
+    </div>
+    <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(6,182,212,.2),rgba(234,179,8,.1),transparent);margin-bottom:1.5rem;"></div>
+    <p style="color:#0c1524;font-size:.78rem;letter-spacing:1px;">&copy; 2026 FIFO – Football International Federation Organization. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+lucide.createIcons();
+
+// ── PARTICLES ──
+const hdrPc = document.getElementById('hdr-particles');
+for(let i=0;i<24;i++){
+  const p=document.createElement('div');
+  const s=Math.random()*2.5+1;
+  const isCyan = Math.random()>0.5;
+  p.style.cssText=`position:absolute;border-radius:50%;width:${s}px;height:${s}px;background:${isCyan?'#06B6D4':'#EAB308'};left:${Math.random()*100}%;top:${Math.random()*100}%;opacity:${Math.random()*.3+.05};animation:ptw ${Math.random()*5+3}s infinite ${Math.random()*4}s;`;
+  hdrPc.appendChild(p);
+}
+const ps=document.createElement('style');
+ps.textContent='@keyframes ptw{0%,100%{opacity:.05;transform:scale(1);}50%{opacity:.6;transform:scale(1.8);}}';
+document.head.appendChild(ps);
+
+// ── FADE IN OBSERVER ──
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.1});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+// ── MOBILE MENU ──
+function toggleMenu(){const m=document.getElementById('mobile-menu'),i=document.getElementById('menu-icon');m.classList.toggle('open');i.setAttribute('data-lucide',m.classList.contains('open')?'x':'menu');lucide.createIcons();}
+
+// ── VIEW TOGGLE ──
+let currentView = 'grid';
+function setView(v){
+  currentView=v;
+  const grid=document.getElementById('tournamentsGrid');
+  document.getElementById('gridBtn').classList.toggle('active',v==='grid');
+  document.getElementById('listBtn').classList.toggle('active',v==='list');
+  grid.classList.toggle('list-view',v==='list');
+  renderTournaments(allTournaments);
+}
+
+// ── TOURNAMENT DATA ──
+const SEED_TOURNAMENTS = [
+  {
+    id:1, name:'FIFO World Championship', short:'FWC',
+    type:'World Cup', region:'Global', status:'live',
+    featured:true,
+    img:'https://images.unsplash.com/photo-1577223625816-7546f13df25d?w=600&q=80',
+    stadium:'Estádio do Maracanã', city:'Rio de Janeiro', country:'Brazil',
+    homeTeam:'Brazil', capacity:78838,
+    startDate:'March 2026', endDate:'June 2026',
+    teams:32, matches:64, prize:'$5,000,000',
+    prizeShort:'$5M',
+    edition:'26th', founded:'1998',
+    avgAttendance:72000, tvReach:'180+ countries',
+    stats:{ prestige:100, competition:98, history:95, spectacle:97 }
+  },
+  {
+    id:2, name:'UEFA Champions League', short:'UCL',
+    type:'Club', region:'Europe', status:'live',
+    featured:false,
+    img:'https://images.unsplash.com/photo-1521537634581-0dced2fee2ef?w=600&q=80',
+    stadium:'Wembley Stadium', city:'London', country:'England',
+    homeTeam:'England NT', capacity:90000,
+    startDate:'Sept 2025', endDate:'May 2026',
+    teams:36, matches:189, prize:'$2,000,000',
+    prizeShort:'$2M',
+    edition:'70th', founded:'1955',
+    avgAttendance:65000, tvReach:'200+ countries',
+    stats:{ prestige:96, competition:95, history:99, spectacle:94 }
+  },
+  {
+    id:3, name:'Copa América Elite', short:'CA',
+    type:'Continental', region:'South America', status:'upcoming',
+    featured:false,
+    img:'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=600&q=80',
+    stadium:'Estadio Monumental', city:'Buenos Aires', country:'Argentina',
+    homeTeam:'Argentina', capacity:84567,
+    startDate:'July 2026', endDate:'August 2026',
+    teams:16, matches:32, prize:'$800,000',
+    prizeShort:'$800K',
+    edition:'50th', founded:'1916',
+    avgAttendance:78000, tvReach:'60+ countries',
+    stats:{ prestige:88, competition:91, history:97, spectacle:89 }
+  },
+  {
+    id:4, name:'FIFO Youth Cup', short:'FYC',
+    type:'Youth', region:'Global', status:'qualifying',
+    featured:false,
+    img:'https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=600&q=80',
+    stadium:'Allianz Arena', city:'Munich', country:'Germany',
+    homeTeam:'Germany U21', capacity:75024,
+    startDate:'May 2026', endDate:'July 2026',
+    teams:24, matches:52, prize:'$500,000',
+    prizeShort:'$500K',
+    edition:'12th', founded:'2014',
+    avgAttendance:42000, tvReach:'90+ countries',
+    stats:{ prestige:75, competition:82, history:55, spectacle:78 }
+  },
+  {
+    id:5, name:'Africa Cup of Nations', short:'AFCON',
+    type:'Continental', region:'Africa', status:'upcoming',
+    featured:false,
+    img:'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=600&q=80',
+    stadium:'FNB Stadium', city:'Johannesburg', country:'South Africa',
+    homeTeam:'South Africa', capacity:94736,
+    startDate:'Jan 2027', endDate:'Feb 2027',
+    teams:24, matches:52, prize:'$750,000',
+    prizeShort:'$750K',
+    edition:'35th', founded:'1957',
+    avgAttendance:61000, tvReach:'80+ countries',
+    stats:{ prestige:82, competition:85, history:90, spectacle:83 }
+  },
+  {
+    id:6, name:'Euro Championship', short:'EURO',
+    type:'Continental', region:'Europe', status:'completed',
+    featured:false,
+    img:'https://images.unsplash.com/photo-1459865264687-595d652de67e?w=600&q=80',
+    stadium:'Olympiastadion Berlin', city:'Berlin', country:'Germany',
+    homeTeam:'Germany', capacity:74475,
+    startDate:'June 2024', endDate:'July 2024',
+    teams:24, matches:51, prize:'$1,200,000',
+    prizeShort:'$1.2M',
+    edition:'17th', founded:'1960',
+    avgAttendance:68000, tvReach:'150+ countries',
+    stats:{ prestige:92, competition:93, history:95, spectacle:91 }
+  },
+  {
+    id:7, name:'Asian Football Cup', short:'AFC',
+    type:'Continental', region:'Asia', status:'qualifying',
+    featured:false,
+    img:'https://images.unsplash.com/photo-1516058575735-ac71a83c6693?w=600&q=80',
+    stadium:'Khalifa International Stadium', city:'Doha', country:'Qatar',
+    homeTeam:'Qatar', capacity:45416,
+    startDate:'Jan 2027', endDate:'Feb 2027',
+    teams:24, matches:52, prize:'$600,000',
+    prizeShort:'$600K',
+    edition:'19th', founded:'1956',
+    avgAttendance:38000, tvReach:'70+ countries',
+    stats:{ prestige:78, competition:80, history:85, spectacle:76 }
+  },
+  {
+    id:8, name:'La Liga Masters Cup', short:'LMC',
+    type:'Club', region:'Europe', status:'completed',
+    featured:false,
+    img:'https://images.unsplash.com/photo-1473976345543-9fac86f22785?w=600&q=80',
+    stadium:'Santiago Bernabéu', city:'Madrid', country:'Spain',
+    homeTeam:'Real Madrid', capacity:81044,
+    startDate:'Aug 2025', endDate:'May 2026',
+    teams:20, matches:380, prize:'$900,000',
+    prizeShort:'$900K',
+    edition:'94th', founded:'1929',
+    avgAttendance:58000, tvReach:'180+ countries',
+    stats:{ prestige:90, competition:92, history:98, spectacle:88 }
+  },
+  {
+    id:9, name:'FIFO Nations League', short:'FNL',
+    type:'Continental', region:'Global', status:'upcoming',
+    featured:false,
+    img:'https://images.unsplash.com/photo-1556056504-5c7696c4c28d?w=600&q=80',
+    stadium:'Luzhniki Stadium', city:'Moscow', country:'Russia',
+    homeTeam:'Russia', capacity:81000,
+    startDate:'Sept 2026', endDate:'Nov 2026',
+    teams:48, matches:110, prize:'$1,500,000',
+    prizeShort:'$1.5M',
+    edition:'4th', founded:'2018',
+    avgAttendance:55000, tvReach:'120+ countries',
+    stats:{ prestige:83, competition:86, history:30, spectacle:85 }
+  },
+  {
+    id:10, name:'Premier League Invitational', short:'PLI',
+    type:'Club', region:'Europe', status:'live',
+    featured:false,
+    img:'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=600&q=80',
+    stadium:'Tottenham Hotspur Stadium', city:'London', country:'England',
+    homeTeam:'Spurs', capacity:62850,
+    startDate:'Feb 2026', endDate:'April 2026',
+    teams:6, matches:15, prize:'$300,000',
+    prizeShort:'$300K',
+    edition:'3rd', founded:'2022',
+    avgAttendance:60000, tvReach:'80+ countries',
+    stats:{ prestige:70, competition:75, history:15, spectacle:80 }
+  },
+  {
+    id:11, name:'CONCACAF Gold Cup', short:'CGC',
+    type:'Continental', region:'North America', status:'upcoming',
+    featured:false,
+    img:'https://images.unsplash.com/photo-1610201429563-a0a35e54a1ae?w=600&q=80',
+    stadium:'SoFi Stadium', city:'Los Angeles', country:'USA',
+    homeTeam:'USA', capacity:70240,
+    startDate:'June 2027', endDate:'July 2027',
+    teams:16, matches:32, prize:'$650,000',
+    prizeShort:'$650K',
+    edition:'18th', founded:'1991',
+    avgAttendance:55000, tvReach:'40+ countries',
+    stats:{ prestige:72, competition:74, history:60, spectacle:73 }
+  },
+  {
+    id:12, name:'Serie A Supercoppa', short:'SAS',
+    type:'Club', region:'Europe', status:'completed',
+    featured:false,
+    img:'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=600&q=80',
+    stadium:'Stadio San Siro', city:'Milan', country:'Italy',
+    homeTeam:'Inter Milan', capacity:75923,
+    startDate:'Jan 2026', endDate:'Jan 2026',
+    teams:4, matches:3, prize:'$200,000',
+    prizeShort:'$200K',
+    edition:'38th', founded:'1988',
+    avgAttendance:72000, tvReach:'100+ countries',
+    stats:{ prestige:68, competition:70, history:80, spectacle:72 }
+  },
+];
+
+let allTournaments = [];
+let searchQ='', regionF='all', statusF='all', typeF='all';
+
+// ── INIT ──
+async function init(){
+  try {
+    const res = await fetch('http://localhost:3000/tournaments');
+    if (!res.ok) throw new Error('API error');
+    const apiData = await res.json();
+    // Merge API data with SEED_TOURNAMENTS to preserve rich fields (img, stats, etc.)
+    allTournaments = apiData.map(t => {
+      const seed = SEED_TOURNAMENTS.find(s => s.id === t.id) || {};
+      return { ...seed, ...t };
+    });
+    if (!allTournaments.length) throw new Error('Empty response');
+  } catch(e) {
+    allTournaments = [...SEED_TOURNAMENTS];
+  }
+  populateRegionFilter();
+  attachListeners();
+  renderTournaments(allTournaments);
+}
+
+function populateRegionFilter(){
+  const sel=document.getElementById('regionFilter');
+  const regions=[...new Set(allTournaments.map(t=>t.region))].sort();
+  regions.forEach(r=>{const o=document.createElement('option');o.value=r;o.textContent=r.toUpperCase();sel.appendChild(o);});
+}
+
+function applyFilters(data){
+  let r=[...data];
+  if(searchQ.trim()){const q=searchQ.toLowerCase();r=r.filter(t=>t.name.toLowerCase().includes(q)||t.stadium.toLowerCase().includes(q)||t.country.toLowerCase().includes(q)||t.city.toLowerCase().includes(q));}
+  if(regionF!=='all') r=r.filter(t=>t.region===regionF);
+  if(statusF!=='all') r=r.filter(t=>t.status===statusF);
+  if(typeF!=='all')   r=r.filter(t=>t.type===typeF);
+  // Featured always first
+  r.sort((a,b)=>(b.featured?1:0)-(a.featured?1:0)||b.stats.prestige-a.stats.prestige);
+  return r;
+}
+
+function statusLabel(s){
+  const m={live:'LIVE NOW',upcoming:'UPCOMING',qualifying:'QUALIFYING',completed:'COMPLETED'};
+  return m[s]||s.toUpperCase();
+}
+
+function buildStatBar(label,val,gold=false){
+  return `<div class="back-bar-wrap">
+    <div class="back-bar-label"><span>${label}</span><span>${val}</span></div>
+    <div class="back-bar"><div class="back-bar-fill${gold?' gold':''}" style="width:${val}%"></div></div>
+  </div>`;
+}
+
+function buildCard(t,idx){
+  const isListView=currentView==='list';
+  const featClass=t.featured?' featured':'';
+
+  if(isListView){
+    return `<div class="tourn-scene flip-in${featClass}" style="--i:${idx}" data-id="${t.id}">
+      <div class="tourn-list-card">
+        <img class="tourn-list-img" src="${t.img}" alt="${t.name}" onerror="this.style.background='linear-gradient(135deg,#0A1020,#0E1628)'"/>
+        <div class="tourn-list-body">
+          <div class="tourn-list-info">
+            <span class="tourn-status status-${t.status}" style="position:static;display:inline-block;margin-bottom:4px;">${statusLabel(t.status)}</span>
+            <div class="tourn-list-name">${t.name}</div>
+            <div class="tourn-list-meta">
+              📍 ${t.stadium} · ${t.city}, ${t.country} &nbsp;·&nbsp; ${t.startDate}${t.endDate?'–'+t.endDate:''}
+            </div>
+          </div>
+          <div class="tourn-list-stats">
+            <div class="tourn-list-stat"><div class="tourn-list-stat-val">${t.teams}</div><div class="tourn-list-stat-lbl">Teams</div></div>
+            <div class="tourn-list-stat"><div class="tourn-list-stat-val">${t.matches}</div><div class="tourn-list-stat-lbl">Matches</div></div>
+            <div class="tourn-list-stat"><div class="tourn-list-stat-val" style="color:#EAB308;">${t.prizeShort}</div><div class="tourn-list-stat-lbl">Prize</div></div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  return `<div class="tourn-scene flip-in${featClass}" style="--i:${idx}" data-id="${t.id}">
+    <div class="tourn-flipper">
+      <!-- FRONT -->
+      <div class="tourn-front">
+        <div class="tourn-img-wrap">
+          <img class="tourn-img" src="${t.img}" alt="${t.name}" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#0A1020,#0E1628)'"/>
+          <div class="tourn-img-overlay"></div>
+          <span class="tourn-status status-${t.status}">${statusLabel(t.status)}</span>
+          <span class="tourn-prize">${t.prizeShort}</span>
+        </div>
+        <div class="tourn-body">
+          <span class="tourn-type-tag">${t.type} · ${t.region}</span>
+          <div class="tourn-name">${t.name}</div>
+          <div class="tourn-stadium-row">
+            <i data-lucide="map-pin" style="width:12px;height:12px;color:#06B6D4;flex-shrink:0;"></i>
+            <span class="tourn-stadium-text">${t.stadium} · ${t.city}</span>
+          </div>
+          <div class="tourn-stats-row">
+            <div class="tourn-stat"><div class="tourn-stat-val">${t.teams}</div><div class="tourn-stat-lbl">Teams</div></div>
+            <div class="tourn-stat"><div class="tourn-stat-val">${t.matches}</div><div class="tourn-stat-lbl">Matches</div></div>
+            <div class="tourn-stat"><div class="tourn-stat-val" style="color:#EAB308;">${t.edition}</div><div class="tourn-stat-lbl">Edition</div></div>
+          </div>
+          <div class="tourn-flip-hint">↻ HOVER TO FLIP</div>
+        </div>
+      </div>
+      <!-- BACK -->
+      <div class="tourn-back">
+        <div class="tourn-back-header">
+          <div class="tourn-back-name">${t.name}</div>
+          <div class="tourn-back-sub">${t.type.toUpperCase()} · ${t.region.toUpperCase()}</div>
+        </div>
+        <div class="back-row"><span class="back-row-key">🏟 Stadium</span><span class="back-row-val">${t.stadium}</span></div>
+        <div class="back-row"><span class="back-row-key">📍 Location</span><span class="back-row-val">${t.city}, ${t.country}</span></div>
+        <div class="back-row"><span class="back-row-key">🏠 Home Side</span><span class="back-row-val">${t.homeTeam}</span></div>
+        <div class="back-row"><span class="back-row-key">👥 Capacity</span><span class="back-row-val">${t.capacity.toLocaleString()}</span></div>
+        <div class="back-row"><span class="back-row-key">📅 Dates</span><span class="back-row-val" style="font-size:.65rem;">${t.startDate} – ${t.endDate}</span></div>
+        <div class="back-row"><span class="back-row-key">💰 Prize Pool</span><span class="back-row-val gold">${t.prize}</span></div>
+        <div class="back-row"><span class="back-row-key">📺 TV Reach</span><span class="back-row-val">${t.tvReach}</span></div>
+        ${buildStatBar('PRESTIGE',t.stats.prestige,false)}
+        ${buildStatBar('COMPETITION',t.stats.competition,false)}
+        ${buildStatBar('HISTORY',t.stats.history,true)}
+        <a href="register.html?tournament=${encodeURIComponent(t.name)}" style="display:flex;align-items:center;justify-content:center;gap:.5rem;margin-top:.6rem;padding:10px;background:linear-gradient(135deg,rgba(6,182,212,.15),rgba(234,179,8,.08));border:1px solid rgba(6,182,212,.3);border-radius:8px;color:#67E8F9;font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:2px;font-weight:700;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='linear-gradient(135deg,rgba(6,182,212,.25),rgba(234,179,8,.12))'" onmouseout="this.style.background='linear-gradient(135deg,rgba(6,182,212,.15),rgba(234,179,8,.08))'">
+          ⚡ REGISTER NOW
+        </a>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderTournaments(data){
+  const grid=document.getElementById('tournamentsGrid');
+  const counter=document.getElementById('tournCount');
+  const filtered=applyFilters(data);
+  if(counter) counter.textContent=filtered.length;
+
+  if(filtered.length===0){
+    grid.innerHTML=`<div class="empty-state"><div class="empty-state-icon">🏆</div><div class="empty-state-title">No Tournaments Found</div><div class="empty-state-sub">Try adjusting your search or filters</div></div>`;
+    return;
+  }
+  grid.innerHTML=filtered.map((t,i)=>buildCard(t,i)).join('');
+  // Remove flip-in after animation
+  grid.querySelectorAll('.tourn-scene').forEach((c,i)=>{
+    setTimeout(()=>c.classList.remove('flip-in'),i*70+700);
+  });
+  lucide.createIcons();
+}
+
+function attachListeners(){
+  let st;
+  document.getElementById('tournSearch').addEventListener('input',function(){clearTimeout(st);st=setTimeout(()=>{searchQ=this.value;renderTournaments(allTournaments);},250);});
+  document.getElementById('regionFilter').addEventListener('change',function(){regionF=this.value;renderTournaments(allTournaments);});
+  document.getElementById('statusFilter').addEventListener('change',function(){statusF=this.value;renderTournaments(allTournaments);});
+  document.getElementById('typeFilter').addEventListener('change',function(){typeF=this.value;renderTournaments(allTournaments);});
+}
+
+init();
+</script>
+</body>
+</html>

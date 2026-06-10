@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="referrer" content="no-referrer"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Players – FIFO Tournament 2026</title>
+  <script src="theme.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    :root{--gold:#EAB308;--gold-light:#FDE047;--bg:#080E1C;--border:rgba(234,179,8,0.18);}
+    *{box-sizing:border-box;}
+    body{background:var(--bg);font-family:'Rajdhani',sans-serif;color:#e2e8f0;overflow-x:hidden;min-height:100vh;}
+    body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9998;opacity:0.5;}
+    .glass-nav{background:rgba(8,14,28,0.8);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);box-shadow:0 4px 40px rgba(234,179,8,0.07);}
+    .nav-logo{font-family:'Orbitron',monospace;font-weight:900;font-size:1.9rem;background:linear-gradient(135deg,#EAB308,#FDE047,#CA8A04);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:5px;position:relative;text-decoration:none;}
+    .nav-logo::after{content:'';position:absolute;bottom:-5px;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#EAB308,transparent);animation:shimmer 3s infinite;}
+    @keyframes shimmer{0%,100%{opacity:.3;}50%{opacity:1;}}
+    .nav-link{font-family:'Rajdhani',sans-serif;font-weight:600;font-size:.9rem;letter-spacing:2.5px;text-transform:uppercase;color:#94a3b8;position:relative;padding-bottom:4px;transition:color .3s;text-decoration:none;}
+    .nav-link::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:#EAB308;transition:width .3s;}
+    .nav-link:hover{color:#EAB308;}.nav-link:hover::after,.nav-link.active::after{width:100%;}.nav-link.active{color:#EAB308;}
+    .mob-menu{display:none;position:fixed;top:72px;left:0;right:0;background:rgba(8,14,28,.98);backdrop-filter:blur(24px);border-bottom:1px solid rgba(234,179,8,.2);padding:1.5rem 2rem;z-index:999;flex-direction:column;gap:1rem;}
+    .mob-menu.open{display:flex;}
+    .gd{height:1px;background:linear-gradient(90deg,transparent,rgba(234,179,8,.35),transparent);}
+    ::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:rgba(234,179,8,.35);border-radius:3px;}
+    .page-hdr{padding-top:130px;padding-bottom:60px;position:relative;overflow:hidden;}
+    .page-hdr::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(234,179,8,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(234,179,8,.04) 1px,transparent 1px);background-size:55px 55px;}
+    .hdr-bg{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1920&q=60');background-size:cover;background-position:center;opacity:.07;}
+    .hdr-grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,14,28,.2) 0%,rgba(8,14,28,1) 100%);}
+    .hdr-word{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Bebas Neue',cursive;font-size:18vw;color:rgba(234,179,8,.025);pointer-events:none;white-space:nowrap;letter-spacing:10px;}
+    .section-label{font-family:'Orbitron',monospace;font-size:.68rem;letter-spacing:5px;color:#EAB308;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:1rem;}
+    .section-label::before{content:'';width:40px;height:2px;background:linear-gradient(90deg,#EAB308,#FDE047);}
+    .section-title{font-family:'Bebas Neue',cursive;font-size:clamp(2.8rem,5.5vw,4.5rem);letter-spacing:2px;color:#f1f5f9;line-height:.95;}
+    .footer{background:rgba(5,8,18,.98);border-top:1px solid rgba(234,179,8,.12);padding:3.5rem 2rem;}
+    .si{width:42px;height:42px;background:rgba(255,255,255,.04);border:1px solid rgba(234,179,8,.15);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#475569;text-decoration:none;transition:all .3s;}
+    .si:hover{background:rgba(234,179,8,.1);border-color:rgba(234,179,8,.5);color:#EAB308;transform:translateY(-4px);}
+    .fade-in{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease;}
+    .fade-in.visible{opacity:1;transform:translateY(0);}
+    .legend-row{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;margin-top:1rem;}
+    .legend-item{display:flex;align-items:center;gap:.5rem;font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:2px;color:#475569;}
+    .legend-dot{width:10px;height:10px;border-radius:50%;}
+    .legend-dot.diamond{background:linear-gradient(135deg,#EAB308,#FDE047);box-shadow:0 0 8px rgba(234,179,8,.5);}
+    .legend-dot.standard{background:#334155;}
+  
+    /* ── ENHANCED THEME OVERRIDE ── */
+    :root {
+      --gold:#EAB308;--gold-light:#FDE047;--gold-dark:#CA8A04;
+      --cyan:#06B6D4;--cyan-light:#67E8F9;
+      --bg:#05091A;--bg2:#0A1020;--border:rgba(6,182,212,0.18);
+      --border-gold:rgba(234,179,8,0.18);
+    }
+    body { background: #05091A !important; }
+    .glass-nav {
+      background: rgba(5,9,26,0.85) !important;
+      border-bottom: 1px solid rgba(6,182,212,0.18) !important;
+      box-shadow: 0 4px 40px rgba(6,182,212,0.06) !important;
+    }
+    .nav-logo {
+      background: linear-gradient(135deg,#06B6D4,#67E8F9,#EAB308) !important;
+      -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important;
+      background-clip: text !important;
+    }
+    .nav-logo::after { background: linear-gradient(90deg,transparent,#06B6D4,#EAB308,transparent) !important; }
+    .nav-link:hover { color:#67E8F9 !important; }
+    .nav-link:hover::after,.nav-link.active::after { background: linear-gradient(90deg,#06B6D4,#EAB308) !important; width:100%; }
+    .nav-link.active { color:#06B6D4 !important; }
+    ::-webkit-scrollbar-thumb { background: rgba(6,182,212,0.35) !important; border-radius:3px; }
+    .gd { background: linear-gradient(90deg,transparent,rgba(6,182,212,.25),rgba(234,179,8,.12),transparent) !important; }
+    .section-label { color:#06B6D4 !important; }
+    .section-label::before { background: linear-gradient(90deg,#06B6D4,#67E8F9) !important; }
+
+  
+    /* ── THEME VARIABLE CONSUMERS (shared) ── */
+    body{background:var(--bg)!important;color:var(--text-secondary)!important;}
+    .glass-nav{background:var(--bg-nav)!important;border-bottom:1px solid var(--border)!important;box-shadow:var(--shadow-nav)!important;}
+    .nav-link{color:var(--text-muted)!important;}
+    .nav-link:hover,.nav-link.active{color:var(--cyan)!important;}
+    .nav-link::after,.nav-link:hover::after,.nav-link.active::after{background:linear-gradient(90deg,var(--cyan),var(--gold))!important;}
+    .mob-menu{background:var(--bg-mob-menu)!important;border-color:var(--border)!important;}
+    .gd{background:linear-gradient(90deg,transparent,var(--border),transparent)!important;}
+    ::-webkit-scrollbar-track{background:var(--bg)!important;}
+    ::-webkit-scrollbar-thumb{background:var(--scrollbar-thumb)!important;}
+    /* Light mode body background override */
+    :root:not([data-theme="dark"]) body,
+    html:not([data-theme="dark"]) body{
+      background:var(--bg)!important;
+    }
+
+  
+    /* ── LIGHT MODE SECTION OVERRIDES ── */
+    :root body,.glass-nav{transition:background-color .3s ease,border-color .3s ease,box-shadow .3s ease;}
+    /* Cards / panels */
+    [data-theme]:not([data-theme="dark"]) .h-card,
+    html:not([data-theme="dark"]) .h-card{background:rgba(255,255,255,0.9)!important;border-color:var(--border-card)!important;box-shadow:0 4px 20px rgba(0,0,0,0.08)!important;}
+    html:not([data-theme="dark"]) .stat-item::after{background:linear-gradient(to bottom,transparent,var(--border),transparent)!important;}
+    html:not([data-theme="dark"]) .stats-bar{background:linear-gradient(90deg,rgba(240,244,248,.98),rgba(230,240,252,.95),rgba(240,244,248,.98))!important;border-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .stat-num{color:var(--gold)!important;}
+    html:not([data-theme="dark"]) .stat-lbl{color:var(--text-muted)!important;}
+    html:not([data-theme="dark"]) .cd-item{background:rgba(255,255,255,0.9)!important;border-color:var(--border-card)!important;}
+    html:not([data-theme="dark"]) .cd-num{color:var(--gold)!important;}
+    html:not([data-theme="dark"]) .cd-unit{color:var(--text-muted)!important;}
+    html:not([data-theme="dark"]) .footer{background:rgba(224,234,248,.98)!important;border-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .section-title{color:var(--text-primary)!important;}
+    html:not([data-theme="dark"]) .feature-row{background:rgba(6,182,212,0.04)!important;border-left-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .feature-row:hover{background:rgba(6,182,212,0.10)!important;border-left-color:var(--cyan)!important;}
+    html:not([data-theme="dark"]) .h-tag{background:rgba(202,138,4,0.10)!important;border-color:var(--border-gold)!important;color:var(--gold)!important;}
+    html:not([data-theme="dark"]) .hero-overlay{background:linear-gradient(135deg,rgba(240,244,248,0.88) 0%,rgba(215,232,250,0.72) 50%,rgba(180,210,248,0.28) 100%)!important;}
+    html:not([data-theme="dark"]) .si{background:rgba(0,0,0,0.04)!important;border-color:var(--border)!important;}
+    html:not([data-theme="dark"]) .si:hover{background:rgba(6,182,212,0.12)!important;}
+    html:not([data-theme="dark"]) .hero-title{color:var(--text-primary)!important;text-shadow:0 0 60px rgba(6,182,212,0.15)!important;}
+    html:not([data-theme="dark"]) .hero-sub{color:var(--text-muted)!important;}
+
+  </style>
+</head>
+<body>
+
+<nav class="glass-nav fixed top-0 left-0 right-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between" style="height:72px;">
+      <a href="index.html" class="nav-logo">FIFO</a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="schedule.html" class="nav-link">Schedule</a>
+        <a href="players.html" class="nav-link active">Players</a>
+        <a href="tournaments.html" class="nav-link">Tournaments</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </div>
+      <a href="signup.html" style="font-family:'Orbitron',monospace;font-size:.72rem;letter-spacing:2px;background:linear-gradient(135deg,#EAB308,#CA8A04);color:#080E1C;font-weight:700;padding:9px 22px;border-radius:4px;text-decoration:none;transition:all .3s;" onmouseover="this.style.boxShadow='0 8px 30px rgba(234,179,8,0.5)'" onmouseout="this.style.boxShadow='none'">REGISTER</a>
+      <button
+        id="theme-toggle"
+        class="theme-toggle-btn hidden md:inline-flex"
+        aria-label="Switch to Light Mode"
+        aria-pressed="false"
+        title="Toggle dark / light mode"
+      >
+        <span class="toggle-track"></span>
+        <i data-lucide="sun" class="theme-icon"></i>
+        <span class="theme-label">LIGHT</span>
+      </button>
+      <button onclick="toggleMenu()" class="md:hidden text-slate-400 hover:text-yellow-400 transition-colors">
+        <i data-lucide="menu" id="menu-icon" style="width:24px;height:24px;"></i>
+      </button>
+    </div>
+  </div>
+  <div class="mob-menu" id="mobile-menu">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="schedule.html" class="nav-link">Schedule</a>
+    <a href="players.html" class="nav-link active">Players</a>
+    <a href="tournaments.html" class="nav-link">Tournaments</a>
+    <a href="contact.html" class="nav-link">Contact</a>
+      <button
+      id="theme-toggle-mobile"
+      class="theme-toggle-btn"
+      style="margin-top:.5rem;width:100%;justify-content:center;"
+      aria-label="Switch to Light Mode"
+      aria-pressed="false"
+      onclick="FIFO_Theme.toggle()"
+    >
+      <span class="toggle-track"></span>
+      <i data-lucide="sun" class="theme-icon"></i>
+      <span class="theme-label">LIGHT MODE</span>
+    </button>
+  </div>
+</nav>
+
+<section class="page-hdr">
+  <div class="hdr-bg"></div>
+  <div class="hdr-grad"></div>
+  <div class="hdr-word">PLAYERS</div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="section-label"><i data-lucide="users" style="width:14px;height:14px;"></i> SQUAD ROSTER</div>
+    <h1 class="section-title">World-Class<br/><span style="background:linear-gradient(135deg,#EAB308,#FDE047);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Athletes</span></h1>
+    <p style="color:#475569;font-size:.88rem;letter-spacing:2px;text-transform:uppercase;margin-top:.8rem;">Hover cards to flip &nbsp;·&nbsp; 💎 Diamond = 91+ &nbsp;·&nbsp; ⭐ Elite = 90</p>
+    <div class="legend-row">
+      <div class="legend-item"><div class="legend-dot diamond"></div><span>💎 Diamond (91+) — Gold glow border</span></div>
+      <div class="legend-item"><div class="legend-dot" style="background:linear-gradient(135deg,#06B6D4,#67E8F9);box-shadow:0 0 8px rgba(6,182,212,0.5);"></div><span>⭐ Elite (90) — Cyan glow border</span></div>
+      <div class="legend-item"><div class="legend-dot standard"></div><span>Standard Player</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="gd"></div>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar fade-in">
+    <div class="filter-search-wrap">
+      <i data-lucide="search" class="filter-search-icon" style="width:16px;height:16px;"></i>
+      <input id="playerSearch" class="filter-search" type="text" placeholder="Search player name…" autocomplete="off"/>
+    </div>
+    <select id="leagueFilter" class="filter-select">
+      <option value="all">ALL LEAGUES</option>
+    </select>
+    <select id="ratingFilter" class="filter-select">
+      <option value="all">ANY RATING</option>
+      <option value="80">80+ RATING</option>
+      <option value="85">85+ RATING</option>
+      <option value="88">88+ RATING</option>
+      <option value="90">90+ ELITE</option>
+      <option value="91">91+ DIAMOND</option>
+    </select>
+    <div class="filter-count"><span id="playerCount">0</span> PLAYERS</div>
+  </div>
+
+  <!-- CARDS GRID -->
+  <div id="playersGrid" class="players-grid">
+    <div style="grid-column:1/-1;text-align:center;padding:4rem;color:#334155;font-family:'Orbitron',monospace;font-size:.7rem;letter-spacing:3px;">LOADING SQUAD DATA…</div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+      <div>
+        <div style="font-family:'Orbitron',monospace;font-weight:900;font-size:1.5rem;background:linear-gradient(135deg,#EAB308,#FDE047);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:4px;">FIFO</div>
+        <p style="color:#1e293b;font-size:.75rem;letter-spacing:1.5px;margin-top:4px;">Football International Federation Org</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="#" class="si"><i data-lucide="twitter" style="width:16px;height:16px;"></i></a>
+        <a href="#" class="si"><i data-lucide="instagram" style="width:16px;height:16px;"></i></a>
+        <a href="#" class="si"><i data-lucide="youtube" style="width:16px;height:16px;"></i></a>
+      </div>
+      <p style="color:#1e293b;font-size:.72rem;letter-spacing:1.5px;">© 2026 FIFO · All rights reserved</p>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script>
+if(typeof lucide !== "undefined") lucide.createIcons(); else window.addEventListener("load", () => lucide && lucide.createIcons());
+function toggleMenu(){const m=document.getElementById('mobile-menu');m.classList.toggle('open');}
+const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:0.1});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
